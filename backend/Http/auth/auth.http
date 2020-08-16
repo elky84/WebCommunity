@@ -1,0 +1,27 @@
+### Token Issue
+
+POST {{host}}/Auth/Token/Issue
+Content-Type: application/json
+
+{
+  "UserId": "elky"
+}
+
+
+### Token Validate
+
+POST {{host}}/Auth/Token/Validate
+Content-Type: application/json
+
+{
+  "UserId": "51984a31cfba324f53c61136ed700145a053e788"
+}
+
+### Token Refresh
+
+POST {{host}}/Auth/Token/Refresh
+Content-Type: application/json
+
+{
+  "UserId": "51984a31cfba324f53c61136ed700145a053e788"
+}

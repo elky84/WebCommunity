@@ -1,0 +1,40 @@
+{
+  "reRoutes": [
+    {
+      "downstreamPathTemplate": "/Board/{everything}",
+      "downstreamScheme": "http",
+      "downstreamHostAndPorts": [
+        {
+          "host": "localhost",
+          "port": 30200
+        }
+      ],
+      "upstreamPathTemplate": "/Board/{everything}",
+      "upstreamHttpMethod": [ "Get", "Post", "Put", "Delete" ]
+    },
+    {
+      "downstreamPathTemplate": "/Auth/{everything}",
+      "downstreamScheme": "http",
+      "downstreamHostAndPorts": [
+        {
+          "host": "localhost",
+          "port": 30100
+        }
+      ],
+      "upstreamPathTemplate": "/Auth/{everything}",
+      "upstreamHttpMethod": [ "Get", "Post", "Put", "Delete" ]
+    },
+    {
+      "downstreamPathTemplate": "/ws",
+      "downstreamScheme": "ws",
+      "downstreamHostAndPorts": [
+        {
+          "host": "localhost",
+          "port": 30200
+        }
+      ],
+      "upstreamPathTemplate": "/ws",
+      "upstreamHttpMethod": [ "Get", "Post", "Put", "Delete" ]
+    }
+  ]
+}

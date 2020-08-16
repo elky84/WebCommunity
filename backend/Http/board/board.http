@@ -1,0 +1,39 @@
+### Board Free Get
+
+GET {{host}}/Board/Free
+
+
+### Board Free Create
+
+POST {{host}}/Board/Free
+Content-Type: application/json
+
+{
+  "Author": "elky",
+  "Title": "test title",
+  "Content": "글 내용",
+  "Category": "game",
+  "Tags": ["aa", "BB"]
+}
+
+
+### Board Free Update
+
+PUT {{host}}/Board/Free/5f7737f44543b61442a80ccd
+Content-Type: application/json
+
+{
+  "Author": "elky",
+  "Title": "test title",
+  "Content": "글 내용",
+  "Category": "game",
+  "Tags": ["aa", "BB"]
+}
+
+### Board Free Recommend
+
+POST {{host}}/Board/Free/5f7737f44543b61442a80ccd/Recommend
+
+### Board Free NotRecommend
+
+POST {{host}}/Board/Free/5f7737f44543b61442a80ccd/NotRecommend

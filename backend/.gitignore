@@ -1,0 +1,14 @@
+.vscode
+
+.vs
+
+bin
+obj
+
+*.db
+*.db-wal
+*.db-shm
+
+debug.log
+
+logs
