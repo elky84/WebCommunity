@@ -33,6 +33,12 @@ namespace Board.Services
             return newData;
         }
 
+        public async Task<long> CountAsync(string id)
+        {
+            var mongoDbUtil = GetMongoDbBoard(id);
+            return await mongoDbUtil.CountAsync();
+        }
+
         public async Task<List<Article>> Get(string id, string keyword, Pageable pageable)
         {
             var mongoDbUtil = GetMongoDbBoard(id);

@@ -2,6 +2,11 @@
 // (runtime-only or standalone) has been set in webpack.base.conf with an alias.
 
 import Vue from 'vue'
+import Vuetify from 'vuetify'
+// import plugin
+import 'vuetify/dist/vuetify.min.css'
+ 
+
 import './plugins/axios'
 import App from './App'
 import router from './router'
@@ -13,6 +18,9 @@ import 'expose-loader?$!expose-loader?jQuery!jquery'
 import TreeView from 'vue-json-tree-view'
 import InputTag from 'vue-input-tag'
 // import JsonEditor from 'vue-json-edit'
+import "@/fontAwesomeIcon.js"; // fontAwesomeIcon.js 불러옴
+
+Vue.use(Vuetify)
 
 // Vue.use(JsonEditor)
 Vue.use(TreeView)

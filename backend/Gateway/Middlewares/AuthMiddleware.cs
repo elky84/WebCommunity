@@ -30,6 +30,10 @@ namespace Gateway.Middlewares
                 return;
             }
 
+#if DEBUG
+            await next.Invoke();
+            return;
+#else
             var uri = ctx.DownstreamRequest.AbsolutePath;
             if (uri.StartsWith("/Auth/Token/Issue")) // TODO white 리스트를 어떻게 관리 할 것인가?
             {
@@ -41,6 +45,7 @@ namespace Gateway.Middlewares
             ctx.DownstreamRequest.Headers.Add(WebUtil.Constants.HeaderKeys.AuthorizedUserId, userId);
 
             await next.Invoke();
+#endif
         }
 
         private async Task<string> Authorization(DownstreamContext ctx)

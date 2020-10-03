@@ -2,8 +2,11 @@
   <div>
     <b-card no-body>
       <b-tabs pills card vertical>
-        <b-tab title="News" active>
-          <BoardList BoardId="News"/>
+        <b-tab title="Free" active>
+          <BoardList BoardId="Free"/>
+        </b-tab>
+        <b-tab title="Humor" active>
+          <BoardList BoardId="Humor"/>
         </b-tab>
       </b-tabs>
     </b-card>
@@ -14,7 +17,7 @@
 import BoardList from '../Board/BoardList'
 
 export default {
-  name: 'News',
+  name: 'Community',
   data () {
     return {
     }

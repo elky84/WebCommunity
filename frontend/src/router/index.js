@@ -4,6 +4,7 @@ import Router from 'vue-router'
 import Home from '@/components/Home'
 
 import News from '@/components/NavMenu/News'
+import Community from '@/components/NavMenu/Community'
 
 // import Stage from '@/components/Stage/Stage'
 // import StageList from '@/components/Stage/StageList'
@@ -22,6 +23,11 @@ export default new Router({
       path: '/News',
       name: 'News',
       component: News
+    },
+    {
+      path: '/Community',
+      name: 'Community',
+      component: Community
     }
     // {
     //   path: '/Stage',

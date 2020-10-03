@@ -1,4 +1,4 @@
-export const ACCOUNT_GRADE = {
+export const BOARD_GRADE = {
   Admin: {
     text: '관리자',
     label: 'badge-primary'
@@ -17,7 +17,7 @@ export const ACCOUNT_GRADE = {
   }
 }
 
-export const ACCOUNT_STATE = {
+export const BOARD_STATE = {
   Enable: {
     text: '활성화',
     label: 'badge-primary'

@@ -22,7 +22,8 @@ namespace Board.Controllers
         {
             return new Web.Protocols.Response.ArticleList
             {
-                Datas = (await _articleService.Get(boardId, keyword, pageable)).ConvertAll(x => x.ToListProtocol())
+                Contents = (await _articleService.Get(boardId, keyword, pageable)).ConvertAll(x => x.ToListProtocol()),
+                Total = await _articleService.CountAsync(boardId)
             };
         }
 
