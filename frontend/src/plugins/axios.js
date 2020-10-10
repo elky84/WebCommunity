@@ -13,12 +13,9 @@ let config = {
   // baseURL: process.env.baseURL || process.env.apiUrl || ""
   timeout: 60 * 1000, // Timeout
   // withCredentials: true, // Check cross-site Access-Control
-  // headers: {'X-Internal-Server': 'Admin'}
 };
 
 const _axios = axios.create(config);
-
-axios.defaults.headers.common['X-Internal-Server'] = 'Admin' // for all requests
 
 _axios.interceptors.request.use(
   function(config) {

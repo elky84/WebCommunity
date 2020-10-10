@@ -6,6 +6,6 @@ namespace Web.Protocols.Response
 {
     public class WebSocketAuth : ResponseHeader
     {
-        public override Id ProtocolId { get { return Id.WebSocketAuth; } }
+        public override ProtocolId ProtocolId { get { return ProtocolId.WebSocketAuth; } }
     }
 }

@@ -1,6 +1,6 @@
 ﻿namespace Web.Protocols
 {
-    public enum Id
+    public enum ProtocolId
     {
         InvalidId,
 

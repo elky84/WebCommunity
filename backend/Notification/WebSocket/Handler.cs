@@ -129,7 +129,7 @@ namespace Notification.WebSocket
             var socketId = ConnectionManager.GetId(socket);
             switch (requestHeader.ProtocolId)
             {
-                case Id.WebSocketAuth:
+                case ProtocolId.WebSocketAuth:
                     {
                         if (IsAuth(socket))
                         {
@@ -214,7 +214,7 @@ namespace Notification.WebSocket
             var requestHeader = JsonConvert.DeserializeObject<RequestHeader>(str);
             switch (requestHeader.ProtocolId)
             {
-                case Id.AdminDisconnectUser:
+                case ProtocolId.AdminDisconnectUser:
                     {
                         var disconnectUser = requestHeader.ExtensionData.Populate<Web.Protocols.Admin.Request.DisconnectUser>();
                         var userData = GetUserData(disconnectUser.UserId);

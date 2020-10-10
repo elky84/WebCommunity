@@ -7,7 +7,7 @@ namespace Web.Protocols.Request
 {
     public class Comment : RequestHeader
     {
-        public override Id ProtocolId { get { return Id.Comment; } }
+        public override ProtocolId ProtocolId { get { return ProtocolId.Comment; } }
 
         public string OriginCommentId { get; set; }
 

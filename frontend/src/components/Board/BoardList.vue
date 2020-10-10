@@ -1,62 +1,59 @@
 <template>
-  <b-card :title=BoardId>
-    <BoardSearch @searching="parentSearching(... arguments)" @create="onClickCreate(... arguments)" ref="searchForm"/>
-    <BoardEdit @create="onCreate(... arguments)" :srcBoard="null" ref="editForm" id="editForm" v-if="editMode"/>
+  <b-card :title=boardId>
+    <BoardWrite @create="onCreate(... arguments)" :boardId="boardId" v-if="editMode"/>
 
+    <b-button variant="outline-primary" v-on:click="onClickWrite">{{buttonText}}</b-button>
     <table class="table table-bordered">
       <thead class="thead-dark">
         <tr class="text-center">
-          <th width="120px" v-on:click="sortBy('cateogry')">
+          <th width="120px">
             <span class="header">분류</span>
-            <span class="arrow" :class="toArrow('cateogry')"/>
           </th>
-          <th width="200px" v-on:click="sortBy('tags')">
+          <th width="200px">
             <span class="header">태그</span>
-            <span class="arrow" :class="toArrow('tags')"/>
           </th>
-          <th v-on:click="sortBy('title')">
+          <th>
             <span class="header">제목</span>
-            <span class="arrow" :class="toArrow('title')"/>
           </th>
-          <th width="150px" v-on:click="sortBy('author')">
+          <th width="150px">
             <span class="header">작성자</span>
-            <span class="arrow" :class="toArrow('author')"/>
           </th>
-          <th width="150px" v-on:click="sortBy('recommend')">
+          <th width="150px">
             <span class="header">추천</span>
-            <span class="arrow" :class="toArrow('recommend')"/>
           </th>
-          <th width="150px" v-on:click="sortBy('notRecommend')">
+          <th width="150px">
             <span class="header">비추천</span>
-            <span class="arrow" :class="toArrow('notRecommend')"/>
           </th>
-          <th width="150px" v-on:click="sortBy('created')">
+          <th width="150px">
             <span class="header">시간</span>
-            <span class="arrow" :class="toArrow('created')"/>
           </th>
         </tr>
       </thead>
       <tbody>
-        <template v-for="(Board) in Boards">
-          <tr class="cursor-pointer" :key="Board.id">
-            <td align="center">{{Board.category}}</td>
-            <td align="left">{{Board.tags}}</td>
-            <td align="center">{{Board.title}}</td>
-            <td align="center">{{Board.author}}</td>
-            <td align="center">{{Board.recommend}}</td>
-            <td align="center">{{Board.notRecommend}}</td>
-            <td align="center">{{Board.created}}</td>
+        <template v-for="(article) in articles">
+          <tr class="cursor-pointer" :key="article.id" @click.prevent="onClickBoard(article)">
+            <td align="center">{{article.category}}</td>
+            <td align="left">{{article.tags}}</td>
+            <td align="center">{{article.title}}</td>
+            <td align="center">{{article.author}}</td>
+            <td align="center">{{article.recommend}}</td>
+            <td align="center">{{article.notRecommend}}</td>
+            <td align="center">{{article.created}}</td>
           </tr>
+          <BoardEdit :boardId="boardId" :srcArticle="article" v-if="article.edit" :key="article.id + '_edit'" />
         </template>
       </tbody>
     </table>
 
+    <BoardSearch @searching="parentSearching(... arguments)" @create="onClickCreate(... arguments)" ref="searchForm"/>
     <b-pagination align="center" size="md" v-model="currentPage" :limit="limit" :total-rows="totalItems" :per-page="limit" @change="listing(... arguments)" />
   </b-card>
 </template>
 
 <script>
 import BoardSearch from './BoardSearch'
+import BoardWrite from './BoardWrite'
+import BoardEdit from './BoardEdit'
 
 import * as _ from 'lodash'
 
@@ -69,14 +66,16 @@ import {
 export default {
   name: 'BoardList',
   props: {
-    BoardId: String
+    boardId: String
   },
   components: {
-    BoardSearch: BoardSearch
+    BoardSearch: BoardSearch,
+    BoardWrite: BoardWrite,
+    BoardEdit: BoardEdit
   },
   data () {
     return {
-      Boards: [],
+      articles: [],
       BOARD_GRADE: BOARD_GRADE,
       BOARD_STATE: BOARD_STATE,
       currentPage: 1,
@@ -84,26 +83,22 @@ export default {
       totalItems: 0,
       limit: 20,
       searchData: {},
-      sort: null,
-      orderState: {
-        id: null,
-        userId: null,
-        token: null,
-        grade: null,
-        state: null
-      },
-      tempGrade: 'Admin',
-      tempState: 'Enable',
+      sort: 'created',
       editMode: false
     }
   },
   mounted () {
     this.getBoards(this.searchData)
   },
+  computed: {
+    buttonText: function () {
+      return this.editMode ? '닫기' : '글쓰기'
+    }
+  },
   methods: {
     getBoards (searchData) {
       var vm = this
-      this.$http.get(`${process.env.VUE_APP_URL_BACKEND}/Board/${this.BoardId}`, {
+      this.$http.get(`${process.env.VUE_APP_URL_BACKEND}/Board/${this.boardId}`, {
         params: {
           offset: this.limit * (this.currentPage - 1),
           limit: this.limit,
@@ -120,15 +115,15 @@ export default {
       }).then((result) => {
         this.viewPageCount = Math.ceil(result.data.total / this.limit)
         this.totalItems = result.data.total
-        vm.Boards = result.data.contents
+        vm.articles = result.data.contents
       })
     },
     onUpdate (newBoard) {
-      this.Boards = _.flatMap(this.Boards, function (Board) {
-        if (Board.id === newBoard.id) {
+      this.articles = _.flatMap(this.articles, function (article) {
+        if (article.id === newBoard.id) {
           return newBoard
         } else {
-          return Board
+          return article
         }
       })
     },
@@ -139,27 +134,15 @@ export default {
       this.currentPage = page
       this.getBoards(this.searchData)
     },
-    sortBy (key) {
-      this.orderState[key] = this.orderState[key] == null ? 'desc' : this.orderState[key] === 'asc' ? null : 'asc'
-      for (var orderKey in this.orderState) {
-        if (key !== orderKey) {
-          this.orderState[orderKey] = null
-        }
-      }
-
-      if (this.orderState[key] != null) {
-        this.sort = key + ':' + this.orderState[key]
-      } else {
-        this.sort = null
-      }
-
-      this.getBoards(this.searchData)
+    onClickWrite () {
+      this.editMode = !this.editMode
     },
-    toArrow (key) {
-      if (this.orderState[key] == null) {
-        return 'none'
-      }
-      return this.orderState[key]
+    onClickBoard (article) {
+      this.$http.get(`${process.env.VUE_APP_URL_BACKEND}/Board/${this.boardId}/${article.id}`, {})
+        .then((result) => {
+          article.content = result.data.data.content
+          this.$set(article, 'edit', !article.edit)
+        })
     }
   }
 }
@@ -193,4 +176,9 @@ div {
   font-size: 1em !important;
   font-family: Arial !important;
 }
+
+.btn {
+  margin: 5px;
+}
+
 </style>

@@ -3,7 +3,7 @@ namespace Web.Protocols.Request
 {
     public class Authenticate : RequestHeader
     {
-        public override Id ProtocolId { get { return Id.Authenticate; } }
+        public override ProtocolId ProtocolId { get { return ProtocolId.Authenticate; } }
 
         public string UserId { get; set; }
     }

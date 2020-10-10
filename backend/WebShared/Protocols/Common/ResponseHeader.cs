@@ -14,7 +14,7 @@ namespace Web.Protocols
         public string ErrorMessage { get; set; }
 
         [JsonConverter(typeof(StringEnumConverter))]
-        public virtual Id ProtocolId { get; set; }
+        public virtual ProtocolId ProtocolId { get; set; }
 
         [SwaggerExcludeAttribute]
         [JsonExtensionData]

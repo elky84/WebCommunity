@@ -53,16 +53,22 @@ namespace Board.Services
             return await mongoDbUtil.Page(filter, pageable.Limit, pageable.Offset, pageable.Sort, pageable.Asc);
         }
 
-        public async Task<Article> Create(string id, Web.Protocols.Request.Article board)
+        public async Task<Article> Create(string id, Web.Protocols.Request.Article article)
         {
             var mongoDbUtil = GetMongoDbBoard(id);
-            return await mongoDbUtil.CreateAsync(board.ToModel());
+            return await mongoDbUtil.CreateAsync(article.ToModel());
         }
 
-        public async Task<Article> Update(string id, string articleId, Web.Protocols.Request.Article board)
+        public async Task<Article> Get(string id, string articleId)
         {
             var mongoDbUtil = GetMongoDbBoard(id);
-            return await mongoDbUtil.UpdateAsync(articleId, board.ToModel());
+            return await mongoDbUtil.FindOneAsyncById(articleId);
+        }
+
+        public async Task<Article> Update(string id, string articleId, Web.Protocols.Request.Article article)
+        {
+            var mongoDbUtil = GetMongoDbBoard(id);
+            return await mongoDbUtil.UpdateAsync(articleId, article.ToModel());
         }
 
         public async Task<Article> Recommend(string id, string articleId)

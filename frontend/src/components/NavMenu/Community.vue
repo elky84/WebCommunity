@@ -3,10 +3,10 @@
     <b-card no-body>
       <b-tabs pills card vertical>
         <b-tab title="Free" active>
-          <BoardList BoardId="Free"/>
+          <BoardList boardId="Free"/>
         </b-tab>
         <b-tab title="Humor" active>
-          <BoardList BoardId="Humor"/>
+          <BoardList boardId="Humor"/>
         </b-tab>
       </b-tabs>
     </b-card>

@@ -2,7 +2,7 @@
 {
     public class Comment : ResponseHeader
     {
-        public override Id ProtocolId { get { return Id.Comment; } }
+        public override ProtocolId ProtocolId { get { return ProtocolId.Comment; } }
 
         public Common.Comment Data { get; set; }
     }

@@ -2,7 +2,7 @@
 {
     public class Article : ResponseHeader
     {
-        public override Id ProtocolId { get { return Id.Article; } }
+        public override ProtocolId ProtocolId { get { return ProtocolId.Article; } }
 
         public Common.Article Data { get; set; }
     }

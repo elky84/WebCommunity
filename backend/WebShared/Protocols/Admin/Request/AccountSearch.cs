@@ -8,7 +8,7 @@ namespace Web.Protocols.Admin.Request
 {
     public class AccountSearch : RequestHeader
     {
-        public override Id ProtocolId { get { return Id.AdminAccountSearch; } }
+        public override ProtocolId ProtocolId { get { return ProtocolId.AdminAccountSearch; } }
 
         public string UserId { get; set; }
 

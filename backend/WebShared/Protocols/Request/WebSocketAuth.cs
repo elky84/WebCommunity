@@ -7,7 +7,7 @@ namespace Web.Protocols.Request
 {
     public class WebSocketAuth : RequestHeader
     {
-        public override Id ProtocolId { get { return Id.WebSocketAuth; } }
+        public override ProtocolId ProtocolId { get { return ProtocolId.WebSocketAuth; } }
 
         public string Cookie { get; set; }
     }

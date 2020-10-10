@@ -3,7 +3,7 @@ namespace Web.Protocols.Request
 {
     public class AuthCheck : RequestHeader
     {
-        public override Id ProtocolId { get { return Id.AuthCheck; } }
+        public override ProtocolId ProtocolId { get { return ProtocolId.AuthCheck; } }
 
         public string Token { get; set; }
     }

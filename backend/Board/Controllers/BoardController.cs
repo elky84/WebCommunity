@@ -36,6 +36,16 @@ namespace Board.Controllers
             };
         }
 
+        [HttpGet("{boardId}/{articleId}")]
+        public async Task<Web.Protocols.Response.Article> Get(string boardId, string articleId)
+        {
+            return new Web.Protocols.Response.Article
+            {
+                Data = (await _articleService.Get(boardId, articleId))?.ToProtocol()
+            };
+        }
+
+
         [HttpPut("{boardId}/{articleId}")]
         public async Task<Web.Protocols.Response.Article> Update(string boardId, string articleId, [FromBody] Web.Protocols.Request.Article article)
         {

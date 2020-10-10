@@ -9,7 +9,7 @@ namespace Web.Protocols.Response
 {
     public class Authenticate : ResponseHeader
     {
-        public override Id ProtocolId { get { return Id.Authenticate; } }
+        public override ProtocolId ProtocolId { get { return ProtocolId.Authenticate; } }
 
         public string AccountId { get; set; }
 

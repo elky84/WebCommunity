@@ -13,6 +13,7 @@ namespace Board.Models
         {
             return new Article
             {
+                Id = article.Id,
                 Author = article.Author,
                 Category = article.Category,
                 Content = article.Content,

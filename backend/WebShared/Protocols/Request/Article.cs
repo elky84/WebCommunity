@@ -7,7 +7,9 @@ namespace Web.Protocols.Request
 {
     public class Article : RequestHeader
     {
-        public override Id ProtocolId { get { return Id.Article; } }
+        public override ProtocolId ProtocolId { get { return ProtocolId.Article; } }
+
+        public string Id { get; set; }
 
         public string Title { get; set; }
 

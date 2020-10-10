@@ -8,7 +8,7 @@ namespace Web.Protocols
     public class RequestHeader
     {
         [JsonConverter(typeof(StringEnumConverter))]
-        public virtual Id ProtocolId { get; set; }
+        public virtual ProtocolId ProtocolId { get; set; }
 
         [SwaggerExcludeAttribute]
         [JsonExtensionData]

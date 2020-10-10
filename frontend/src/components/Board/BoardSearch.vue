@@ -52,7 +52,7 @@ export default {
 }
 </script>
 
-<style>
+<style scoped>
 .form-control {
   margin-right: 3px;
   margin-bottom: 5px;

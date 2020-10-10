@@ -3,7 +3,7 @@
     <b-card no-body>
       <b-tabs pills card vertical>
         <b-tab title="News" active>
-          <BoardList BoardId="News"/>
+          <BoardList boardId="News"/>
         </b-tab>
       </b-tabs>
     </b-card>

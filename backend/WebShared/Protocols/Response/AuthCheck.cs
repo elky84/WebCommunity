@@ -6,7 +6,7 @@ namespace Web.Protocols.Response
 {
     public class AuthCheck : ResponseHeader
     {
-        public override Id ProtocolId { get { return Id.AuthCheck; } }
+        public override ProtocolId ProtocolId { get { return ProtocolId.AuthCheck; } }
 
         public string UserId { get; set; }
     }
