@@ -1,8 +1,8 @@
-### Board Free Get
+### Board Comment Free Get
 
 GET {{host}}/Board/Comment/Free/5f775d8d4a0ec52d9c539e9b
 
-### Board Free Create
+### Board Comment Free Create
 
 POST {{host}}/Board/Comment/Free/5f775d8d4a0ec52d9c539e9b
 Content-Type: application/json
@@ -12,7 +12,7 @@ Content-Type: application/json
   "Content": "댓글"
 }
 
-### Board Free Create Reply Comment
+### Board Comment Free Create Reply Comment
 
 POST {{host}}/Board/Comment/Free/5f775d8d4a0ec52d9c539e9b
 Content-Type: application/json
@@ -23,7 +23,7 @@ Content-Type: application/json
   "Content": "대댓글"
 }
 
-### Board Free Update
+### Board Comment Free Update
 
 PUT {{host}}/Board/Comment/Free/5f775d8d4a0ec52d9c539e9b
 Content-Type: application/json
@@ -33,10 +33,10 @@ Content-Type: application/json
   "Content": "댓글 갱신",
 }
 
-### Board Free Recommend
+### Board Comment Free Recommend
 
 POST {{host}}/Board/Comment/Free/5f775f33c71938f7a3b45cd8/Recommend
 
-### Board Free NotRecommend
+### Board Comment Free NotRecommend
 
 POST {{host}}/Board/Comment/Free/5f775f33c71938f7a3b45cd8/NotRecommend

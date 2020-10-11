@@ -118,10 +118,10 @@ export default {
         vm.articles = result.data.contents
       })
     },
-    onUpdate (newBoard) {
+    onUpdate (newArticle) {
       this.articles = _.flatMap(this.articles, function (article) {
-        if (article.id === newBoard.id) {
-          return newBoard
+        if (article.id === newArticle.id) {
+          return newArticle
         } else {
           return article
         }
@@ -138,7 +138,7 @@ export default {
       this.editMode = !this.editMode
     },
     onClickBoard (article) {
-      this.$http.get(`${process.env.VUE_APP_URL_BACKEND}/Board/${this.boardId}/${article.id}`, {})
+      this.$http.get(`${process.env.VUE_APP_URL_BACKEND}/Board/${this.boardId}/${article.id}`)
         .then((result) => {
           article.content = result.data.data.content
           this.$set(article, 'edit', !article.edit)
