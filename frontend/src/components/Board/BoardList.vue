@@ -1,6 +1,6 @@
 <template>
   <b-card :title=boardId>
-    <BoardWrite @create="onCreate(... arguments)" :boardId="boardId" v-if="editMode"/>
+    <BoardWrite @refresh="onRefresh(... arguments)" @cancelWrite="onCancelWrite(... arguments)" :boardId="boardId" v-if="writeMode"/>
 
     <b-button variant="outline-primary" v-on:click="onClickWrite">{{buttonText}}</b-button>
     <table class="table table-bordered">
@@ -40,7 +40,7 @@
             <td align="center">{{article.notRecommend}}</td>
             <td align="center">{{article.created}}</td>
           </tr>
-          <BoardEdit :boardId="boardId" :srcArticle="article" v-if="article.edit" :key="article.id + '_edit'" />
+          <BoardEdit @refresh="onRefresh(... arguments)" @close="onClose(... arguments)" @update="onUpdate(... arguments)" :boardId="boardId" :srcArticle="article" v-if="article.edit" :key="article.id + '_edit'" />
         </template>
       </tbody>
     </table>
@@ -83,8 +83,8 @@ export default {
       totalItems: 0,
       limit: 20,
       searchData: {},
-      sort: 'created',
-      editMode: false
+      sort: 'Created',
+      writeMode: false
     }
   },
   mounted () {
@@ -92,7 +92,7 @@ export default {
   },
   computed: {
     buttonText: function () {
-      return this.editMode ? '닫기' : '글쓰기'
+      return this.writeMode ? '닫기' : '글쓰기'
     }
   },
   methods: {
@@ -102,7 +102,8 @@ export default {
         params: {
           offset: this.limit * (this.currentPage - 1),
           limit: this.limit,
-          sort: this.sort
+          sort: this.sort,
+          asc: false
         },
         paramsSerializer (params) {
           return Qs.stringify($.extend(params, searchData), {
@@ -121,6 +122,7 @@ export default {
     onUpdate (newArticle) {
       this.articles = _.flatMap(this.articles, function (article) {
         if (article.id === newArticle.id) {
+          newArticle.edit = article.edit
           return newArticle
         } else {
           return article
@@ -135,7 +137,7 @@ export default {
       this.getBoards(this.searchData)
     },
     onClickWrite () {
-      this.editMode = !this.editMode
+      this.writeMode = !this.writeMode
     },
     onClickBoard (article) {
       this.$http.get(`${process.env.VUE_APP_URL_BACKEND}/Board/${this.boardId}/${article.id}`)
@@ -143,6 +145,17 @@ export default {
           article.content = result.data.data.content
           this.$set(article, 'edit', !article.edit)
         })
+    },
+    onRefresh () {
+      this.getBoards(this.searchData)
+    },
+    onClose (article) {
+      var origin = _.get(this.articles, article)
+      console.log(origin)
+      this.$set(origin, 'edit', !origin.edit)
+    },
+    onCancelWrite () {
+      this.writeMode = false
     }
   }
 }

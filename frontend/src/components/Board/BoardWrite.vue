@@ -33,8 +33,8 @@ export default {
   methods: {
     onClickConfirm () {
       this.$refs.editor.getHTML()
-      console.log(this.editorContent)
 
+      var vm = this
       this.$http.post(`${process.env.VUE_APP_URL_BACKEND}/Board/${this.boardId}`,
         {
           author: this.author,
@@ -44,11 +44,12 @@ export default {
           tags: []
         })
         .then((result) => {
-          console.log(result)
+          vm.$emit('refresh')
+          vm.$emit('cancelWrite')
         })
     },
     onClickCancel () {
-      console.log(this.editorContent)
+      this.$emit('cancelWrite')
     },
     onEditorContent (editorContent) {
       this.editorContent = editorContent

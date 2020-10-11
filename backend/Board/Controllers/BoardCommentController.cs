@@ -45,7 +45,7 @@ namespace Board.Controllers
         }
 
         [HttpDelete("{boardId}/{commentId}")]
-        public async Task<Web.Protocols.Response.Comment> Delete(string boardId, string articleId, string commentId)
+        public async Task<Web.Protocols.Response.Comment> Delete(string boardId, string commentId)
         {
             return new Web.Protocols.Response.Comment
             {
@@ -54,7 +54,7 @@ namespace Board.Controllers
         }
 
         [HttpPost("{boardId}/{commentId}/Recommend")]
-        public async Task<Web.Protocols.Response.Comment> Recommend(string boardId, string articleId, string commentId)
+        public async Task<Web.Protocols.Response.Comment> Recommend(string boardId, string commentId)
         {
             return new Web.Protocols.Response.Comment
             {
@@ -63,7 +63,7 @@ namespace Board.Controllers
         }
 
         [HttpPost("{boardId}/{commentId}/NotRecommend")]
-        public async Task<Web.Protocols.Response.Comment> NotRecommend(string boardId, string articleId, string commentId)
+        public async Task<Web.Protocols.Response.Comment> NotRecommend(string boardId, string commentId)
         {
             return new Web.Protocols.Response.Comment
             {

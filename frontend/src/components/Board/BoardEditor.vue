@@ -241,7 +241,6 @@ export default {
     },
     getHTML () {
       this.content = this.editor.getHTML()
-      console.log(this.content)
       this.$emit('onEditorContent', this.content)
     },
     setEditMode (editMode) {
