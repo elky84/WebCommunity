@@ -5,7 +5,7 @@
         <b-tab title="Free" active>
           <BoardList boardId="Free"/>
         </b-tab>
-        <b-tab title="Humor" active>
+        <b-tab title="Humor">
           <BoardList boardId="Humor"/>
         </b-tab>
       </b-tabs>
