@@ -219,6 +219,9 @@ export default {
   },
   mounted () {
     this.editable = this.originEditable
+    this.editor.setOptions({
+      editable: this.editable
+    })
   },
   watch: {
     editable () {
