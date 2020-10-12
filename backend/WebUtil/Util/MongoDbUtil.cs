@@ -102,18 +102,19 @@ namespace WebUtil.Util
             Collection.DeleteMany(x => true);
         }
 
-        public void Update(string id, T t)
+        public T Update(string id, T t)
         {
             t.Updated = DateTime.Now;
             Collection.ReplaceOne(GetIdFilter(id), t);
+            return t;
         }
 
-        public void Update(FilterDefinition<T> filter, T t)
+        public T Update(FilterDefinition<T> filter, T t)
         {
             t.Updated = DateTime.Now;
             Collection.ReplaceOne(filter, t);
+            return t;
         }
-
         public async Task<T> UpsertAsync(FilterDefinition<T> filter, T t, Action<T> createAction = null)
         {
             var origin = await FindOneAsync(filter);
