@@ -104,6 +104,7 @@ namespace WebUtil.Util
 
         public T Update(string id, T t)
         {
+            t.Id = id;
             t.Updated = DateTime.Now;
             Collection.ReplaceOne(GetIdFilter(id), t);
             return t;
@@ -115,6 +116,7 @@ namespace WebUtil.Util
             Collection.ReplaceOne(filter, t);
             return t;
         }
+
         public async Task<T> UpsertAsync(FilterDefinition<T> filter, T t, Action<T> createAction = null)
         {
             var origin = await FindOneAsync(filter);
@@ -141,6 +143,7 @@ namespace WebUtil.Util
 
         public async Task<T> UpdateAsync(string id, T t)
         {
+            t.Id = id;
             t.Updated = DateTime.Now;
             var result = await Collection.ReplaceOneAsync(GetIdFilter(id), t);
             return result.ModifiedCount > 0 ? t : null;
