@@ -70,7 +70,7 @@ export default {
       comment: '',
       commentAuthor: '',
       comments: [],
-      article: this.srcArticle
+      article: Object.assign({}, this.srcArticle)
     }
   },
   watch: {

@@ -68,7 +68,11 @@ namespace Board.Services
         public async Task<Article> Update(string id, string articleId, Web.Protocols.Request.Article article)
         {
             var mongoDbUtil = GetMongoDbBoard(id);
-            return await mongoDbUtil.UpdateAsync(articleId, article.ToModel());
+            return await mongoDbUtil.UpdateGetAsync(articleId,
+                Builders<Article>.Update.Set(x => x.Tags, article.Tags)
+                .Set(x => x.Title, article.Title)
+                .Set(x => x.Content, article.Content)
+                .Set(x => x.Category, article.Category));
         }
 
         public async Task<Article> Recommend(string id, string articleId)
