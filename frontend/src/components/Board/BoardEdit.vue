@@ -13,37 +13,37 @@
         <b-button variant="outline-info" v-on:click="onClickCancel">닫기</b-button>
       </b-btn-group>
 
-      <b-row v-for="(comment) in comments" :key="comment.id">
-        <b-col sm="2">
-          <label>{{comment.author}}</label>
-        </b-col>
-        <b-col sm="6">
-          <b-form-input :value="comment.content" :readonly="true"></b-form-input>
-        </b-col>
-        <b-col>
-          <b-button variant="outline-primary" @click="onClickCommentRecommend(comment)">추천 {{comment.recommend}}</b-button>
-          <b-button variant="outline-warning" @click="onClickCommentNotRecommend(comment)">비추천 {{comment.notRecommend}}</b-button>
-        </b-col>
-      </b-row>
+      <div v-for="(comment) in comments" :key="comment.id">
+        <b-row :class="rowColor(comment)">
+          <b-col sm="2">
+            <label>{{comment.author}}</label>
+          </b-col>
+          <b-col sm="6">
+            <b-form-input :value="comment.content" :readonly="true"></b-form-input>
+          </b-col>
+          <b-col>
+            <b-button variant="outline-primary" @click="onClickCommentRecommend(comment)">추천 {{comment.recommend}}</b-button>
+            <b-button variant="outline-warning" @click="onClickCommentNotRecommend(comment)">비추천 {{comment.notRecommend}}</b-button>
+            <b-button variant="outline-info" @click="onClickCommentReply(comment)">댓글</b-button>
+          </b-col>
+          <b-col>
+            <label>{{toDateString(comment.created)}}</label>
+          </b-col>
+        </b-row>
+        <BoardCommentEdit v-if="comment.reply" :srcComment="comment" :boardId="boardId" :srcArticle="srcArticle" @refreshComments="refreshComments(... arguments)" />
+      </div>
 
-      <b-row>
-        <b-col sm="2">
-          <b-form-input v-model="commentAuthor" placeholder="Enter Author"></b-form-input>
-        </b-col>
-        <b-col sm="6">
-          <b-form-input v-model="comment" placeholder="Enter Comment"></b-form-input>
-        </b-col>
-        <b-col>
-          <b-button variant="outline-primary" v-on:click="onClickComment">댓글 쓰기</b-button>
-        </b-col>
-      </b-row>
+      <BoardCommentEdit :boardId="boardId" :srcArticle="srcArticle" @refreshComments="refreshComments(... arguments)" />
     </td>
   </tr>
 </template>
 
 <script>
 import BoardEditor from './BoardEditor'
+import BoardCommentEdit from './BoardCommentEdit'
+
 import _ from 'lodash'
+import dayjs from 'dayjs'
 
 export default {
   name: 'BoardEdit',
@@ -52,7 +52,8 @@ export default {
     srcArticle: Object
   },
   components: {
-    BoardEditor: BoardEditor
+    BoardEditor: BoardEditor,
+    BoardCommentEdit: BoardCommentEdit
   },
   data () {
     return {
@@ -163,6 +164,9 @@ export default {
           }
         })
     },
+    onClickCommentReply (comment) {
+      this.$set(comment, 'reply', !comment.reply)
+    },
     onUpdate (newArticle) {
       this.article = newArticle
       this.$emit('update', this.article)
@@ -175,6 +179,12 @@ export default {
           return comment
         }
       })
+    },
+    toDateString (date) {
+      return dayjs(date).format('YYYY-MM-DD HH:mm:ss')
+    },
+    rowColor (comment) {
+      return comment.id === comment.commentId ? 'bg-dark' : 'bg-secondary'
     }
   }
 }

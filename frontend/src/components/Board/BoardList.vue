@@ -33,12 +33,14 @@
         <template v-for="(article) in articles">
           <tr class="cursor-pointer" :key="article.id" @click.prevent="onClickBoard(article)">
             <td align="center">{{article.category}}</td>
-            <td align="left">{{article.tags}}</td>
+            <td align="left">
+              <input-tag v-model="article.tags" read-only="true" v-if="hasTags(article)"></input-tag>
+            </td>
             <td align="center">{{article.title}}</td>
             <td align="center">{{article.author}}</td>
             <td align="center">{{article.recommend}}</td>
             <td align="center">{{article.notRecommend}}</td>
-            <td align="center">{{article.created}}</td>
+            <td align="center">{{toDateString(article.created)}}</td>
           </tr>
           <BoardEdit @refresh="onRefresh(... arguments)" @close="onClose(... arguments)" @update="onUpdate(... arguments)" :boardId="boardId" :srcArticle="article" v-if="article.edit" :key="article.id + '_edit'" />
         </template>
@@ -55,7 +57,9 @@ import BoardSearch from './BoardSearch'
 import BoardWrite from './BoardWrite'
 import BoardEdit from './BoardEdit'
 
+import InputTag from 'vue-input-tag'
 import * as _ from 'lodash'
+import dayjs from 'dayjs'
 
 import Qs from 'qs'
 import {
@@ -71,7 +75,8 @@ export default {
   components: {
     BoardSearch: BoardSearch,
     BoardWrite: BoardWrite,
-    BoardEdit: BoardEdit
+    BoardEdit: BoardEdit,
+    InputTag: InputTag
   },
   data () {
     return {
@@ -151,11 +156,16 @@ export default {
     },
     onClose (article) {
       var origin = _.get(this.articles, article)
-      console.log(origin)
       this.$set(origin, 'edit', !origin.edit)
     },
     onCancelWrite () {
       this.writeMode = false
+    },
+    toDateString (date) {
+      return dayjs(date).format('YYYY-MM-DD HH:mm:ss')
+    },
+    hasTags (article) {
+      return !_.isEmpty(article.tags)
     }
   }
 }

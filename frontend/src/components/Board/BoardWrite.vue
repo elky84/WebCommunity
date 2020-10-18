@@ -3,6 +3,7 @@
     <b-form-input v-model="title" placeholder="Enter Title"></b-form-input>
     <b-form-input v-model="author" placeholder="Enter Author"></b-form-input>
     <b-form-input v-model="category" placeholder="Enter Category"></b-form-input>
+    <input-tag v-model="tags"></input-tag>
     <BoardEditor ref="editor" @onEditorContent="onEditorContent(... arguments)" />
     <b-btn-group>
       <b-button variant="outline-primary" v-on:click="onClickConfirm">등록</b-button>
@@ -13,6 +14,7 @@
 
 <script>
 import BoardEditor from './BoardEditor'
+import InputTag from 'vue-input-tag'
 
 export default {
   name: 'BoardWrite',
@@ -24,11 +26,13 @@ export default {
       editorContent: '',
       title: '',
       author: '',
-      category: ''
+      category: '',
+      tags: []
     }
   },
   components: {
-    BoardEditor: BoardEditor
+    BoardEditor: BoardEditor,
+    InputTag: InputTag
   },
   methods: {
     onClickConfirm () {
@@ -41,7 +45,7 @@ export default {
           title: this.title,
           content: this.editorContent,
           category: this.category,
-          tags: []
+          tags: this.tags
         })
         .then((result) => {
           vm.$emit('refresh')
