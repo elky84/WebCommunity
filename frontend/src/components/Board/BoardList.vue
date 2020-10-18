@@ -125,9 +125,10 @@ export default {
       })
     },
     onUpdate (newArticle) {
+      var vm = this
       this.articles = _.flatMap(this.articles, function (article) {
         if (article.id === newArticle.id) {
-          newArticle.edit = article.edit
+          vm.$set(newArticle, 'edit', article.edit)
           return newArticle
         } else {
           return article
