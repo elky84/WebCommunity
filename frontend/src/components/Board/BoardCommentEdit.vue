@@ -37,24 +37,13 @@ export default {
       var vm = this
       this.$http.post(`${process.env.VUE_APP_URL_BACKEND}/Board/Comment/${this.boardId}/${this.srcArticle.id}`,
         {
-          originCommentId: this.getOriginCommentId(),
+          originCommentId: this.srcComment === null ? null : this.srcComment.id,
           author: this.commentAuthor,
           content: this.comment
         })
         .then((result) => {
           vm.$emit('refreshComments')
         })
-    },
-    getOriginCommentId () {
-      if (this.srcComment === null) {
-        return null
-      }
-
-      if (this.srcComment.id === this.srcComment.commentId) {
-        return this.srcComment.id
-      }
-
-      return this.srcComment.commentId
     }
   }
 }

@@ -47,7 +47,9 @@ namespace Board.Services
         public async Task<Comment> Create(string id, string articleId, Web.Protocols.Request.Comment comment)
         {
             var mongoDbUtil = GetMongoDbBoardComment(id);
-            var created = await mongoDbUtil.CreateAsync(comment.ToModel(articleId));
+            var originComment = await mongoDbUtil.FindOneAsyncById(comment.OriginCommentId);
+
+            var created = await mongoDbUtil.CreateAsync(comment.ToModel(articleId, originComment?.CommentId, originComment?.Author));
             if (created != null && string.IsNullOrEmpty(comment.OriginCommentId))
             {
                 await mongoDbUtil.UpdateAsync(created.Id, Builders<Comment>.Update.Set(x => x.CommentId, created.Id));
@@ -59,7 +61,7 @@ namespace Board.Services
         public async Task<Comment> Update(string id, string articleId, Web.Protocols.Request.Comment comment)
         {
             var mongoDbUtil = GetMongoDbBoardComment(id);
-            return await mongoDbUtil.UpdateAsync(articleId, comment.ToModel(articleId));
+            return await mongoDbUtil.UpdateGetAsync(articleId, Builders<Comment>.Update.Set(x => x.Content, comment.Content));
         }
 
         public async Task<Comment> Recommend(string id, string commentId)

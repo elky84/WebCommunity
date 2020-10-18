@@ -34,7 +34,7 @@
           <tr class="cursor-pointer" :key="article.id" @click.prevent="onClickBoard(article)">
             <td align="center">{{article.category}}</td>
             <td align="left">
-              <input-tag v-model="article.tags" read-only="true" v-if="hasTags(article)"></input-tag>
+              <input-tag v-model="article.tags" :read-only=true v-if="hasTags(article)"></input-tag>
             </td>
             <td align="center">{{article.title}}</td>
             <td align="center">{{article.author}}</td>
@@ -155,7 +155,7 @@ export default {
       this.getBoards(this.searchData)
     },
     onClose (article) {
-      var origin = _.get(this.articles, article)
+      var origin = _.find(this.articles, { id: article.id })
       this.$set(origin, 'edit', !origin.edit)
     },
     onCancelWrite () {

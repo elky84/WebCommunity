@@ -1,6 +1,13 @@
 <template>
   <tr>
     <td colspan="7">
+      <div v-if="editMode">
+        <b-form-input v-model="article.title" placeholder="Enter Title"></b-form-input>
+        <b-form-input v-model="article.author" placeholder="Enter Author"></b-form-input>
+        <b-form-input v-model="article.category" placeholder="Enter Category"></b-form-input>
+        <input-tag v-model="article.tags"></input-tag>
+      </div>
+
       <BoardEditor ref="editor" @onEditorContent="onEditorContent(... arguments)"
         :originEditable="editMode" :originContent=article.content />
 
@@ -19,6 +26,7 @@
             <label>{{comment.author}}</label>
           </b-col>
           <b-col sm="6">
+            <label v-if="comment.originAuthor">{{comment.originAuthor}}에 대한 댓글</label>
             <b-form-input :value="comment.content" :readonly="true"></b-form-input>
           </b-col>
           <b-col>
@@ -191,11 +199,5 @@ export default {
 </script>
 
 <style scoped>
-
-label {
-  display: inline-block;
-  width: 140px;
-  text-align: right;
-}
 
 </style>

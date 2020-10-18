@@ -49,14 +49,15 @@ namespace Board.Models
             }.ToProtocol(article);
         }
 
-        public static Comment ToModel(this Web.Protocols.Request.Comment comment, string articleId)
+        public static Comment ToModel(this Web.Protocols.Request.Comment comment, string articleId, string commentId = null, string originAuthor = null)
         {
             return new Comment
             {
                 Author = comment.Author,
                 ArticleId = articleId,
-                CommentId = comment.OriginCommentId,
-                Content = comment.Content
+                Content = comment.Content,
+                CommentId = commentId,
+                OriginAuthor = originAuthor
             };
         }
 
@@ -70,6 +71,7 @@ namespace Board.Models
                 Content = comment.Content,
                 Recommend = comment.Recommend,
                 NotRecommend = comment.NotRecommend,
+                OriginAuthor = comment.OriginAuthor
             }.ToProtocol(comment);
         }
     }

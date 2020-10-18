@@ -13,6 +13,8 @@ namespace Web.Protocols.Common
 
         public string Author { get; set; }
 
+        public string OriginAuthor { get; set; }
+
         public int Recommend { get; set; }
 
         public int NotRecommend { get; set; }
