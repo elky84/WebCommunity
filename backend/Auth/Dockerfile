@@ -1,3 +1,5 @@
+#See https://aka.ms/containerfastmode to understand how Visual Studio uses this Dockerfile to build your images for faster debugging.
+
 FROM mcr.microsoft.com/dotnet/core/aspnet:3.0-buster-slim AS base
 WORKDIR /app
 EXPOSE 80
@@ -7,11 +9,7 @@ FROM mcr.microsoft.com/dotnet/core/sdk:3.0-buster AS build
 WORKDIR /src
 COPY ["Auth/Auth.csproj", "Auth/"]
 COPY ["WebUtil/WebUtil.csproj", "WebUtil/"]
-COPY ["Data/MasterDataServer/MasterDataServer.csproj", "Data/MasterDataServer/"]
-COPY ["Data/MasterDataTypes/MasterDataTypes.csproj", "Data/MasterDataTypes/"]
 COPY ["WebShared/WebShared.csproj", "WebShared/"]
-COPY ["BattleCore/BattleLogicShared/BattleLogicShared.csproj", "BattleCore/BattleLogicShared/"]
-COPY ["Data/MasterDataClient/MasterDataClient.csproj", "Data/MasterDataClient/"]
 RUN dotnet restore "Auth/Auth.csproj"
 COPY . .
 WORKDIR "/src/Auth"

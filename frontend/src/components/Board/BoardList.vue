@@ -1,5 +1,5 @@
 <template>
-  <b-card :title=boardId>
+  <b-card :title=title>
     <BoardWrite @refresh="onRefresh(... arguments)" @cancelWrite="onCancelWrite(... arguments)" :boardId="boardId" v-if="writeMode"/>
 
     <b-button variant="outline-primary" v-on:click="onClickWrite">{{buttonText}}</b-button>
@@ -85,7 +85,8 @@ import {
 export default {
   name: 'BoardList',
   props: {
-    boardId: String
+    boardId: String,
+    title: String
   },
   components: {
     BoardSearch: BoardSearch,
@@ -140,8 +141,7 @@ export default {
           })
         }
       }).then((result) => {
-        this.numberOfPages = Math.ceil(result.data.total / this.limit)
-        console.log(this.numberOfPages)
+        this.numberOfPages = Math.max(1, Math.ceil(result.data.total / this.limit))
         vm.articles = result.data.contents
       })
     },

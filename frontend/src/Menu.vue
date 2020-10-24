@@ -6,13 +6,14 @@
 
     <b-collapse id="nav-collapse" is-nav>
       <b-navbar-nav>
-        <b-nav-item b-link href="#/News" :active="routePath.startsWith('/News')">뉴스</b-nav-item>
-        <b-nav-item b-link href="#/Webzine" :active="routePath.startsWith('/Webzine')">웹진</b-nav-item>
-        <b-nav-item b-link href="#/Windows" :active="routePath.startsWith('/Windows')">윈도우즈</b-nav-item>
-        <b-nav-item b-link href="#/Console" :active="routePath.startsWith('/Console')">콘솔</b-nav-item>
+        <b-nav-item b-link href="#/News" :active="routePath.startsWith('/Webzine')">News</b-nav-item>
+        <b-nav-item b-link href="#/PC" :active="routePath.startsWith('/PC')">PC</b-nav-item>
+        <b-nav-item b-link href="#/PS" :active="routePath.startsWith('/PS')">PS</b-nav-item>
+        <b-nav-item b-link href="#/Xbox" :active="routePath.startsWith('/Xbox')">XBOX</b-nav-item>
+        <b-nav-item b-link href="#/Switch" :active="routePath.startsWith('/Switch')">Switch</b-nav-item>
         <b-nav-item b-link href="#/Mobile" :active="routePath.startsWith('/Mobile')">모바일</b-nav-item>
         <b-nav-item b-link href="#/Community" :active="routePath.startsWith('/Community')">커뮤니티</b-nav-item>
-        <b-nav-item b-link href="#/Localization" :active="routePath.startsWith('/Community')">한글화</b-nav-item>
+        <b-nav-item b-link href="#/L10N" :active="routePath.startsWith('/Community')">한글화</b-nav-item>
         <!-- <b-nav-item href="#">Link</b-nav-item>
         <b-nav-item href="#" disabled>Disabled</b-nav-item> -->
       </b-navbar-nav>

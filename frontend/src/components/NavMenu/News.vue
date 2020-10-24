@@ -1,26 +1,23 @@
 <template>
-  <div>
-    <b-card no-body>
-      <b-tabs pills card vertical>
-        <b-tab title="News" active>
-          <BoardList boardId="News"/>
-        </b-tab>
-      </b-tabs>
-    </b-card>
-  </div>
+  <b-tabs pills card vertical>
+    <PageTab title="뉴스"/>
+    <BoardTab boardTitle="PC 유저 정보" boardId='PcUserInfo'/>
+    <BoardTab boardTitle="PS 유저 정보" boardId='PsUserInfo'/>
+    <BoardTab boardTitle="XBOX 유저 정보" boardId='XboxUserInfo'/>
+    <BoardTab boardTitle="Switch 유저 정보" boardId='SwitchUserInfo'/>
+    <BoardTab boardTitle="모바일 유저 정보" boardId='MobileUserInfo'/>
+  </b-tabs>
 </template>
 
 <script>
-import BoardList from '../Board/BoardList'
+import BoardTab from '../Tab/BoardTab'
+import PageTab from '../Tab/PageTab'
 
 export default {
   name: 'News',
-  data () {
-    return {
-    }
-  },
   components: {
-    BoardList: BoardList
+    BoardTab: BoardTab,
+    PageTab: PageTab
   }
 }
 </script>
