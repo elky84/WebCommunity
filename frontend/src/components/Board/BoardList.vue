@@ -33,7 +33,7 @@
       </thead>
       <tbody>
         <template v-if="focusArticle">
-            <tr class="cursor-pointer" :key="focusArticle.id" @click.prevent="onClickBoard(focusArticle)">
+            <tr class="cursor-pointer" :key="focusArticle.id + '_focus'" @click.prevent="onClickBoard(focusArticle)">
               <td align="center">{{focusArticle.category}}</td>
               <td align="left">
                 <input-tag v-model="focusArticle.tags" :read-only=true v-if="hasTags(focusArticle)"></input-tag>
@@ -118,7 +118,6 @@ export default {
   },
   mounted () {
     this.listing(this.$route.query.page ? parseInt(this.$route.query.page) : 1)
-
     this.articleId = this.$route.query.articleId
     if (this.$route.query.boardId === this.boardId && this.articleId) {
       this.getFocusArticle()
@@ -177,7 +176,10 @@ export default {
         .then((result) => {
           article.content = result.data.data.content
           this.$set(article, 'edit', !article.edit)
-          this.$router.push(`/${this.category}?boardId=${this.boardId}&articleId=${article.id}`)
+
+          if (this.$route.query.articleId !== article.id) {
+            history.pushState({}, null, `/?boardId=${this.boardId}&articleId=${article.id}`)
+          }
         })
     },
     getFocusArticle () {

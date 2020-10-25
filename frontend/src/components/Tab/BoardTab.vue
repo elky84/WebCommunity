@@ -36,7 +36,10 @@ export default {
       return _.isEqual(this.boardId, this.$route.query.boardId)
     },
     onClick () {
-      this.$router.push(`/${this.category}?boardId=${this.boardId}`)
+      var path = `/${this.category}?boardId=${this.boardId}`
+      if (this.$router.currentRoute.fullPath !== path) {
+        this.$router.push(path)
+      }
     }
   }
 }
