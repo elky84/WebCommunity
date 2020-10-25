@@ -33,31 +33,11 @@
       </thead>
       <tbody>
         <template v-if="focusArticle">
-            <tr class="cursor-pointer" :key="focusArticle.id + '_focus'" @click.prevent="onClickBoard(focusArticle)">
-              <td align="center">{{focusArticle.category}}</td>
-              <td align="left">
-                <input-tag v-model="focusArticle.tags" :read-only=true v-if="hasTags(focusArticle)"></input-tag>
-              </td>
-              <td align="center">{{focusArticle.title}}</td>
-              <td align="center">{{focusArticle.author}}</td>
-              <td align="center">{{focusArticle.recommend}}</td>
-              <td align="center">{{focusArticle.notRecommend}}</td>
-              <td align="center">{{toDateString(focusArticle.created)}}</td>
-            </tr>
-            <BoardEdit @refresh="onRefresh(... arguments)" @close="onClose(... arguments)" @update="onUpdate(... arguments)" :boardId="boardId" :srcArticle="focusArticle" v-if="focusArticle.edit" :key="focusArticle.id + '_edit_focus'" />
+          <BoardListArticle :key="focusArticle.id + '_focus'" :boardId="boardId" :srcArticle="focusArticle" v-if="focusArticle" />
+          <BoardEdit @refresh="onRefresh(... arguments)" @close="onClose(... arguments)" @update="onUpdate(... arguments)" :boardId="boardId" :srcArticle="focusArticle" v-if="focusArticle.edit" :key="focusArticle.id + '_edit_focus'" />
         </template>
         <template v-for="(article) in articles">
-          <tr class="cursor-pointer" :key="article.id" @click.prevent="onClickBoard(article)">
-            <td align="center">{{article.category}}</td>
-            <td align="left">
-              <input-tag v-model="article.tags" :read-only=true v-if="hasTags(article)"></input-tag>
-            </td>
-            <td align="center">{{article.title}}</td>
-            <td align="center">{{article.author}}</td>
-            <td align="center">{{article.recommend}}</td>
-            <td align="center">{{article.notRecommend}}</td>
-            <td align="center">{{toDateString(article.created)}}</td>
-          </tr>
+          <BoardListArticle :key="article.id" :boardId="boardId" :srcArticle="article" />
           <BoardEdit @refresh="onRefresh(... arguments)" @close="onClose(... arguments)" @update="onUpdate(... arguments)" :boardId="boardId" :srcArticle="article" v-if="article.edit" :key="article.id + '_edit'" />
         </template>
       </tbody>
@@ -72,8 +52,8 @@
 import BoardSearch from './BoardSearch'
 import BoardWrite from './BoardWrite'
 import BoardEdit from './BoardEdit'
+import BoardListArticle from './BoardListArticle'
 
-import InputTag from 'vue-input-tag'
 import * as _ from 'lodash'
 import dayjs from 'dayjs'
 
@@ -94,7 +74,7 @@ export default {
     BoardSearch: BoardSearch,
     BoardWrite: BoardWrite,
     BoardEdit: BoardEdit,
-    InputTag: InputTag
+    BoardListArticle: BoardListArticle
   },
   data () {
     return {
@@ -171,17 +151,6 @@ export default {
       this.focusArticle = null
       this.onRefresh()
     },
-    onClickBoard (article) {
-      this.$http.get(`${process.env.VUE_APP_URL_BACKEND}/Board/${this.boardId}/${article.id}`)
-        .then((result) => {
-          article.content = result.data.data.content
-          this.$set(article, 'edit', !article.edit)
-
-          if (this.$route.query.articleId !== article.id) {
-            history.pushState({}, null, `/?boardId=${this.boardId}&articleId=${article.id}`)
-          }
-        })
-    },
     getFocusArticle () {
       this.$http.get(`${process.env.VUE_APP_URL_BACKEND}/Board/${this.boardId}/${this.articleId}`)
         .then((result) => {
@@ -203,9 +172,6 @@ export default {
     },
     toDateString (date) {
       return dayjs(date).format('YYYY-MM-DD HH:mm:ss')
-    },
-    hasTags (article) {
-      return !_.isEmpty(article.tags)
     },
     linkGen (pageNum) {
       return {
