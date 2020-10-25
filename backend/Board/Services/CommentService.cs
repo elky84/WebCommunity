@@ -47,7 +47,7 @@ namespace Board.Services
         public async Task<Comment> Create(string id, string articleId, Web.Protocols.Request.Comment comment)
         {
             var mongoDbUtil = GetMongoDbBoardComment(id);
-            var originComment = await mongoDbUtil.FindOneAsyncById(comment.OriginCommentId);
+            var originComment = string.IsNullOrEmpty(comment.OriginCommentId) ? null : await mongoDbUtil.FindOneAsyncById(comment.OriginCommentId);
 
             var created = await mongoDbUtil.CreateAsync(comment.ToModel(articleId, originComment?.CommentId, originComment?.Author));
             if (created != null && string.IsNullOrEmpty(comment.OriginCommentId))
