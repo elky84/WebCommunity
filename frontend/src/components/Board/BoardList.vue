@@ -86,7 +86,8 @@ export default {
   name: 'BoardList',
   props: {
     boardId: String,
-    title: String
+    title: String,
+    category: String
   },
   components: {
     BoardSearch: BoardSearch,
@@ -171,6 +172,7 @@ export default {
         .then((result) => {
           article.content = result.data.data.content
           this.$set(article, 'edit', !article.edit)
+          this.$router.push(`/${this.category}?boardId=${this.boardId}&articleId=${article.id}`)
         })
     },
     getFocusArticle () {

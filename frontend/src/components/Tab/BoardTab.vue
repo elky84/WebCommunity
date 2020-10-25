@@ -4,7 +4,7 @@
       <div style="font-size: smaller;">{{boardTitle}}</div>
     </template>
 
-    <BoardList :title=boardTitle :boardId=boardId v-if="activeState()" />
+    <BoardList :category=category :title=boardTitle :boardId=boardId v-if="activeState()" />
   </b-tab>
 </template>
 
@@ -22,6 +22,10 @@ export default {
     boardId: {
       type: String,
       default: ''
+    },
+    category: {
+      type: String,
+      default: ''
     }
   },
   components: {
@@ -37,8 +41,7 @@ export default {
       return _.isEqual(this.boardId, this.$route.query.boardId)
     },
     onClick () {
-      this.$route.query.boardId = this.boardId
-      this.$forceUpdate()
+      this.$router.push(`/${this.category}?boardId=${this.boardId}`)
     }
   }
 }

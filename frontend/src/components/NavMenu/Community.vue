@@ -1,10 +1,10 @@
 <template>
   <div>
     <b-tabs pills card vertical>
-      <PageTab title="커뮤니티"/>
-      <BoardTab boardTitle="자유 게시판" boardId='Free'/>
-      <BoardTab boardTitle="유머 게시판" boardId='Humor'/>
-      <BoardTab boardTitle="핫딜 게시판" boardId='Hotdeal'/>
+      <PageTab :category="category" title="커뮤니티"/>
+      <BoardTab :category="category" boardTitle="자유 게시판" boardId='Free'/>
+      <BoardTab :category="category" boardTitle="유머 게시판" boardId='Humor'/>
+      <BoardTab :category="category" boardTitle="핫딜 게시판" boardId='Hotdeal'/>
     </b-tabs>
   </div>
 </template>
@@ -18,6 +18,11 @@ export default {
   components: {
     BoardTab: BoardTab,
     PageTab: PageTab
+  },
+  data () {
+    return {
+      category: 'Community'
+    }
   }
 }
 </script>

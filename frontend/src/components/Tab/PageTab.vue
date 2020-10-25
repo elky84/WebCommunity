@@ -1,5 +1,5 @@
 <template>
-  <b-tab>
+  <b-tab v-bind:active="activeState()" v-on:click="onClick()">
     <template #title>
       <strong>{{title}}</strong>
     </template>
@@ -17,6 +17,10 @@ export default {
     title: {
       type: String,
       default: ''
+    },
+    category: {
+      type: String,
+      default: ''
     }
   },
   methods: {
@@ -24,8 +28,7 @@ export default {
       return _.isEqual(null, this.$route.query.boardId)
     },
     onClick () {
-      this.$route.query.boardId = null
-      this.$forceUpdate()
+      this.$router.push(`/${this.category}`)
     }
   }
 }

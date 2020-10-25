@@ -1,14 +1,14 @@
 <template>
   <b-tabs pills card vertical>
-    <PageTab title="엑스박스"/>
+    <PageTab :category="category" title="엑스박스"/>
     <CategoryTab title="정보 게시판"/>
-    <BoardTab boardTitle="엑스박스 유저 정보" boardId='XboxUserInfo'/>
-    <BoardTab boardTitle="핫딜 게시판" boardId='Hotdeal'/>
+    <BoardTab :category="category" boardTitle="엑스박스 유저 정보" boardId='XboxUserInfo'/>
+    <BoardTab :category="category" boardTitle="핫딜 게시판" boardId='Hotdeal'/>
     <CategoryTab title="게임 게시판"/>
-    <BoardTab boardTitle="게임 이야기" boardId='XboxGameTalk'/>
-    <BoardTab boardTitle="잡담 게시판" boardId='XboxFreeTalk'/>
-    <BoardTab boardTitle="질문 게시판" boardId='XboxQ&A'/>
-    <BoardTab boardTitle="리뷰 게시판" boardId='XboxReview'/>
+    <BoardTab :category="category" boardTitle="게임 이야기" boardId='XboxGameTalk'/>
+    <BoardTab :category="category" boardTitle="잡담 게시판" boardId='XboxFreeTalk'/>
+    <BoardTab :category="category" boardTitle="질문 게시판" boardId='XboxQ&A'/>
+    <BoardTab :category="category" boardTitle="리뷰 게시판" boardId='XboxReview'/>
   </b-tabs>
 </template>
 
@@ -18,11 +18,16 @@ import CategoryTab from '../Tab/CategoryTab'
 import PageTab from '../Tab/PageTab'
 
 export default {
-  name: 'Community',
+  name: 'Xbox',
   components: {
     BoardTab: BoardTab,
     CategoryTab: CategoryTab,
     PageTab: PageTab
+  },
+  data () {
+    return {
+      category: 'Xbox'
+    }
   }
 }
 </script>
