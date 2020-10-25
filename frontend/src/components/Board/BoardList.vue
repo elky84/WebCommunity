@@ -105,6 +105,8 @@ export default {
   },
   methods: {
     getArticles (searchData) {
+      this.focusArticle = null
+
       var vm = this
       this.$http.get(`${process.env.VUE_APP_URL_BACKEND}/Board/${this.boardId}`, {
         params: {
@@ -189,38 +191,3 @@ export default {
   }
 }
 </script>
-
-<style scoped>
-div {
-  word-break: break-word;
-}
-.arrow {
-    display: inline-block;
-    vertical-align: middle;
-    width: 0;
-    height: 0;
-    margin-left: 5px;
-    opacity: 0.66;
-}
-.arrow.asc {
-    display: inline-block;
-    border-left: 3px solid transparent;
-    border-right: 3px solid transparent;
-    border-bottom: 3px solid #FFFFFF;
-}
-.arrow.desc {
-    display: inline-block;
-    border-left: 3px solid transparent;
-    border-right: 3px solid transparent;
-    border-top: 3px solid #FFFFFF;
-}
-.badge {
-  font-size: 1em !important;
-  font-family: Arial !important;
-}
-
-.btn {
-  margin: 5px;
-}
-
-</style>

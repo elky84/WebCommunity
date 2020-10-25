@@ -18,11 +18,12 @@ namespace Board.Controllers
         }
 
         [HttpGet("{boardId}")]
-        public async Task<Web.Protocols.Response.ArticleList> Get(string boardId, [FromQuery] string keyword, [FromQuery] Pageable pageable)
+        public async Task<Web.Protocols.Response.ArticleList> Get(string boardId, [FromQuery] string author,
+            [FromQuery] string title, [FromQuery] string content, [FromQuery] Pageable pageable)
         {
             return new Web.Protocols.Response.ArticleList
             {
-                Contents = (await _articleService.Get(boardId, keyword, pageable)).ConvertAll(x => x.ToListProtocol()),
+                Contents = (await _articleService.Get(boardId, author, title, content, pageable)).ConvertAll(x => x.ToListProtocol()),
                 Total = await _articleService.CountAsync(boardId)
             };
         }

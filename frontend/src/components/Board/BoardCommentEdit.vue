@@ -1,5 +1,5 @@
 <template>
-  <b-row>
+  <b-row class="m-1">
     <b-col sm="2">
       <b-form-input v-model="commentAuthor" placeholder="Enter Author"></b-form-input>
     </b-col>

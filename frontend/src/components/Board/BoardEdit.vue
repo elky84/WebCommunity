@@ -19,6 +19,7 @@
         <b-button variant="outline-warning" v-on:click="onClickDelete">삭제</b-button>
         <b-button variant="outline-info" v-on:click="onClickCancel">닫기</b-button>
       </b-btn-group>
+      <hr/>
 
       <div v-for="(comment) in comments" :key="comment.id">
         <BoardComment :comment=comment :boardId="boardId" />

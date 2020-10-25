@@ -39,15 +39,25 @@ namespace Board.Services
             return await mongoDbUtil.CountAsync();
         }
 
-        public async Task<List<Article>> Get(string id, string keyword, Pageable pageable)
+        public async Task<List<Article>> Get(string id, string author, string title, string content, Pageable pageable)
         {
             var mongoDbUtil = GetMongoDbBoard(id);
 
             var builder = Builders<Article>.Filter;
             var filter = FilterDefinition<Article>.Empty;
-            if (!string.IsNullOrEmpty(keyword))
+            if (!string.IsNullOrEmpty(author))
             {
-                filter &= builder.Regex(x => x.Title, ".*" + keyword + ".*");
+                filter &= builder.Regex(x => x.Author, ".*" + author + ".*");
+            }
+
+            if (!string.IsNullOrEmpty(title))
+            {
+                filter &= builder.Regex(x => x.Title, ".*" + title + ".*");
+            }
+
+            if (!string.IsNullOrEmpty(content))
+            {
+                filter &= builder.Regex(x => x.Content, ".*" + content + ".*");
             }
 
             return await mongoDbUtil.Page(filter, pageable.Limit, pageable.Offset, pageable.Sort, pageable.Asc);
