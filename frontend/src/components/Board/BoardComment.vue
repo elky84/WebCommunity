@@ -3,17 +3,18 @@
     <b-col sm="2">
       <label>{{comment.author}}</label>
     </b-col>
-    <b-col sm="6">
+    <b-col sm="5">
       <label v-if="comment.originAuthor">{{comment.originAuthor}}에 대한 댓글</label>
       <b-form-input :value="comment.content" :readonly="true"></b-form-input>
     </b-col>
-    <b-col>
-      <b-button variant="outline-primary" @click="onClickCommentRecommend(comment)">추천 {{comment.recommend}}</b-button>
-      <b-button variant="outline-warning" @click="onClickCommentNotRecommend(comment)">비추천 {{comment.notRecommend}}</b-button>
-      <b-button variant="outline-info" @click="onClickCommentReply(comment)">댓글</b-button>
+    <b-col sm="3">
+      <b-button variant="outline-primary" class="m-1" @click="onClickRecommend()">추천 {{comment.recommend}}</b-button>
+      <b-button variant="outline-warning" class="m-1" @click="onClickNotRecommend()">비추천 {{comment.notRecommend}}</b-button>
+      <b-button variant="outline-info" class="m-1" @click="onClickReply()">댓글</b-button>
+      <b-button variant="outline-danger" class="m-1" @click="onClickDelete()">삭제</b-button>
     </b-col>
     <b-col>
-      <label>{{toDateString(comment.created)}}</label>
+      <label>{{toDateString()}}</label>
     </b-col>
   </b-row>
 </template>
@@ -33,35 +34,42 @@ export default {
     }
   },
   methods: {
-    onClickCommentRecommend (comment) {
+    onClickRecommend () {
       var vm = this
-      this.$http.post(`${process.env.VUE_APP_URL_BACKEND}/Board/Comment/${this.boardId}/${comment.id}/Recommend`)
+      this.$http.post(`${process.env.VUE_APP_URL_BACKEND}/Board/Comment/${this.boardId}/${this.comment.id}/Recommend`)
         .then((result) => {
           if (result.data.data) {
             vm.onCommentUpdate(result.data.data)
           }
         })
     },
-    onClickCommentNotRecommend (comment) {
+    onClickNotRecommend () {
       var vm = this
-      this.$http.post(`${process.env.VUE_APP_URL_BACKEND}/Board/Comment/${this.boardId}/${comment.id}/NotRecommend`)
+      this.$http.post(`${process.env.VUE_APP_URL_BACKEND}/Board/Comment/${this.boardId}/${this.comment.id}/NotRecommend`)
         .then((result) => {
-          if (result.data.data) {
-            vm.onCommentUpdate(result.data.data)
-          }
+          vm.$emit('delete', this.comment)
         })
     },
-    onClickCommentReply (comment) {
-      this.$set(comment, 'reply', !comment.reply)
+    onClickReply () {
+      this.$set(this.comment, 'reply', !this.comment.reply)
+    },
+    onClickDelete () {
+      var vm = this
+      this.$http.delete(`${process.env.VUE_APP_URL_BACKEND}/Board/Comment/${this.boardId}/${this.comment.id}`)
+        .then((result) => {
+          if (result.data.data) {
+            vm.$emit('delete', this.comment)
+          }
+        })
     },
     onCommentUpdate (newComment) {
       this.comment = newComment
     },
-    rowColor (comment) {
-      return comment.id === comment.commentId ? 'border border-primary' : 'border border-warning'
+    rowColor () {
+      return this.comment.id === this.comment.commentId ? 'border border-primary' : 'border border-warning'
     },
-    toDateString (date) {
-      return dayjs(date).format('YYYY-MM-DD HH:mm:ss')
+    toDateString () {
+      return dayjs(this.comment.created).format('YYYY-MM-DD HH:mm:ss')
     }
   }
 }

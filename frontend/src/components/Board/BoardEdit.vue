@@ -22,7 +22,7 @@
       <hr/>
 
       <div v-for="(comment) in comments" :key="comment.id">
-        <BoardComment :comment=comment :boardId="boardId" />
+        <BoardComment @delete="onCommentDelete(... arguments)" :comment=comment :boardId="boardId" />
         <BoardCommentEdit v-if="comment.reply" :srcComment="comment" :boardId="boardId" :srcArticle="srcArticle" @refreshComments="refreshComments(... arguments)" />
       </div>
 
@@ -37,6 +37,7 @@ import BoardCommentEdit from './BoardCommentEdit'
 import BoardComment from './BoardComment'
 
 import dayjs from 'dayjs'
+import * as _ from 'lodash'
 
 export default {
   name: 'BoardEdit',
@@ -76,6 +77,7 @@ export default {
         })
         .then((result) => {
           vm.comments = result.data.datas
+          console.log(vm.comments)
         })
     },
     onClickUpdate () {
@@ -107,6 +109,11 @@ export default {
         .then((result) => {
           vm.$emit('refresh')
         })
+    },
+    onCommentDelete (deleteComment) {
+      this.comments = _.filter(this.comments, function (comment) {
+        return comment.id !== deleteComment.id
+      })
     },
     onClickCancel () {
       this.$emit('close', this.article)

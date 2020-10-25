@@ -7,7 +7,7 @@
       <b-form-input v-model="comment" placeholder="Enter Comment"></b-form-input>
     </b-col>
     <b-col>
-      <b-button variant="outline-primary" v-on:click="onClickComment">댓글 쓰기</b-button>
+      <b-button variant="outline-primary" v-on:click="onClickComment">{{commentText}}</b-button>
     </b-col>
   </b-row>
 </template>
@@ -30,6 +30,11 @@ export default {
     return {
       comment: '',
       commentAuthor: ''
+    }
+  },
+  computed: {
+    commentText: function () {
+      return this.srcComment != null ? `${this.srcComment.author}에 대한 댓글 쓰기` : '댓글 쓰기'
     }
   },
   methods: {

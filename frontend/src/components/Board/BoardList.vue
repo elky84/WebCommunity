@@ -2,8 +2,8 @@
   <b-card :title=title>
     <BoardWrite @refresh="onRefresh(... arguments)" @cancelWrite="onCancelWrite(... arguments)" :boardId="boardId" v-if="writeMode"/>
 
-    <b-button variant="outline-primary" v-on:click="onClickWrite">{{buttonText}}</b-button>
-    <b-button variant="outline-secondary" v-on:click="onClickRefresh">목록</b-button>
+    <b-button variant="outline-primary" class="m-1" v-on:click="onClickWrite">{{buttonText}}</b-button>
+    <b-button variant="outline-secondary" class="m-1" v-on:click="onClickRefresh">목록</b-button>
 
     <table class="table table-bordered">
       <thead class="thead-dark">
