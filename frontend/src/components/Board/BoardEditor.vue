@@ -1,6 +1,8 @@
 <template>
   <div class="editor">
-    <Modal ref="ytmodal" @onConfirm="addCommand" />
+    <ImageModal ref="imageModal" @onConfirm="addCommand" />
+    <VideoModal ref="videoModal" @onConfirm="addCommand" />
+
     <editor-menu-bar :editor="editor" v-slot="{ commands, isActive }" v-if="editable">
       <div class="menubar">
         <button
@@ -131,14 +133,17 @@
 
         <button
           class="menubar__button"
-          @click="commands.redo"
-        >
+          @click="commands.redo">
           <font-awesome-icon :icon="['fas', 'redo']" />
 
         </button>
 
-        <button class="menubar__button" @click="openModal(commands.image);">
+        <button class="menubar__button" @click="openImageModal(commands.image);">
           <font-awesome-icon :icon="['fas', 'image']" />
+        </button>
+
+        <button class="menubar__button" @click="openVideoModal(commands.iframe);">
+          <font-awesome-icon :icon="['fab', 'youtube-square']" />
         </button>
 
       </div>
@@ -150,7 +155,8 @@
 
 <script>
 import { Editor, EditorContent, EditorMenuBar } from 'tiptap'
-import Modal from './Modal'
+import ImageModal from './ImageModal'
+import VideoModal from './VideoModal'
 
 import {
   Blockquote,
@@ -173,11 +179,14 @@ import {
   Image
 } from 'tiptap-extensions'
 
+import Iframe from './Iframe.js'
+
 export default {
   components: {
     EditorContent,
     EditorMenuBar,
-    Modal
+    ImageModal,
+    VideoModal
   },
   props: {
     originContent: {
@@ -210,7 +219,8 @@ export default {
           new Strike(),
           new Underline(),
           new History(),
-          new Image()
+          new Image(),
+          new Iframe()
         ],
         content: this.originContent
       }),
@@ -231,8 +241,11 @@ export default {
     }
   },
   methods: {
-    openModal (command) {
-      this.$refs.ytmodal.showModal(command)
+    openImageModal (command) {
+      this.$refs.imageModal.showModal(command)
+    },
+    openVideoModal (command) {
+      this.$refs.videoModal.showModal(command)
     },
     addCommand (data) {
       if (data.command !== null) {
@@ -257,3 +270,22 @@ export default {
 </script>
 
 <style lang="css" src="../../css/tiptap.css"></style>
+
+<style lang="scss">
+.iframe {
+  &__embed {
+    width: 100%;
+    height: 15rem;
+    border: 0;
+  }
+  &__input {
+    display: block;
+    width: 100%;
+    font: inherit;
+    border: 0;
+    border-radius: 5px;
+    background-color: rgba(0, 0, 0, 0.1);
+    padding: 0.3rem 0.5rem;
+  }
+}
+</style>
