@@ -28,7 +28,7 @@ export default {
     boardId: {
       type: String
     },
-    postFix: {
+    category: {
       type: String
     }
   },
@@ -57,7 +57,7 @@ export default {
           this.$set(this.article, 'edit', !this.article.edit)
 
           if (this.$route.query.articleId !== this.article.id) {
-            history.pushState({}, null, `/?boardId=${this.boardId}&articleId=${this.article.id}`)
+            history.pushState({}, null, `#/${this.category}?boardId=${this.boardId}&articleId=${this.article.id}`)
           }
         })
     }

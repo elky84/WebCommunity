@@ -33,12 +33,12 @@
       </thead>
       <tbody>
         <template v-if="focusArticle">
-          <BoardListArticle :key="focusArticle.id + '_focus'" :boardId="boardId" :srcArticle="focusArticle" v-if="focusArticle" />
-          <BoardEdit @refresh="onRefresh(... arguments)" @close="onClose(... arguments)" @update="onUpdate(... arguments)" :boardId="boardId" :srcArticle="focusArticle" v-if="focusArticle.edit" :key="focusArticle.id + '_edit_focus'" />
+          <BoardListArticle :class="rowColor(focusArticle)" :key="focusArticle.id + '_focus'" :category="category" :boardId="boardId" :srcArticle="focusArticle" v-if="focusArticle" />
+          <BoardEdit :class="rowColor(focusArticle)" @refresh="onRefresh(... arguments)" @close="onClose(... arguments)" @update="onUpdate(... arguments)" :boardId="boardId" :srcArticle="focusArticle" v-if="focusArticle.edit" :key="focusArticle.id + '_edit_focus'" />
         </template>
         <template v-for="(article) in articles">
-          <BoardListArticle :key="article.id" :boardId="boardId" :srcArticle="article" />
-          <BoardEdit @refresh="onRefresh(... arguments)" @close="onClose(... arguments)" @update="onUpdate(... arguments)" :boardId="boardId" :srcArticle="article" v-if="article.edit" :key="article.id + '_edit'" />
+          <BoardListArticle :class="rowColor(article)" :key="article.id" :category="category" :boardId="boardId" :srcArticle="article" />
+          <BoardEdit :class="rowColor(article)" @refresh="onRefresh(... arguments)" @close="onClose(... arguments)" @update="onUpdate(... arguments)" :boardId="boardId" :srcArticle="article" v-if="article.edit" :key="article.id + '_edit'" />
         </template>
       </tbody>
     </table>
@@ -182,6 +182,9 @@ export default {
           articleId: this.articleId
         }
       }
+    },
+    rowColor (article) {
+      return article.edit ? 'bg-secondary' : ''
     }
   }
 }
