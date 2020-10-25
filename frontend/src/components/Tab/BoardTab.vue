@@ -31,11 +31,6 @@ export default {
   components: {
     BoardList: BoardList
   },
-  watch: {
-    editMode () {
-      this.$refs.editor.setEditMode(this.editMode)
-    }
-  },
   methods: {
     activeState () {
       return _.isEqual(this.boardId, this.$route.query.boardId)

@@ -3,6 +3,7 @@
     <BoardWrite @refresh="onRefresh(... arguments)" @cancelWrite="onCancelWrite(... arguments)" :boardId="boardId" v-if="writeMode"/>
 
     <b-button variant="outline-primary" v-on:click="onClickWrite">{{buttonText}}</b-button>
+    <b-button variant="outline-secondary" v-on:click="onClickRefresh">목록</b-button>
 
     <table class="table table-bordered">
       <thead class="thead-dark">
@@ -166,6 +167,10 @@ export default {
     },
     onClickWrite () {
       this.writeMode = !this.writeMode
+    },
+    onClickRefresh () {
+      this.focusArticle = null
+      this.onRefresh()
     },
     onClickBoard (article) {
       this.$http.get(`${process.env.VUE_APP_URL_BACKEND}/Board/${this.boardId}/${article.id}`)
