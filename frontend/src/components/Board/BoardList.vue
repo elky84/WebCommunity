@@ -33,12 +33,12 @@
       </thead>
       <tbody>
         <template v-if="focusArticle">
-          <BoardListArticle :class="rowColor(focusArticle)" :key="focusArticle.id + '_focus'" :category="category" :boardId="boardId" :srcArticle="focusArticle" v-if="focusArticle" />
-          <BoardEdit :class="rowColor(focusArticle)" @refresh="onRefresh(... arguments)" @close="onClose(... arguments)" @update="onUpdate(... arguments)" :boardId="boardId" :srcArticle="focusArticle" v-if="focusArticle.edit" :key="focusArticle.id + '_edit_focus'" />
+          <BoardListArticle :borderClass="rowColor(focusArticle)" :key="focusArticle.id + '_focus'" :category="category" :boardId="boardId" :srcArticle="focusArticle" v-if="focusArticle" />
+          <BoardEdit :borderClass="rowColor(focusArticle)" @refresh="onRefresh(... arguments)" @close="onClose(... arguments)" @update="onUpdate(... arguments)" :boardId="boardId" :srcArticle="focusArticle" v-if="focusArticle.edit" :key="focusArticle.id + '_edit_focus'" />
         </template>
         <template v-for="(article) in articles">
-          <BoardListArticle :class="rowColor(article)" :key="article.id" :category="category" :boardId="boardId" :srcArticle="article" />
-          <BoardEdit :class="rowColor(article)" @refresh="onRefresh(... arguments)" @close="onClose(... arguments)" @update="onUpdate(... arguments)" :boardId="boardId" :srcArticle="article" v-if="article.edit" :key="article.id + '_edit'" />
+          <BoardListArticle :borderClass="rowColor(article)" :key="article.id" :category="category" :boardId="boardId" :srcArticle="article" />
+          <BoardEdit :borderClass="rowColor(article)" @refresh="onRefresh(... arguments)" @close="onClose(... arguments)" @update="onUpdate(... arguments)" :boardId="boardId" :srcArticle="article" v-if="article.edit" :key="article.id + '_edit'" />
         </template>
       </tbody>
     </table>
@@ -184,7 +184,7 @@ export default {
       }
     },
     rowColor (article) {
-      return article.edit ? 'bg-secondary' : ''
+      return article.edit ? 'border-primary' : 'border-secondary'
     }
   }
 }

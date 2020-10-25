@@ -1,14 +1,14 @@
 <template>
   <tr class="cursor-pointer" @click.prevent="onClickBoard(srcArticle)">
-    <td align="center">{{srcArticle.category}}</td>
-    <td align="left">
+    <td align="center" :class="borderClass">{{srcArticle.category}}</td>
+    <td align="left" :class="borderClass">
       <input-tag v-model="srcArticle.tags" :read-only=true v-if="hasTags(srcArticle)"/>
     </td>
-    <td align="center">{{srcArticle.title}}</td>
-    <td align="center">{{srcArticle.author}}</td>
-    <td align="center">{{srcArticle.recommend}}</td>
-    <td align="center">{{srcArticle.notRecommend}}</td>
-    <td align="center">{{toDateString(srcArticle.created)}}</td>
+    <td align="center" :class="borderClass">{{srcArticle.title}}</td>
+    <td align="center" :class="borderClass">{{srcArticle.author}}</td>
+    <td align="center" :class="borderClass">{{srcArticle.recommend}}</td>
+    <td align="center" :class="borderClass">{{srcArticle.notRecommend}}</td>
+    <td align="center" :class="borderClass">{{toDateString(srcArticle.created)}}</td>
   </tr>
 </template>
 
@@ -29,6 +29,9 @@ export default {
       type: String
     },
     category: {
+      type: String
+    },
+    borderClass: {
       type: String
     }
   },

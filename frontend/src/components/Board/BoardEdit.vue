@@ -1,6 +1,6 @@
 <template>
   <tr>
-    <td colspan="7">
+    <td colspan="7" :class="borderClass">
       <div v-if="editMode">
         <b-form-input v-model="article.title" placeholder="Enter Title"></b-form-input>
         <b-form-input v-model="article.author" placeholder="Enter Author"></b-form-input>
@@ -41,7 +41,8 @@ export default {
   name: 'BoardEdit',
   props: {
     boardId: String,
-    srcArticle: Object
+    srcArticle: Object,
+    borderClass: String
   },
   components: {
     BoardEditor: BoardEditor,

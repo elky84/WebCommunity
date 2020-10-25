@@ -58,7 +58,7 @@ export default {
       this.comment = newComment
     },
     rowColor (comment) {
-      return comment.id === comment.commentId ? 'bg-dark' : 'bg-secondary'
+      return comment.id === comment.commentId ? 'border border-primary' : 'border border-warning'
     },
     toDateString (date) {
       return dayjs(date).format('YYYY-MM-DD HH:mm:ss')
