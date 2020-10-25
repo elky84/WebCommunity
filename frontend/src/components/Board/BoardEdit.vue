@@ -77,7 +77,6 @@ export default {
         })
         .then((result) => {
           vm.comments = result.data.datas
-          console.log(vm.comments)
         })
     },
     onClickUpdate () {
