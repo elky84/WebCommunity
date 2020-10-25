@@ -7,7 +7,7 @@
     <CategoryTab title="게임 게시판"/>
     <BoardTab :category="category" boardTitle="게임 이야기" boardId='XboxGameTalk'/>
     <BoardTab :category="category" boardTitle="잡담 게시판" boardId='XboxFreeTalk'/>
-    <BoardTab :category="category" boardTitle="질문 게시판" boardId='XboxQ&A'/>
+    <BoardTab :category="category" boardTitle="질문 게시판" boardId='XboxQnA'/>
     <BoardTab :category="category" boardTitle="리뷰 게시판" boardId='XboxReview'/>
   </b-tabs>
 </template>

@@ -7,7 +7,7 @@
     <CategoryTab title="게임 게시판"/>
     <BoardTab :category="category" boardTitle="게임 이야기" boardId='PcGameTalk'/>
     <BoardTab :category="category" boardTitle="잡담 게시판" boardId='PcFreeTalk'/>
-    <BoardTab :category="category" boardTitle="질문 게시판" boardId='PcQ&A'/>
+    <BoardTab :category="category" boardTitle="질문 게시판" boardId='PcQnA'/>
     <BoardTab :category="category" boardTitle="리뷰 게시판" boardId='PcReview'/>
   </b-tabs>
 </template>

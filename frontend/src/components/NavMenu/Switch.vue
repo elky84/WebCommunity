@@ -7,7 +7,7 @@
     <CategoryTab title="게임 게시판"/>
     <BoardTab :category="category" boardTitle="게임 이야기" boardId='SwitchGameTalk'/>
     <BoardTab :category="category" boardTitle="잡담 게시판" boardId='SwitchFreeTalk'/>
-    <BoardTab :category="category" boardTitle="질문 게시판" boardId='SwitchQ&A'/>
+    <BoardTab :category="category" boardTitle="질문 게시판" boardId='SwitchQnA'/>
     <BoardTab :category="category" boardTitle="리뷰 게시판" boardId='SwitchReview'/>
   </b-tabs>
 </template>
