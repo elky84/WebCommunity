@@ -44,7 +44,7 @@
     </table>
 
     <BoardSearch @searching="parentSearching(... arguments)" @create="onClickCreate(... arguments)" ref="searchForm"/>
-    <b-pagination-nav ref="pagination" align="center" size="md" :link-gen="linkGen" v-model="currentPage" :limit="limit" :number-of-pages="numberOfPages" :per-page="limit" @change="listing(... arguments)" />
+    <b-pagination-nav ref="pagination" align="center" size="md" :link-gen="linkGen" v-model="currentPage" :number-of-pages="numberOfPages" :per-page="limit" @change="listing(... arguments)" />
   </b-card>
 </template>
 

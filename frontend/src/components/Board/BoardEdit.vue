@@ -28,6 +28,7 @@
         <BoardComment @delete="onCommentDelete(... arguments)" :comment=comment :boardId="boardId" />
         <BoardCommentEdit v-if="comment.reply" :srcComment="comment" :boardId="boardId" :srcArticle="srcArticle" @refreshComments="refreshComments(... arguments)" />
       </div>
+      <b-pagination ref="pagination" align="center" size="md" v-model="currentPage" :total-rows="totalItems" :per-page="limit" @change="listing(... arguments)" />
 
       <BoardCommentEdit :boardId="boardId" :srcArticle="srcArticle" @refreshComments="refreshComments(... arguments)" />
     </td>
@@ -61,7 +62,10 @@ export default {
       comment: '',
       commentAuthor: '',
       comments: [],
-      article: Object.assign({}, this.srcArticle)
+      article: Object.assign({}, this.srcArticle),
+      currentPage: 1,
+      limit: 10,
+      totalItems: 0
     }
   },
   watch: {
@@ -77,9 +81,14 @@ export default {
       var vm = this
       this.$http.get(`${process.env.VUE_APP_URL_BACKEND}/Board/Comment/${this.boardId}/${this.article.id}`,
         {
+          params: {
+            offset: this.limit * (this.currentPage - 1),
+            limit: this.limit
+          }
         })
         .then((result) => {
           vm.comments = result.data.datas
+          vm.totalItems = result.data.total
         })
     },
     onClickUpdate () {
@@ -156,6 +165,10 @@ export default {
     },
     toDateString (date) {
       return dayjs(date).format('YYYY-MM-DD HH:mm:ss')
+    },
+    listing (page) {
+      this.currentPage = page
+      this.refreshComments()
     }
   }
 }

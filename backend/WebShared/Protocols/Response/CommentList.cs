@@ -7,5 +7,7 @@ namespace Web.Protocols.Response
         public override ProtocolId ProtocolId { get { return ProtocolId.CommentList; } }
 
         public List<Common.Comment> Datas { get; set; }
+
+        public long Total { get; set; }
     }
 }

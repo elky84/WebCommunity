@@ -44,6 +44,12 @@ namespace Board.Services
                 });
         }
 
+        public async Task<long> CountAsync(string id, string articleId)
+        {
+            var mongoDbUtil = GetMongoDbBoardComment(id);
+            return await mongoDbUtil.CountAsync(Builders<Comment>.Filter.Eq(x => x.ArticleId, articleId));
+        }
+
         public async Task<Comment> Create(string id, string articleId, Web.Protocols.Request.Comment comment)
         {
             var mongoDbUtil = GetMongoDbBoardComment(id);

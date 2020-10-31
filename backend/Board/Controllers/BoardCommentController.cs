@@ -22,7 +22,8 @@ namespace Board.Controllers
         {
             return new Web.Protocols.Response.CommentList
             {
-                Datas = (await _commentService.Get(boardId, articleId, pageable)).ConvertAll(x => x.ToProtocol())
+                Datas = (await _commentService.Get(boardId, articleId, pageable)).ConvertAll(x => x.ToProtocol()),
+                Total = await _commentService.CountAsync(boardId, articleId)
             };
         }
 
