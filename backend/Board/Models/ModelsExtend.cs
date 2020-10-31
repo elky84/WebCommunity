@@ -18,7 +18,8 @@ namespace Board.Models
                 Category = article.Category,
                 Content = article.Content,
                 Title = article.Title,
-                Tags = article.Tags
+                Tags = article.Tags,
+                Source = article.Source
             };
         }
 
@@ -33,6 +34,7 @@ namespace Board.Models
                 Tags = article.Tags,
                 Recommend = article.Recommend,
                 NotRecommend = article.NotRecommend,
+                Source = article.Source
             }.ToProtocol(article);
         }
 

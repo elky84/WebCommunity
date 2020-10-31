@@ -5,8 +5,11 @@
         <b-form-input v-model="article.title" placeholder="Enter Title"></b-form-input>
         <b-form-input v-model="article.author" placeholder="Enter Author"></b-form-input>
         <b-form-input v-model="article.category" placeholder="Enter Category"></b-form-input>
+        <b-form-input v-model="article.source" placeholder="Enter Source"></b-form-input>
         <input-tag v-model="article.tags"></input-tag>
       </div>
+
+      <label :v-if="srcArticle.source">[출처]:{{srcArticle.source}}</label>
 
       <BoardEditor ref="editor" @onEditorContent="onEditorContent(... arguments)"
         :originEditable="editMode" :originContent=article.content />

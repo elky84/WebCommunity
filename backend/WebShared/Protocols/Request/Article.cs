@@ -21,6 +21,8 @@ namespace Web.Protocols.Request
 
         public List<string> Tags { get; set; }
 
+        public string Source { get; set; }
+
         public int Recommend { get; set; }
 
         public int NotRecommend { get; set; }

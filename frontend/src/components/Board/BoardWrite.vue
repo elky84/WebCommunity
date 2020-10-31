@@ -4,6 +4,7 @@
     <b-form-input v-model="author" placeholder="Enter Author"></b-form-input>
     <b-form-input v-model="category" placeholder="Enter Category"></b-form-input>
     <input-tag v-model="tags"></input-tag>
+    <b-form-input v-model="source" placeholder="Enter Source"></b-form-input>
     <BoardEditor ref="editor" @onEditorContent="onEditorContent(... arguments)" />
     <b-btn-group>
       <b-button variant="outline-primary" v-on:click="onClickConfirm">등록</b-button>
@@ -27,7 +28,8 @@ export default {
       title: '',
       author: '',
       category: '',
-      tags: []
+      tags: [],
+      source: ''
     }
   },
   components: {
@@ -45,7 +47,8 @@ export default {
           title: this.title,
           content: this.editorContent,
           category: this.category,
-          tags: this.tags
+          tags: this.tags,
+          source: this.source
         })
         .then((result) => {
           vm.$emit('refresh')
