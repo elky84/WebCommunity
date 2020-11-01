@@ -28,7 +28,9 @@ export default {
       return _.isEqual(null, this.$route.query.boardId)
     },
     onClick () {
-      this.$router.push(`/${this.category}`)
+      if (this.$router.currentRoute.fullPath !== `/${this.category}`) {
+        this.$router.push(`/${this.category}`)
+      }
     }
   }
 }

@@ -2,6 +2,7 @@
 using MongoDB.Driver;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using Web.Protocols.Exception;
 using Web.Protocols.Page;
 using WebUtil.Service;
 using WebUtil.Util;
@@ -50,7 +51,7 @@ namespace Board.Services
             return await mongoDbUtil.CountAsync(Builders<Comment>.Filter.Eq(x => x.ArticleId, articleId));
         }
 
-        public async Task<Comment> Create(string id, string articleId, Web.Protocols.Request.Comment comment)
+        public async Task<Comment> Create(string id, string articleId, string nickName, string userId, Web.Protocols.Request.Comment comment)
         {
             var mongoDbUtil = GetMongoDbBoardComment(id);
             var originComment = string.IsNullOrEmpty(comment.OriginCommentId) ? null : await mongoDbUtil.FindOneAsyncById(comment.OriginCommentId);
@@ -64,28 +65,56 @@ namespace Board.Services
             return created;
         }
 
-        public async Task<Comment> Update(string id, string articleId, Web.Protocols.Request.Comment comment)
+        public async Task<Comment> Update(string id, string commentId, string userId, Web.Protocols.Request.Comment comment)
         {
             var mongoDbUtil = GetMongoDbBoardComment(id);
-            return await mongoDbUtil.UpdateGetAsync(articleId, Builders<Comment>.Update.Set(x => x.Content, comment.Content));
+
+            var origin = await GetAndValidation(mongoDbUtil, commentId, userId);
+
+            var result = await mongoDbUtil.UpdateAsync(commentId, Builders<Comment>.Update.Set(x => x.Content, comment.Content));
+            if (!result)
+            {
+                throw new DeveloperException(Web.Code.ResultCode.DatabaseUpdateFailure);
+            }
+
+            origin.Content = comment.Content;
+            return origin;
         }
 
-        public async Task<Comment> Recommend(string id, string commentId)
+        private async Task<Comment> GetAndValidation(MongoDbUtil<Comment> mongoDbUtil, string articleId, string userId)
+        {
+            var origin = await mongoDbUtil.FindOneAsyncById(articleId);
+            if (origin == null)
+            {
+                throw new DeveloperException(Web.Code.ResultCode.NotFoundData);
+            }
+
+            if (origin.UserId != userId)
+            {
+                throw new DeveloperException(Web.Code.ResultCode.NotMatchedAuthor);
+            }
+
+            return origin;
+        }
+
+        public async Task<Comment> Recommend(string id, string commentId, string userId)
         {
             var mongoDbUtil = GetMongoDbBoardComment(id);
             return await mongoDbUtil.UpdateGetAsync(commentId, Builders<Comment>.Update.Inc(x => x.Recommend, 1));
         }
 
-        public async Task<Comment> NotRecommend(string id, string commentId)
+        public async Task<Comment> NotRecommend(string id, string commentId, string userId)
         {
             var mongoDbUtil = GetMongoDbBoardComment(id);
             return await mongoDbUtil.UpdateGetAsync(commentId, Builders<Comment>.Update.Inc(x => x.NotRecommend, 1));
         }
 
-        public async Task<Comment> Delete(string id, string commentId)
+        public async Task<Comment> Delete(string id, string commentId, string userId)
         {
             var mongoDbUtil = GetMongoDbBoardComment(id);
-            return await mongoDbUtil.RemoveAsync(commentId);
+            var origin = await GetAndValidation(mongoDbUtil, commentId, userId);
+            await mongoDbUtil.RemoveAsync(commentId);
+            return origin;
         }
     }
 }

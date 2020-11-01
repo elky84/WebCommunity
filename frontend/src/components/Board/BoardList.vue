@@ -108,7 +108,7 @@ export default {
       this.focusArticle = null
 
       var vm = this
-      this.$http.get(`${process.env.VUE_APP_URL_BACKEND}/Board/${this.boardId}`, {
+      this.$axios.get(`${process.env.VUE_APP_URL_BACKEND}/Board/${this.boardId}`, {
         params: {
           offset: this.limit * (this.currentPage - 1),
           limit: this.limit,
@@ -154,7 +154,7 @@ export default {
       this.onRefresh()
     },
     getFocusArticle () {
-      this.$http.get(`${process.env.VUE_APP_URL_BACKEND}/Board/${this.boardId}/${this.articleId}`)
+      this.$axios.get(`${process.env.VUE_APP_URL_BACKEND}/Board/${this.boardId}/${this.articleId}`)
         .then((result) => {
           this.focusArticle = result.data.data
           if (this.focusArticle) {

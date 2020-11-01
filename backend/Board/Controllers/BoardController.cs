@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using Board.Models;
 using Board.Services;
 using Web.Protocols.Page;
+using System.Web;
 
 namespace Board.Controllers
 {
@@ -29,11 +30,13 @@ namespace Board.Controllers
         }
 
         [HttpPost("{boardId}")]
-        public async Task<Web.Protocols.Response.Article> Create(string boardId, [FromBody] Web.Protocols.Request.Article article)
+        public async Task<Web.Protocols.Response.Article> Create([FromHeader(Name = WebUtil.HeaderKeys.AuthorizedUserId)] string userId,
+            [FromHeader(Name = WebUtil.HeaderKeys.AuthorizedNickName)] string encodedNickName,
+            string boardId, [FromBody] Web.Protocols.Request.Article article)
         {
             return new Web.Protocols.Response.Article
             {
-                Data = (await _articleService.Create(boardId, article))?.ToProtocol()
+                Data = (await _articleService.Create(boardId, userId, HttpUtility.UrlDecode(encodedNickName), article))?.ToProtocol()
             };
         }
 
@@ -48,38 +51,42 @@ namespace Board.Controllers
 
 
         [HttpPut("{boardId}/{articleId}")]
-        public async Task<Web.Protocols.Response.Article> Update(string boardId, string articleId, [FromBody] Web.Protocols.Request.Article article)
+        public async Task<Web.Protocols.Response.Article> Update([FromHeader(Name = WebUtil.HeaderKeys.AuthorizedUserId)] string userId,
+            string boardId, string articleId, [FromBody] Web.Protocols.Request.Article article)
         {
             return new Web.Protocols.Response.Article
             {
-                Data = (await _articleService.Update(boardId, articleId, article))?.ToProtocol()
+                Data = (await _articleService.Update(boardId, articleId, userId, article))?.ToProtocol()
             };
         }
 
         [HttpDelete("{boardId}/{articleId}")]
-        public async Task<Web.Protocols.Response.Article> Delete(string boardId, string articleId)
+        public async Task<Web.Protocols.Response.Article> Delete([FromHeader(Name = WebUtil.HeaderKeys.AuthorizedUserId)] string userId,
+            string boardId, string articleId)
         {
             return new Web.Protocols.Response.Article
             {
-                Data = (await _articleService.Delete(boardId, articleId))?.ToProtocol()
+                Data = (await _articleService.Delete(boardId, articleId, userId))?.ToProtocol()
             };
         }
 
         [HttpPost("{boardId}/{articleId}/Recommend")]
-        public async Task<Web.Protocols.Response.Article> Recommend(string boardId, string articleId)
+        public async Task<Web.Protocols.Response.Article> Recommend([FromHeader(Name = WebUtil.HeaderKeys.AuthorizedUserId)] string userId,
+            string boardId, string articleId)
         {
             return new Web.Protocols.Response.Article
             {
-                Data = (await _articleService.Recommend(boardId, articleId))?.ToProtocol()
+                Data = (await _articleService.Recommend(boardId, articleId, userId))?.ToProtocol()
             };
         }
 
         [HttpPost("{boardId}/{articleId}/NotRecommend")]
-        public async Task<Web.Protocols.Response.Article> NotRecommend(string boardId, string articleId)
+        public async Task<Web.Protocols.Response.Article> NotRecommend([FromHeader(Name = WebUtil.HeaderKeys.AuthorizedUserId)] string userId,
+            string boardId, string articleId)
         {
             return new Web.Protocols.Response.Article
             {
-                Data = (await _articleService.NotRecommend(boardId, articleId))?.ToProtocol()
+                Data = (await _articleService.NotRecommend(boardId, articleId, userId))?.ToProtocol()
             };
         }
 

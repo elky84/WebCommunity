@@ -30,8 +30,9 @@
           <template v-slot:button-content>
             <em>User</em>
           </template>
-          <b-dropdown-item href="#">Profile</b-dropdown-item>
-          <b-dropdown-item href="#">Sign Out</b-dropdown-item>
+          <b-dropdown-item b-link href="#/Account">Account</b-dropdown-item>
+          <b-dropdown-item b-link href="#/Account?mid=Profile">Profile</b-dropdown-item>
+          <b-dropdown-item b-link href="#/Account?mid=SignOut">Sign Out</b-dropdown-item>
         </b-nav-item-dropdown>
       </b-navbar-nav>
     </b-collapse>

@@ -34,13 +34,17 @@ namespace Gateway
         {
             services.CommonConfigureServices();
 
-            services.AddCors(options => options.AddPolicy("AllowSpecificOrigin",
-                builder =>
-                {
-                    builder.AllowAnyOrigin()
+            // Add Cors
+            services.AddCors(options =>
+            {
+                options.AddDefaultPolicy(
+                    builder => builder
+                        .AllowAnyMethod()
                         .AllowAnyHeader()
-                        .AllowAnyMethod();
-                }));
+                        .WithOrigins("http://localhost:8080") // 설정 파일로 빼야 할 덧?
+                        .AllowCredentials()
+                        .WithExposedHeaders("Set-Cookie"));
+            });
 
             services.AddHttpClient();
 
@@ -65,9 +69,9 @@ namespace Gateway
             //    // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
             //    app.UseHsts();
             //}
-            //app.UseHttpsRedirection();
+            app.UseHttpsRedirection();
 
-            app.UseCors("AllowSpecificOrigin");
+            app.UseCors();
             app.UseWebSockets();
 
             var ocelotConfiguration = new OcelotPipelineConfiguration
@@ -80,9 +84,9 @@ namespace Gateway
                     }
                     catch (System.Exception e)
                     {
-                        if (e.GetType() == typeof(LogicException))
+                        if (e.GetType() == typeof(DeveloperException))
                         {
-                            var logicException = (LogicException)e;
+                            var logicException = (DeveloperException)e;
                             ctx.HttpContext.Response.StatusCode = (int)logicException.HttpStatusCode;
 
                             await ctx.HttpContext.Response.Body.WriteAsync(Encoding.UTF8.GetBytes(JsonConvert.SerializeObject(new ErrorDetails

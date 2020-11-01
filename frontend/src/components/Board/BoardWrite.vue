@@ -1,7 +1,6 @@
 <template>
   <div class="editor">
     <b-form-input v-model="title" placeholder="Enter Title"></b-form-input>
-    <b-form-input v-model="author" placeholder="Enter Author"></b-form-input>
     <b-form-input v-model="category" placeholder="Enter Category"></b-form-input>
     <input-tag v-model="tags"></input-tag>
     <b-form-input v-model="source" placeholder="Enter Source"></b-form-input>
@@ -38,12 +37,9 @@ export default {
   },
   methods: {
     onClickConfirm () {
-      this.$refs.editor.getHTML()
-
       var vm = this
-      this.$http.post(`${process.env.VUE_APP_URL_BACKEND}/Board/${this.boardId}`,
+      this.$axios.post(`${process.env.VUE_APP_URL_BACKEND}/Board/${this.boardId}`,
         {
-          author: this.author,
           title: this.title,
           content: this.editorContent,
           category: this.category,

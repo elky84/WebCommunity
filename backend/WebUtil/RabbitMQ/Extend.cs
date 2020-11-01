@@ -40,7 +40,7 @@ namespace WebUtil.RabbitMQ
             }
             catch (System.Exception e)
             {
-                throw new LogicException(Web.Code.ResultCode.NotConnectedMQ, System.Net.HttpStatusCode.InternalServerError, e.Message);
+                throw new DeveloperException(Web.Code.ResultCode.NotConnectedMQ, System.Net.HttpStatusCode.InternalServerError, e.Message);
             }
         }
 

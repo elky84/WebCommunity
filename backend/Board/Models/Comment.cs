@@ -13,6 +13,8 @@ namespace Board.Models
 
         public string Author { get; set; }
 
+        public string UserId { get; set; }
+
         public string OriginAuthor { get; set; }
 
         public int Recommend { get; set; }

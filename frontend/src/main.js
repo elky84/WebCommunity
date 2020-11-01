@@ -9,18 +9,17 @@ import router from './router'
 import BootstrapVue from 'bootstrap-vue'
 import 'bootstrap/dist/css/bootstrap.min.css'
 import 'bootstrap-vue/dist/bootstrap-vue.css'
-import axios from 'axios'
 import 'expose-loader?$!expose-loader?jQuery!jquery'
 import TreeView from 'vue-json-tree-view'
 import InputTag from 'vue-input-tag'
 import '@/fontAwesomeIcon.js' // fontAwesomeIcon.js 불러옴
+import VueCookie from 'vue-cookie'
 
+Vue.use(VueCookie)
 Vue.use(TreeView)
 Vue.use(BootstrapVue)
 
 Vue.component('input-tag', InputTag)
-
-Vue.prototype.$http = axios
 
 Vue.config.productionTip = false
 

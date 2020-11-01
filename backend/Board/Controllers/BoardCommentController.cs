@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using Board.Models;
 using Board.Services;
 using Web.Protocols.Page;
+using System.Web;
 
 namespace Board.Controllers
 {
@@ -28,47 +29,53 @@ namespace Board.Controllers
         }
 
         [HttpPost("{boardId}/{articleId}")]
-        public async Task<Web.Protocols.Response.Comment> Create(string boardId, string articleId, [FromBody] Web.Protocols.Request.Comment comment)
+        public async Task<Web.Protocols.Response.Comment> Create([FromHeader(Name = WebUtil.HeaderKeys.AuthorizedUserId)] string userId,
+            [FromHeader(Name = WebUtil.HeaderKeys.AuthorizedNickName)] string encodedNickName,
+            string boardId, string articleId, [FromBody] Web.Protocols.Request.Comment comment)
         {
             return new Web.Protocols.Response.Comment
             {
-                Data = (await _commentService.Create(boardId, articleId, comment))?.ToProtocol()
+                Data = (await _commentService.Create(boardId, articleId, userId, HttpUtility.UrlDecode(encodedNickName), comment))?.ToProtocol()
             };
         }
 
         [HttpPut("{boardId}/{commentId}")]
-        public async Task<Web.Protocols.Response.Comment> Update(string boardId, string commentId, [FromBody] Web.Protocols.Request.Comment comment)
+        public async Task<Web.Protocols.Response.Comment> Update([FromHeader(Name = WebUtil.HeaderKeys.AuthorizedUserId)] string userId,
+            string boardId, string commentId, [FromBody] Web.Protocols.Request.Comment comment)
         {
             return new Web.Protocols.Response.Comment
             {
-                Data = (await _commentService.Update(boardId, commentId, comment))?.ToProtocol()
+                Data = (await _commentService.Update(boardId, commentId, userId, comment))?.ToProtocol()
             };
         }
 
         [HttpDelete("{boardId}/{commentId}")]
-        public async Task<Web.Protocols.Response.Comment> Delete(string boardId, string commentId)
+        public async Task<Web.Protocols.Response.Comment> Delete([FromHeader(Name = WebUtil.HeaderKeys.AuthorizedUserId)] string userId,
+            string boardId, string commentId)
         {
             return new Web.Protocols.Response.Comment
             {
-                Data = (await _commentService.Delete(boardId, commentId))?.ToProtocol()
+                Data = (await _commentService.Delete(boardId, commentId, userId))?.ToProtocol()
             };
         }
 
         [HttpPost("{boardId}/{commentId}/Recommend")]
-        public async Task<Web.Protocols.Response.Comment> Recommend(string boardId, string commentId)
+        public async Task<Web.Protocols.Response.Comment> Recommend([FromHeader(Name = WebUtil.HeaderKeys.AuthorizedUserId)] string userId,
+            string boardId, string commentId)
         {
             return new Web.Protocols.Response.Comment
             {
-                Data = (await _commentService.Recommend(boardId, commentId))?.ToProtocol()
+                Data = (await _commentService.Recommend(boardId, commentId, userId))?.ToProtocol()
             };
         }
 
         [HttpPost("{boardId}/{commentId}/NotRecommend")]
-        public async Task<Web.Protocols.Response.Comment> NotRecommend(string boardId, string commentId)
+        public async Task<Web.Protocols.Response.Comment> NotRecommend([FromHeader(Name = WebUtil.HeaderKeys.AuthorizedUserId)] string userId,
+            string boardId, string commentId)
         {
             return new Web.Protocols.Response.Comment
             {
-                Data = (await _commentService.NotRecommend(boardId, commentId))?.ToProtocol()
+                Data = (await _commentService.NotRecommend(boardId, commentId, userId))?.ToProtocol()
             };
         }
 

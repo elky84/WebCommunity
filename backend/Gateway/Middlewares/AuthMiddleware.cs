@@ -7,6 +7,7 @@ using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Runtime.Caching;
 using System.Threading.Tasks;
+using System.Web;
 using Web.Protocols.Exception;
 
 namespace Gateway.Middlewares
@@ -24,46 +25,43 @@ namespace Gateway.Middlewares
 
         public async Task Authenticate(DownstreamContext ctx, Func<Task> next)
         {
-            if (ctx.DownstreamRequest.Headers.TryGetValues(WebUtil.Constants.HeaderKeys.InternalServer, out var server))
+            if (ctx.DownstreamRequest.Headers.TryGetValues(WebUtil.HeaderKeys.InternalServer, out var server))
             {
                 await next.Invoke();
                 return;
             }
 
-#if DEBUG
-            await next.Invoke();
-            return;
-#else
             var uri = ctx.DownstreamRequest.AbsolutePath;
-            if (uri.StartsWith("/Auth/Token/Issue")) // TODO white 리스트를 어떻게 관리 할 것인가?
+            if (uri.StartsWith("/Auth/Account/SignUp") ||
+                uri.StartsWith("/Auth/Account/SignIn") ||
+                ctx.DownstreamRequest.Method == HttpMethod.Get.Method) // TODO white 리스트를 어떻게 관리 할 것인가?
             {
                 await next.Invoke();
                 return;
             }
 
-            string userId = await Authorization(ctx);
-            ctx.DownstreamRequest.Headers.Add(WebUtil.Constants.HeaderKeys.AuthorizedUserId, userId);
-
+            var auth = await Authorization(ctx);
+            ctx.DownstreamRequest.Headers.Add(WebUtil.HeaderKeys.AuthorizedUserId, auth.UserId);
+            ctx.DownstreamRequest.Headers.Add(WebUtil.HeaderKeys.AuthorizedNickName, HttpUtility.UrlEncode(auth.NickName));
             await next.Invoke();
-#endif
         }
 
-        private async Task<string> Authorization(DownstreamContext ctx)
+        private async Task<Web.Protocols.Response.Authenticate> Authorization(DownstreamContext ctx)
         {
             ctx.HttpContext.Request.Headers.TryGetValue(Web.Constants.HeaderKeys.Cookie, out StringValues values);
             var cacheKey = values.ToString();
 
             ObjectCache cache = MemoryCache.Default;
-            var userId = cache[cacheKey] as string;
-            if (userId != null)
+            var cacheAuth = cache[cacheKey] as Web.Protocols.Response.Authenticate;
+            if (cacheAuth != null)
             {
-                return userId;
+                return cacheAuth;
             }
 
             var reRoute = Configuration.Extend.Get("AuthReRoute", "/Auth/{everything}");
             if (reRoute == null)
             {
-                throw new LogicException(Web.Code.ResultCode.NotFoundAuthRoutes);
+                throw new DeveloperException(Web.Code.ResultCode.NotFoundAuthRoutes);
             }
 
             var downStreamHostAndPorts = reRoute.DownstreamHostAndPorts[Random.Next(reRoute.DownstreamHostAndPorts.Count)];
@@ -79,14 +77,14 @@ namespace Gateway.Middlewares
             if (response.StatusCode != System.Net.HttpStatusCode.OK)
             {
                 var error = JsonConvert.DeserializeObject<ErrorDetails>(content);
-                throw new LogicException(error.ResultCode, response.StatusCode, error.Detail);
+                throw new DeveloperException(error.ResultCode, response.StatusCode, error.Detail);
             }
             else
             {
                 var auth = JsonConvert.DeserializeObject<Web.Protocols.Response.Authenticate>(content);
                 if (auth.ResultCode != Web.Code.ResultCode.Success)
                 {
-                    throw new LogicException(auth.ResultCode, response.StatusCode, auth.ErrorMessage);
+                    throw new DeveloperException(auth.ResultCode, response.StatusCode, auth.ErrorMessage);
                 }
 
                 if (response.Headers.TryGetValues(Web.Constants.HeaderKeys.SetCookie, out var setCookie))
@@ -98,7 +96,7 @@ namespace Gateway.Middlewares
 
                 var policy = new CacheItemPolicy();
                 cache.Set(cacheKey, auth.UserId, policy);
-                return auth.UserId;
+                return auth;
             }
         }
     }

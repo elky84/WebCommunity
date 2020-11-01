@@ -8,6 +8,10 @@
         Authenticate,
         AuthCheck,
         WebSocketAuth,
+        SignUp,
+        SignIn,
+        SignOut,
+        AccountUpdate,
         // Auth End
 
         // Board Start

@@ -9,6 +9,8 @@ namespace Board.Models
 
         public string Content { get; set; }
 
+        public string UserId { get; set; }
+
         public string Author { get; set; }
 
         public string Category { get; set; }

@@ -26,9 +26,8 @@ namespace WebUtil.StartUp
 
             services.Configure<CookiePolicyOptions>(options =>
             {
-                // This lambda determines whether user consent for non-essential cookies is needed for a given request.
-                options.CheckConsentNeeded = context => true;
                 options.MinimumSameSitePolicy = SameSiteMode.None;
+                options.Secure = CookieSecurePolicy.Always;
             });
 
             services.AddMvc(option => option.EnableEndpointRouting = false)
@@ -42,10 +41,10 @@ namespace WebUtil.StartUp
                 }).SetCompatibilityVersion(CompatibilityVersion.Version_3_0);
 
             services.AddSwaggerGen(c =>
-            {
-                c.SwaggerDoc("v1", new OpenApiInfo { Title = "API", Version = "v1" });
-                c.SchemaFilter<SwaggerExcludeFilter>();
-            });
+                    {
+                        c.SwaggerDoc("v1", new OpenApiInfo { Title = "API", Version = "v1" });
+                        c.SchemaFilter<SwaggerExcludeFilter>();
+                    });
 
             services.ConfigureSwaggerGen(options =>
             {

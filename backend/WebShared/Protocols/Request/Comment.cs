@@ -13,8 +13,6 @@ namespace Web.Protocols.Request
 
         public string Content { get; set; }
 
-        public string Author { get; set; }
-
         public int Recommend { get; set; }
 
         public int NotRecommend { get; set; }

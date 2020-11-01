@@ -36,7 +36,7 @@ export default {
   methods: {
     onClickRecommend () {
       var vm = this
-      this.$http.post(`${process.env.VUE_APP_URL_BACKEND}/Board/Comment/${this.boardId}/${this.comment.id}/Recommend`)
+      this.$axios.post(`${process.env.VUE_APP_URL_BACKEND}/Board/Comment/${this.boardId}/${this.comment.id}/Recommend`)
         .then((result) => {
           if (result.data.data) {
             vm.onCommentUpdate(result.data.data)
@@ -45,7 +45,7 @@ export default {
     },
     onClickNotRecommend () {
       var vm = this
-      this.$http.post(`${process.env.VUE_APP_URL_BACKEND}/Board/Comment/${this.boardId}/${this.comment.id}/NotRecommend`)
+      this.$axios.post(`${process.env.VUE_APP_URL_BACKEND}/Board/Comment/${this.boardId}/${this.comment.id}/NotRecommend`)
         .then((result) => {
           vm.$emit('delete', this.comment)
         })
@@ -55,7 +55,7 @@ export default {
     },
     onClickDelete () {
       var vm = this
-      this.$http.delete(`${process.env.VUE_APP_URL_BACKEND}/Board/Comment/${this.boardId}/${this.comment.id}`)
+      this.$axios.delete(`${process.env.VUE_APP_URL_BACKEND}/Board/Comment/${this.boardId}/${this.comment.id}`)
         .then((result) => {
           if (result.data.data) {
             vm.$emit('delete', this.comment)

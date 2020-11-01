@@ -1,8 +1,5 @@
 <template>
   <b-row class="m-1">
-    <b-col sm="2">
-      <b-form-input v-model="commentAuthor" placeholder="Enter Author"></b-form-input>
-    </b-col>
     <b-col sm="6">
       <b-form-input v-model="comment" placeholder="Enter Comment"></b-form-input>
     </b-col>
@@ -28,8 +25,7 @@ export default {
   },
   data () {
     return {
-      comment: '',
-      commentAuthor: ''
+      comment: ''
     }
   },
   computed: {
@@ -40,10 +36,9 @@ export default {
   methods: {
     onClickComment () {
       var vm = this
-      this.$http.post(`${process.env.VUE_APP_URL_BACKEND}/Board/Comment/${this.boardId}/${this.srcArticle.id}`,
+      this.$axios.post(`${process.env.VUE_APP_URL_BACKEND}/Board/Comment/${this.boardId}/${this.srcArticle.id}`,
         {
           originCommentId: this.srcComment === null ? null : this.srcComment.id,
-          author: this.commentAuthor,
           content: this.comment
         })
         .then((result) => {

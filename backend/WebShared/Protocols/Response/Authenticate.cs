@@ -15,9 +15,10 @@ namespace Web.Protocols.Response
 
         public string UserId { get; set; }
 
+        public string NickName { get; set; }
+
         [JsonIgnore]
         public string Token { get; set; }
-
 
         [JsonConverter(typeof(StringEnumConverter))]
         public AccountGradeType Grade { get; set; }

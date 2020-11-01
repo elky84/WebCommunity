@@ -25,20 +25,13 @@ namespace Auth.Services
 
         private readonly JwtSecurityTokenHandler _tokenHandler = new JwtSecurityTokenHandler();
 
-        private readonly IHttpClientFactory _clientFactory;
-
-        private readonly IConfiguration _configuration;
-
         private const string UserIdName = "UserId";
 
         private MongoDbUtil<AccountData> _mongoDbAccountData;
 
-        public TokenService(MongoDbService mongoDbServbice, IOptions<AppSettings> appSettings, IConfiguration configuration, IHttpClientFactory clientFactory)
+        public TokenService(MongoDbService mongoDbServbice, IOptions<AppSettings> appSettings)
         {
             _appSettings = appSettings.Value;
-            _configuration = configuration;
-            _clientFactory = clientFactory;
-
             _mongoDbAccountData = new MongoDbUtil<AccountData>(mongoDbServbice.Database);
         }
 
@@ -46,41 +39,39 @@ namespace Auth.Services
         {
             if (string.IsNullOrEmpty(userId) || userId.ToCharArray().Where(x => char.GetUnicodeCategory(x) == System.Globalization.UnicodeCategory.OtherLetter).Count() > 0)
             {
-                throw new LogicException(Web.Code.ResultCode.InvalidUserId, System.Net.HttpStatusCode.BadRequest);
+                throw new DeveloperException(Web.Code.ResultCode.InvalidUserId, System.Net.HttpStatusCode.BadRequest);
             }
 
             var accountData = await _mongoDbAccountData.FindOneAsync(Builders<AccountData>.Filter.Eq(x => x.UserId, userId));
             if (accountData == null)
             {
                 accountData = new AccountData { UserId = userId, Grade = AccountGradeType.User, State = AccountStateType.Enable };
-
                 await _mongoDbAccountData.CreateAsync(accountData);
+                throw new DeveloperException(Web.Code.ResultCode.NotFoundAccount, System.Net.HttpStatusCode.Unauthorized);
             }
 
             if (accountData.State != AccountStateType.Enable)
             {
-                throw new LogicException(Web.Code.ResultCode.NotUsableAccount, System.Net.HttpStatusCode.Unauthorized);
+                throw new DeveloperException(Web.Code.ResultCode.NotUsableAccount, System.Net.HttpStatusCode.Unauthorized);
             }
 
-            await Issue(accountData);
+            Issue(accountData);
 
             return accountData.ToAuthenticateResponse();
         }
 
-        private async Task Issue(AccountData accountData)
+        public void Issue(AccountData accountData)
         {
             // authentication successful so generate jwt token
             var tokenDescriptor = new SecurityTokenDescriptor
             {
-                Subject = new ClaimsIdentity(new Claim[] { new Claim(UserIdName, accountData.UserId), new Claim("MasterDataVersion", "zxcvzxcv") }),
+                Subject = new ClaimsIdentity(new Claim[] { new Claim(UserIdName, accountData.UserId) }),
                 Expires = DateTime.UtcNow.AddDays(30),
                 SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(Encoding.ASCII.GetBytes(_appSettings.Secret)), SecurityAlgorithms.HmacSha256Signature)
             };
 
             var token = _tokenHandler.CreateToken(tokenDescriptor);
             accountData.Token = _tokenHandler.WriteToken(token);
-
-            await _mongoDbAccountData.UpdateAsync(accountData.Id, accountData);
         }
 
         public async Task<AccountData> Validate(string token)
@@ -89,7 +80,7 @@ namespace Auth.Services
             var remain = pair.Key.ValidTo.Subtract(DateTime.UtcNow);
             if (remain.TotalDays <= 7.0)
             {
-                await Issue(pair.Value);
+                Issue(pair.Value);
             }
             return pair.Value;
         }
@@ -110,22 +101,22 @@ namespace Auth.Services
             var accountData = await _mongoDbAccountData.FindOneAsync(Builders<AccountData>.Filter.Eq(x => x.UserId, dic[UserIdName].Value));
             if (accountData == null)
             {
-                throw new LogicException(Web.Code.ResultCode.NotFoundAccount, System.Net.HttpStatusCode.BadRequest);
+                throw new DeveloperException(Web.Code.ResultCode.NotFoundAccount, System.Net.HttpStatusCode.BadRequest);
             }
 
             if (string.IsNullOrEmpty(token))
             {
-                throw new LogicException(Web.Code.ResultCode.NotPrivodedToken, System.Net.HttpStatusCode.Unauthorized);
+                throw new DeveloperException(Web.Code.ResultCode.NotPrivodedToken, System.Net.HttpStatusCode.Unauthorized);
             }
 
             if (accountData.State != AccountStateType.Enable)
             {
-                throw new LogicException(Web.Code.ResultCode.NotUsableAccount, System.Net.HttpStatusCode.Unauthorized);
+                throw new DeveloperException(Web.Code.ResultCode.NotUsableAccount, System.Net.HttpStatusCode.Unauthorized);
             }
 
             if (token != accountData.Token)
             {
-                throw new LogicException(Web.Code.ResultCode.InvalidToken, System.Net.HttpStatusCode.Unauthorized);
+                throw new DeveloperException(Web.Code.ResultCode.InvalidToken, System.Net.HttpStatusCode.Unauthorized);
             }
             return new KeyValuePair<SecurityToken, AccountData>(securityToken, accountData);
         }
@@ -136,7 +127,7 @@ namespace Auth.Services
             var accountData = await Validate(token);
             if (userId != accountData.UserId)
             {
-                throw new LogicException(Web.Code.ResultCode.InvalidToken, System.Net.HttpStatusCode.Unauthorized);
+                throw new DeveloperException(Web.Code.ResultCode.InvalidToken, System.Net.HttpStatusCode.Unauthorized);
             }
             return accountData;
         }
@@ -144,9 +135,7 @@ namespace Auth.Services
         public async Task<AccountData> Refresh(string userId, string token)
         {
             var accountData = await Validate(userId, token);
-
-            await Issue(accountData);
-
+            Issue(accountData);
             return accountData;
         }
     }

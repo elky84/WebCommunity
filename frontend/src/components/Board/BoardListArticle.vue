@@ -54,9 +54,10 @@ export default {
       return !_.isEmpty(article.tags)
     },
     onClickBoard () {
-      this.$http.get(`${process.env.VUE_APP_URL_BACKEND}/Board/${this.boardId}/${this.article.id}`)
+      this.$axios.get(`${process.env.VUE_APP_URL_BACKEND}/Board/${this.boardId}/${this.article.id}`)
         .then((result) => {
           this.article.content = result.data.data.content
+          this.article.source = result.data.data.source
           this.$set(this.article, 'edit', !this.article.edit)
 
           if (this.$route.query.articleId !== this.article.id) {

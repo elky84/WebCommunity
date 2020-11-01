@@ -9,12 +9,13 @@ namespace Board.Models
 {
     public static class ModelsExtend
     {
-        public static Article ToModel(this Web.Protocols.Request.Article article)
+        public static Article ToModel(this Web.Protocols.Request.Article article, string userId, string author)
         {
             return new Article
             {
                 Id = article.Id,
-                Author = article.Author,
+                UserId = userId,
+                Author = author,
                 Category = article.Category,
                 Content = article.Content,
                 Title = article.Title,
@@ -51,11 +52,12 @@ namespace Board.Models
             }.ToProtocol(article);
         }
 
-        public static Comment ToModel(this Web.Protocols.Request.Comment comment, string articleId, string commentId = null, string originAuthor = null)
+        public static Comment ToModel(this Web.Protocols.Request.Comment comment, string articleId, string userId, string author, string commentId = null, string originAuthor = null)
         {
             return new Comment
             {
-                Author = comment.Author,
+                UserId = userId,
+                Author = author,
                 ArticleId = articleId,
                 Content = comment.Content,
                 CommentId = commentId,

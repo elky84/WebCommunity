@@ -23,9 +23,9 @@ namespace WebUtil.Exception
                     if (contextFeature != null)
                     {
                         logger.Error($"Something went wrong: {contextFeature.Error}");
-                        if (contextFeature.Error.GetType() == typeof(LogicException))
+                        if (contextFeature.Error.GetType() == typeof(DeveloperException))
                         {
-                            var logicException = (LogicException)contextFeature.Error;
+                            var logicException = (DeveloperException)contextFeature.Error;
                             context.Response.StatusCode = (int)logicException.HttpStatusCode;
 
                             await context.Response.WriteAsync(JsonConvert.SerializeObject(new ErrorDetails

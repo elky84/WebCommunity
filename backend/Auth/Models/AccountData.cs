@@ -18,6 +18,12 @@ namespace Auth.Models
 
         public AccountStateType State { get; set; }
 
+        public string Password { get; set; }
+
+        public string Email { get; set; }
+
+        public string NickName { get; set; }
+
         public Authenticate ToAuthenticateResponse()
         {
             return new Authenticate
@@ -25,7 +31,8 @@ namespace Auth.Models
                 AccountId = this.Id,
                 Token = this.Token,
                 UserId = this.UserId,
-                Grade = this.Grade
+                Grade = this.Grade,
+                NickName = this.NickName
             };
         }
 
@@ -37,7 +44,9 @@ namespace Auth.Models
                 Token = this.Token,
                 UserId = this.UserId,
                 Grade = this.Grade,
-                State = this.State
+                State = this.State,
+                Email = this.Email,
+                NickName = this.NickName
             };
         }
     }

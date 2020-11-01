@@ -16,5 +16,9 @@ namespace Web.Protocols.Common
 
         [JsonConverter(typeof(StringEnumConverter))]
         public AccountStateType State { get; set; }
+
+        public string Email { get; set; }
+
+        public string NickName { get; set; }
     }
 }

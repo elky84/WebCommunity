@@ -14,10 +14,10 @@ namespace WebUtil.HttpClient
         public static void SetDefaultHeader(this System.Net.Http.HttpClient client, HttpRequestMessage request, string userId)
         {
             client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
-            request.Headers.Add(Constants.HeaderKeys.InternalServer, System.Reflection.Assembly.GetEntryAssembly().GetName().Name);
+            request.Headers.Add(HeaderKeys.InternalServer, System.Reflection.Assembly.GetEntryAssembly().GetName().Name);
             if (userId != null)
             {
-                request.Headers.Add(WebUtil.Constants.HeaderKeys.AuthorizedUserId, userId);
+                request.Headers.Add(HeaderKeys.AuthorizedUserId, userId);
             }
         }
 
@@ -28,11 +28,11 @@ namespace WebUtil.HttpClient
                 var responseHeader = JsonConvert.DeserializeObject<ResponseHeader>(await httpResponseMessage.Content.ReadAsStringAsync());
                 if (responseHeader != null)
                 {
-                    throw new LogicException(responseHeader.ResultCode);
+                    throw new DeveloperException(responseHeader.ResultCode);
                 }
                 else
                 {
-                    throw new LogicException(Web.Code.ResultCode.HttpError, httpResponseMessage.StatusCode);
+                    throw new DeveloperException(Web.Code.ResultCode.HttpError, httpResponseMessage.StatusCode);
                 }
             }
         }

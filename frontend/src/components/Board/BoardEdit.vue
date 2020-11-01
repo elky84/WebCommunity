@@ -59,10 +59,8 @@ export default {
     return {
       editMode: false,
       editorContent: '',
-      comment: '',
-      commentAuthor: '',
-      comments: [],
       article: Object.assign({}, this.srcArticle),
+      comments: [],
       currentPage: 1,
       limit: 10,
       totalItems: 0
@@ -75,11 +73,12 @@ export default {
   },
   mounted () {
     this.refreshComments()
+    console.log(this.srcArticle)
   },
   methods: {
     refreshComments () {
       var vm = this
-      this.$http.get(`${process.env.VUE_APP_URL_BACKEND}/Board/Comment/${this.boardId}/${this.article.id}`,
+      this.$axios.get(`${process.env.VUE_APP_URL_BACKEND}/Board/Comment/${this.boardId}/${this.article.id}`,
         {
           params: {
             offset: this.limit * (this.currentPage - 1),
@@ -99,7 +98,7 @@ export default {
       this.$refs.editor.getHTML()
 
       var vm = this
-      this.$http.put(`${process.env.VUE_APP_URL_BACKEND}/Board/${this.boardId}/${this.article.id}`,
+      this.$axios.put(`${process.env.VUE_APP_URL_BACKEND}/Board/${this.boardId}/${this.article.id}`,
         {
           id: this.article.id,
           author: this.article.author,
@@ -116,7 +115,7 @@ export default {
     },
     onClickDelete () {
       var vm = this
-      this.$http.delete(`${process.env.VUE_APP_URL_BACKEND}/Board/${this.boardId}/${this.article.id}`)
+      this.$axios.delete(`${process.env.VUE_APP_URL_BACKEND}/Board/${this.boardId}/${this.article.id}`)
         .then((result) => {
           vm.$emit('refresh')
         })
@@ -132,27 +131,16 @@ export default {
     onEditorContent (editorContent) {
       this.editorContent = editorContent
     },
-    onClickComment () {
-      var vm = this
-      this.$http.post(`${process.env.VUE_APP_URL_BACKEND}/Board/Comment/${this.boardId}/${this.article.id}`,
-        {
-          author: this.commentAuthor,
-          content: this.comment
-        })
-        .then((result) => {
-          vm.refreshComments()
-        })
-    },
     onClickRecommend () {
       var vm = this
-      this.$http.post(`${process.env.VUE_APP_URL_BACKEND}/Board/${this.boardId}/${this.article.id}/Recommend`)
+      this.$axios.post(`${process.env.VUE_APP_URL_BACKEND}/Board/${this.boardId}/${this.article.id}/Recommend`)
         .then((result) => {
           vm.onUpdate(result.data.data)
         })
     },
     onClickNotRecommend () {
       var vm = this
-      this.$http.post(`${process.env.VUE_APP_URL_BACKEND}/Board/${this.boardId}/${this.article.id}/NotRecommend`)
+      this.$axios.post(`${process.env.VUE_APP_URL_BACKEND}/Board/${this.boardId}/${this.article.id}/NotRecommend`)
         .then((result) => {
           if (result.data.data) {
             vm.onUpdate(result.data.data)

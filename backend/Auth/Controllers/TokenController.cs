@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Threading.Tasks;
+using Auth.Extend;
 using Auth.Services;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using NLog;
 
@@ -11,8 +11,6 @@ namespace Auth.Controllers
     [ApiController]
     public class TokenController : ControllerBase
     {
-        private static readonly Logger logger = LogManager.GetCurrentClassLogger();
-
         private readonly TokenService _tokenService;
 
         public TokenController(TokenService tokenService)
@@ -26,7 +24,7 @@ namespace Auth.Controllers
             var data = await _tokenService.Issue(authenticate.UserId);
             if (data != null)
             {
-                TokenSaveToCookie(Response, data.Token);
+                Response.TokenSaveToCookie(data.Token);
             }
             return data;
         }
@@ -38,7 +36,7 @@ namespace Auth.Controllers
             var data = await _tokenService.Validate(token);
             if (data != null && data.Token != token)
             {
-                TokenSaveToCookie(Response, data.Token);
+                Response.TokenSaveToCookie(data.Token);
             }
             return data.ToAuthenticateResponse();
         }
@@ -51,22 +49,10 @@ namespace Auth.Controllers
             var data = await _tokenService.Refresh(authenticate.UserId, token);
             if (data != null && data.Token != token)
             {
-                TokenSaveToCookie(Response, data.Token);
+                Response.TokenSaveToCookie(data.Token);
             }
             return data.ToAuthenticateResponse();
         }
 
-        private void TokenSaveToCookie(HttpResponse response, string token)
-        {
-            response.Cookies.Delete(token);
-
-            var options = new CookieOptions
-            {
-                //Expires = DateTime.Now.AddMinutes(60),
-                IsEssential = true
-            };
-
-            response.Cookies.Append("Token", token, options);
-        }
     }
 }

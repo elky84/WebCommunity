@@ -3,6 +3,8 @@ import Router from 'vue-router'
 
 import Home from '@/components/Home'
 
+import Account from '@/components/Account/Menu'
+
 import News from '@/components/NavMenu/News'
 import Community from '@/components/NavMenu/Community'
 import PS from '@/components/NavMenu/PS'
@@ -20,6 +22,11 @@ export default new Router({
       path: '/',
       name: 'Home',
       component: Home
+    },
+    {
+      path: '/Account',
+      name: 'Account',
+      component: Account
     },
     {
       path: '/News',
