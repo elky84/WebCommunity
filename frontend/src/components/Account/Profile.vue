@@ -4,35 +4,37 @@
       <strong>{{title}}</strong>
     </template>
     <b-card :title=title>
-      <div class="form-group row">
-        <label for="inputPassword" class="col-sm-2 col-form-label">Password</label>
-        <div class="col-sm-10">
-          <input type="password" class="form-control" id="ProfileInputPassword" placeholder="Password" v-model="password">
+      <form>
+        <div class="form-group row">
+          <label for="inputPassword" class="col-sm-2 col-form-label">Password</label>
+          <div class="col-sm-10">
+            <input type="password" class="form-control" id="ProfileInputPassword" placeholder="Password" v-model="password" autocomplete="on">
+          </div>
         </div>
-      </div>
-      <div class="form-group row">
-        <label for="inputReTypePassword" class="col-sm-2 col-form-label">ReType Password</label>
-        <div class="col-sm-10">
-          <input type="password" class="form-control" id="ProfileInputReTypePassword" placeholder="ReTypePassword" v-model="reTypePassword">
+        <div class="form-group row">
+          <label for="inputReTypePassword" class="col-sm-2 col-form-label">ReType Password</label>
+          <div class="col-sm-10">
+            <input type="password" class="form-control" id="ProfileInputReTypePassword" placeholder="ReTypePassword" v-model="reTypePassword" autocomplete="on">
+          </div>
         </div>
-      </div>
-      <div class="form-group row">
-        <label for="inputNickName" class="col-sm-2 col-form-label">NickName</label>
-        <div class="col-sm-10">
-          <input type="nickName" class="form-control" id="ProfileInputNickName" placeholder="NickName" v-model="nickName">
+        <div class="form-group row">
+          <label for="inputNickName" class="col-sm-2 col-form-label">NickName</label>
+          <div class="col-sm-10">
+            <input type="nickName" class="form-control" id="ProfileInputNickName" placeholder="NickName" v-model="nickName">
+          </div>
         </div>
-      </div>
-      <div class="form-group row">
-        <label for="inputEmail" class="col-sm-2 col-form-label">Email</label>
-        <div class="col-sm-10">
-          <input type="email" class="form-control" id="ProfileInputEmail" placeholder="Email" v-model="email">
+        <div class="form-group row">
+          <label for="inputEmail" class="col-sm-2 col-form-label">Email</label>
+          <div class="col-sm-10">
+            <input type="email" class="form-control" id="ProfileInputEmail" placeholder="Email" v-model="email">
+          </div>
         </div>
-      </div>
-      <div class="form-group row">
-        <div class="col-sm-10">
-          <button type="submit" class="btn btn-primary" v-on:click="onClickSubmit">Update</button>
+        <div class="form-group row">
+          <div class="col-sm-10">
+            <button type="submit" class="btn btn-primary" v-on:click="onClickSubmit">Update</button>
+          </div>
         </div>
-      </div>
+      </form>
     </b-card>
   </b-tab>
 </template>

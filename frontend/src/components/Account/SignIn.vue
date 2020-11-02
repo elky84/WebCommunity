@@ -4,15 +4,13 @@
       <strong>{{title}}</strong>
     </template>
     <b-card :title=title>
-      <div class="form-group">
+      <form class="form-group">
         <label for="Input UserId">UserId</label>
         <input type="userId" class="form-control" id="SignInInputEmail" aria-describedby="userIdHelp" placeholder="Enter UserId" v-model="userId">
         <small id="userIdHelp" class="form-text text-muted">We'll never share your userId with anyone else.</small>
-      </div>
-      <div class="form-group">
         <label for="InputPassword1">Password</label>
-        <input type="password" class="form-control" id="SignInInputPassword" placeholder="Password" v-model="password">
-      </div>
+        <input type="password" class="form-control" id="SignInInputPassword" placeholder="Password" v-model="password" autocomplete="on">
+      </form>
       <button type="submit" class="btn btn-primary" v-on:click="onClickSubmit">Submit</button>
     </b-card>
   </b-tab>
