@@ -3,7 +3,7 @@
     <template #title>
       <strong>{{title}}</strong>
     </template>
-    <b-card :title=title>
+    <b-card :title=title class="mb-2">
       <form>
         <div class="form-group row">
           <label for="inputPassword" class="col-sm-2 col-form-label">Password</label>
@@ -81,9 +81,8 @@ export default {
           password: this.password
         })
         .then((result) => {
-          vm.$buefy.dialog.alert({
-            title: 'Alert',
-            message: '프로필이 갱신되었습니다'
+          vm.$bvModal.msgBoxOk('프로필이 갱신되었습니다', {
+            title: 'Alert'
           })
         })
     }

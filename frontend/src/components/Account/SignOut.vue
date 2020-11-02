@@ -3,7 +3,7 @@
     <template #title>
       <strong>{{title}}</strong>
     </template>
-    <b-card :title=title>
+    <b-card :title=title class="mb-2">
       <button type="submit" class="btn btn-primary" v-on:click="onClickSubmit">Confirm</button>
     </b-card>
   </b-tab>
@@ -44,10 +44,8 @@ export default {
         {
         })
         .then((result) => {
-          vm.$buefy.dialog.confirm({
-            title: 'Alert',
-            message: '로그아웃 완료되었습니다. 홈 화면으로 이동하시겠습니까?',
-            onConfirm: () => vm.$router.push('/')
+          vm.$bvModal.msgBoxOk('로그아웃 되셨습니다.', {
+            title: 'Alert'
           })
         })
     }

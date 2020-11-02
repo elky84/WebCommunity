@@ -9,7 +9,6 @@ import router from '../router'
 import axiosCookieJarSupport from 'axios-cookiejar-support'
 
 import { CookieJar } from 'tough-cookie'
-import { DialogProgrammatic as Dialog } from 'buefy'
 
 // Full config:  https://github.com/axios/axios#request-config
 // axios.defaults.baseURL = process.env.baseURL || process.env.apiUrl || '';
@@ -44,22 +43,27 @@ _axios.interceptors.response.use(
     return response;
   },
   function(error) {
+    const vm = new Vue()
     // Do something with response error
     if (error.response) {
       if(error.response.status === 401) {
         console.log(error.response.config)
-        Dialog.confirm({
-          title:'Information', 
-          message:'로그인이 필요합니다. 로그인 창으로 가시겠습니까?',
-          onConfirm: () => router.push('/Account?mid=SignIn')
+        vm.$bvModal.msgBoxConfirm('로그인이 필요합니다. 로그인 창으로 가시겠습니까?', {
+          title:'Information'
+        }).then(value => {
+          router.push('/Account?mid=SignIn')
         })
       }
       else {
-        Dialog.alert({title:'Server Error', message:error.response.data.ErrorMessage})  
+        vm.$bvModal.msgBoxOk(error.response.data.ErrorMessage, {
+          title:'Server Error'
+        })
       }
     }
     else {
-      Dialog.alert({title:'Network Error', message:'서버에서 응답이 없습니다'})
+      vm.$bvModal.msgBoxOk('서버에서 응답이 없습니다', {
+        title:'Network Error'
+      })
       console.log(error)
     }
     return Promise.reject(error);

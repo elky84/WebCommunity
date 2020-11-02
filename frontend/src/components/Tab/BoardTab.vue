@@ -1,7 +1,7 @@
 <template>
   <b-tab v-bind:active="activeState()" v-on:click="onClick()">
     <template #title>
-      <div style="font-size: smaller;">{{boardTitle}}</div>
+      <div style="font-size: smaller;" class="mb-2">{{boardTitle}}</div>
     </template>
 
     <BoardList :category=category :title=boardTitle :boardId=boardId v-if="activeState()" />

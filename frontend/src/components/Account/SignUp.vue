@@ -3,7 +3,7 @@
     <template #title>
       <strong>{{title}}</strong>
     </template>
-    <b-card :title=title>
+    <b-card>
       <form>
         <div class="form-group row">
           <label for="inputUserId" class="col-sm-2 col-form-label">UserId</label>
@@ -89,10 +89,10 @@ export default {
           password: this.password
         })
         .then((result) => {
-          vm.$buefy.dialog.confirm({
-            title: 'Alert',
-            message: '회원 가입에 성공했습니다. 홈 화면으로 이동하시겠습니까?',
-            onConfirm: () => vm.$router.push('/')
+          vm.$bvModal.msgBoxConfirm('회원 가입에 성공했습니다. 홈 화면으로 이동하시겠습니까?', {
+            title: 'Alert'
+          }).then(value => {
+            vm.$router.push('/')
           })
         })
     }

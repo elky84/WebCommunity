@@ -12,11 +12,8 @@ import 'bootstrap-vue/dist/bootstrap-vue.css'
 import 'expose-loader?$!expose-loader?jQuery!jquery'
 import TreeView from 'vue-json-tree-view'
 import InputTag from 'vue-input-tag'
-import '@/fontAwesomeIcon.js' // fontAwesomeIcon.js 불러옴
-import Buefy from 'buefy'
-import 'buefy/dist/buefy.css'
+import '@/fontAwesomeIcon.js'
 
-Vue.use(Buefy)
 Vue.use(TreeView)
 Vue.use(BootstrapVue)
 

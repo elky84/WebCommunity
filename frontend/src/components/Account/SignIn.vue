@@ -3,7 +3,7 @@
     <template #title>
       <strong>{{title}}</strong>
     </template>
-    <b-card :title=title>
+    <b-card :title=title class="mb-2">
       <form class="form-group">
         <label for="Input UserId">UserId</label>
         <input type="userId" class="form-control" id="SignInInputEmail" aria-describedby="userIdHelp" placeholder="Enter UserId" v-model="userId">
@@ -55,10 +55,10 @@ export default {
           password: this.password
         })
         .then((result) => {
-          vm.$buefy.dialog.confirm({
-            title: 'Alert',
-            message: '로그인에 성공했습니다. 홈 화면으로 이동하시겠습니까?',
-            onConfirm: () => vm.$router.push('/')
+          vm.$bvModal.msgBoxConfirm('로그인에 성공했습니다. 홈 화면으로 이동하시겠습니까?', {
+            title: 'Alert'
+          }).then(value => {
+            vm.$router.push('/')
           })
         })
     }
