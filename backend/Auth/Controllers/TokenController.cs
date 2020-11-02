@@ -4,6 +4,7 @@ using Auth.Extend;
 using Auth.Services;
 using Microsoft.AspNetCore.Mvc;
 using NLog;
+using Web.Protocols.Exception;
 
 namespace Auth.Controllers
 {
@@ -33,6 +34,11 @@ namespace Auth.Controllers
         public async Task<Web.Protocols.Response.Authenticate> Validate()
         {
             Request.Cookies.TryGetValue("Token", out string token);
+            if (string.IsNullOrEmpty(token))
+            {
+                throw new DeveloperException(Web.Code.ResultCode.NotPrivodeToken, System.Net.HttpStatusCode.Unauthorized);
+            }
+
             var data = await _tokenService.Validate(token);
             if (data != null && data.Token != token)
             {

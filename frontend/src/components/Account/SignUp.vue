@@ -7,31 +7,31 @@
       <div class="form-group row">
         <label for="inputUserId" class="col-sm-2 col-form-label">UserId</label>
         <div class="col-sm-10">
-          <input type="userId" class="form-control" id="inputUserId" placeholder="UserId" v-model="userId">
+          <input type="userId" class="form-control" id="SignUpInputUserId" placeholder="UserId" v-model="userId">
         </div>
       </div>
       <div class="form-group row">
         <label for="inputPassword" class="col-sm-2 col-form-label">Password</label>
         <div class="col-sm-10">
-          <input type="password" class="form-control" id="inputPassword" placeholder="Password" v-model="password">
+          <input type="password" class="form-control" id="SignUpInputPassword" placeholder="Password" v-model="password">
         </div>
       </div>
       <div class="form-group row">
         <label for="inputReTypePassword" class="col-sm-2 col-form-label">ReType Password</label>
         <div class="col-sm-10">
-          <input type="password" class="form-control" id="inputReTypePassword" placeholder="ReTypePassword" v-model="reTypePassword">
+          <input type="password" class="form-control" id="SignUpInputReTypePassword" placeholder="ReTypePassword" v-model="reTypePassword">
         </div>
       </div>
       <div class="form-group row">
         <label for="inputNickName" class="col-sm-2 col-form-label">NickName</label>
         <div class="col-sm-10">
-          <input type="nickName" class="form-control" id="inputNickName" placeholder="NickName" v-model="nickName">
+          <input type="nickName" class="form-control" id="SignUpInputNickName" placeholder="NickName" v-model="nickName">
         </div>
       </div>
       <div class="form-group row">
         <label for="inputEmail" class="col-sm-2 col-form-label">Email</label>
         <div class="col-sm-10">
-          <input type="email" class="form-control" id="inputEmail" placeholder="Email" v-model="email">
+          <input type="email" class="form-control" id="SignUpInputEmail" placeholder="Email" v-model="email">
         </div>
       </div>
       <div class="form-group row">
@@ -78,7 +78,7 @@ export default {
       }
     },
     onClickSubmit () {
-      // var vm = this
+      var vm = this
       this.$axios.post(`${process.env.VUE_APP_URL_BACKEND}/Auth/Account/SignUp`,
         {
           userId: this.userId,
@@ -87,7 +87,11 @@ export default {
           password: this.password
         })
         .then((result) => {
-          console.log(result)
+          vm.$buefy.dialog.confirm({
+            title: 'Alert',
+            message: '회원 가입에 성공했습니다. 홈 화면으로 이동하시겠습니까?',
+            onConfirm: () => vm.$router.push('/')
+          })
         })
     }
   }

@@ -7,25 +7,25 @@
       <div class="form-group row">
         <label for="inputPassword" class="col-sm-2 col-form-label">Password</label>
         <div class="col-sm-10">
-          <input type="password" class="form-control" id="inputPassword" placeholder="Password" v-model="password">
+          <input type="password" class="form-control" id="ProfileInputPassword" placeholder="Password" v-model="password">
         </div>
       </div>
       <div class="form-group row">
         <label for="inputReTypePassword" class="col-sm-2 col-form-label">ReType Password</label>
         <div class="col-sm-10">
-          <input type="password" class="form-control" id="inputReTypePassword" placeholder="ReTypePassword" v-model="reTypePassword">
+          <input type="password" class="form-control" id="ProfileInputReTypePassword" placeholder="ReTypePassword" v-model="reTypePassword">
         </div>
       </div>
       <div class="form-group row">
         <label for="inputNickName" class="col-sm-2 col-form-label">NickName</label>
         <div class="col-sm-10">
-          <input type="nickName" class="form-control" id="inputNickName" placeholder="NickName" v-model="nickName">
+          <input type="nickName" class="form-control" id="ProfileInputNickName" placeholder="NickName" v-model="nickName">
         </div>
       </div>
       <div class="form-group row">
         <label for="inputEmail" class="col-sm-2 col-form-label">Email</label>
         <div class="col-sm-10">
-          <input type="email" class="form-control" id="inputEmail" placeholder="Email" v-model="email">
+          <input type="email" class="form-control" id="ProfileInputEmail" placeholder="Email" v-model="email">
         </div>
       </div>
       <div class="form-group row">
@@ -71,7 +71,7 @@ export default {
       }
     },
     onClickSubmit () {
-      // var vm = this
+      var vm = this
       this.$axios.put(`${process.env.VUE_APP_URL_BACKEND}/Auth/Account/Update`,
         {
           email: this.email,
@@ -79,7 +79,10 @@ export default {
           password: this.password
         })
         .then((result) => {
-          console.log(result)
+          vm.$buefy.dialog.alert({
+            title: 'Alert',
+            message: '프로필이 갱신되었습니다'
+          })
         })
     }
   }

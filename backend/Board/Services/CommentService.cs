@@ -51,12 +51,12 @@ namespace Board.Services
             return await mongoDbUtil.CountAsync(Builders<Comment>.Filter.Eq(x => x.ArticleId, articleId));
         }
 
-        public async Task<Comment> Create(string id, string articleId, string nickName, string userId, Web.Protocols.Request.Comment comment)
+        public async Task<Comment> Create(string id, string articleId, string userId, string nickName, Web.Protocols.Request.Comment comment)
         {
             var mongoDbUtil = GetMongoDbBoardComment(id);
             var originComment = string.IsNullOrEmpty(comment.OriginCommentId) ? null : await mongoDbUtil.FindOneAsyncById(comment.OriginCommentId);
 
-            var created = await mongoDbUtil.CreateAsync(comment.ToModel(articleId, originComment?.CommentId, originComment?.Author));
+            var created = await mongoDbUtil.CreateAsync(comment.ToModel(articleId, userId, nickName, originComment?.CommentId, originComment?.Author));
             if (created != null && string.IsNullOrEmpty(comment.OriginCommentId))
             {
                 await mongoDbUtil.UpdateAsync(created.Id, Builders<Comment>.Update.Set(x => x.CommentId, created.Id));

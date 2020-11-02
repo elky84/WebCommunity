@@ -1,6 +1,6 @@
 <template>
   <b-card :title=title>
-    <BoardWrite @refresh="onRefresh(... arguments)" @cancelWrite="onCancelWrite(... arguments)" :boardId="boardId" v-if="writeMode"/>
+    <BoardWrite @new="onNew(... arguments)" @cancelWrite="onCancelWrite(... arguments)" :boardId="boardId" v-if="writeMode"/>
 
     <b-button variant="outline-primary" class="m-1" v-on:click="onClickWrite">{{buttonText}}</b-button>
     <b-button variant="outline-secondary" class="m-1" v-on:click="onClickRefresh">목록</b-button>
@@ -106,8 +106,6 @@ export default {
   methods: {
     getArticles (searchData) {
       this.focusArticle = null
-
-      var vm = this
       this.$axios.get(`${process.env.VUE_APP_URL_BACKEND}/Board/${this.boardId}`, {
         params: {
           offset: this.limit * (this.currentPage - 1),
@@ -125,8 +123,27 @@ export default {
         }
       }).then((result) => {
         this.numberOfPages = Math.max(1, Math.ceil(result.data.total / this.limit))
-        vm.articles = result.data.contents
+        this.onArticlesRefresh(result.data.contents)
       })
+    },
+    onArticlesRefresh (articles) {
+      if (_.isEmpty(this.articles)) {
+        this.articles = articles
+        return
+      }
+
+      var vm = this
+      _.forEach(articles, function (article) {
+        var origin = _.find(vm.articles, { id: article.id })
+        if (origin) {
+          origin = article
+        } else {
+          vm.articles.unshift(article)
+        }
+      })
+    },
+    onNew (newArticle) {
+      this.articles.unshift(newArticle)
     },
     onUpdate (newArticle) {
       var vm = this

@@ -39,12 +39,16 @@ export default {
       }
     },
     onClickSubmit () {
-      // var vm = this
+      var vm = this
       this.$axios.post(`${process.env.VUE_APP_URL_BACKEND}/Auth/Account/SignOut`,
         {
         })
         .then((result) => {
-          console.log(result)
+          vm.$buefy.dialog.confirm({
+            title: 'Alert',
+            message: '로그아웃 완료되었습니다. 홈 화면으로 이동하시겠습니까?',
+            onConfirm: () => vm.$router.push('/')
+          })
         })
     }
   }

@@ -73,7 +73,6 @@ export default {
   },
   mounted () {
     this.refreshComments()
-    console.log(this.srcArticle)
   },
   methods: {
     refreshComments () {

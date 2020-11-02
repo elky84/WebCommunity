@@ -47,7 +47,7 @@ export default {
           source: this.source
         })
         .then((result) => {
-          vm.$emit('refresh')
+          vm.$emit('new', result.data.data)
           vm.$emit('cancelWrite')
         })
     },

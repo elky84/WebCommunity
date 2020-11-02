@@ -67,5 +67,8 @@ namespace Web.Code
 
         [Description("데이터베이스 갱신에 실패했습니다")]
         DatabaseUpdateFailure,
+
+        [Description("로그인이 필요합니다")]
+        NotPrivodeToken,
     }
 }
