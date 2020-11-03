@@ -18,7 +18,7 @@ import CategoryTab from '../Tab/CategoryTab'
 import PageTab from '../Tab/PageTab'
 
 export default {
-  name: 'Switch',
+  name: 'NintendoSwitch',
   components: {
     BoardTab: BoardTab,
     CategoryTab: CategoryTab,
