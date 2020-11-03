@@ -2,7 +2,7 @@
 using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.AspNetCore.Http;
 using Newtonsoft.Json;
-using NLog;
+using Serilog;
 using System.Net;
 using Web.Protocols.Exception;
 
@@ -11,7 +11,7 @@ namespace WebUtil.Exception
     public static class ExceptionMiddlewareExtensions
     {
 
-        public static void ConfigureExceptionHandler(this IApplicationBuilder app, Logger logger)
+        public static void ConfigureExceptionHandler(this IApplicationBuilder app)
         {
             app.UseExceptionHandler(appError =>
             {
@@ -22,18 +22,18 @@ namespace WebUtil.Exception
                     var contextFeature = context.Features.Get<IExceptionHandlerFeature>();
                     if (contextFeature != null)
                     {
-                        logger.Error($"Something went wrong: {contextFeature.Error}");
+                        Log.Logger.Error($"Something went wrong: {contextFeature.Error}");
                         if (contextFeature.Error.GetType() == typeof(DeveloperException))
                         {
-                            var logicException = (DeveloperException)contextFeature.Error;
-                            context.Response.StatusCode = (int)logicException.HttpStatusCode;
+                            var developerException = (DeveloperException)contextFeature.Error;
+                            context.Response.StatusCode = (int)developerException.HttpStatusCode;
 
                             await context.Response.WriteAsync(JsonConvert.SerializeObject(new ErrorDetails
                             {
                                 StatusCode = context.Response.StatusCode,
-                                ErrorMessage = logicException.ResultCode.ToString(),
-                                Detail = logicException.Detail,
-                                ResultCode = logicException.ResultCode
+                                ErrorMessage = developerException.ResultCode.ToString(),
+                                Detail = developerException.Detail,
+                                ResultCode = developerException.ResultCode
                             }));
                         }
                         else

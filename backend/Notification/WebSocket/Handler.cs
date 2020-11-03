@@ -1,8 +1,8 @@
 ﻿using Microsoft.Extensions.Configuration;
 using Newtonsoft.Json;
-using NLog;
 using RabbitMQ.Client;
 using RabbitMQ.Client.Events;
+using Serilog;
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
@@ -35,8 +35,6 @@ namespace Notification.WebSocket
 
             public string ChannelId { get; set; }
         }
-
-        private readonly Logger logger = LogManager.GetCurrentClassLogger();
 
         private IConnection _connection;
 
@@ -76,7 +74,7 @@ namespace Notification.WebSocket
             }
             catch (Exception e)
             {
-                logger.Error($"Catched Exception. [Message:{e.Message}] StackTrace:{e.StackTrace}");
+                Log.Logger.Error($"Catched Exception. [Message:{e.Message}] StackTrace:{e.StackTrace}");
             }
         }
 
@@ -139,7 +137,7 @@ namespace Notification.WebSocket
 
                         var webSocketAuth = requestHeader.ExtensionData.Populate<Web.Protocols.Request.WebSocketAuth>();
 
-                        logger.Debug($"[ReceiveAsync] SocketId:{socketId}, Cookie:{webSocketAuth.Cookie}");
+                        Log.Logger.Debug($"[ReceiveAsync] SocketId:{socketId}, Cookie:{webSocketAuth.Cookie}");
 
                         var token = CookieValue(webSocketAuth.Cookie, "Token");
                         if (string.IsNullOrEmpty(token))
@@ -166,7 +164,7 @@ namespace Notification.WebSocket
                     }
                     break;
                 default:
-                    logger.Error($"OnReceiveByUser() Not Implemented Handler.  [Id:{requestHeader.ProtocolId}] [{socketId}]");
+                    Log.Logger.Error($"OnReceiveByUser() Not Implemented Handler.  [Id:{requestHeader.ProtocolId}] [{socketId}]");
                     break;
             }
         }
@@ -186,13 +184,13 @@ namespace Notification.WebSocket
             var userData = GetUserData(queueName);
             if (userData == null)
             {
-                logger.Debug($"OnReceiveByUser() Not found User [{queueName}]");
+                Log.Logger.Debug($"OnReceiveByUser() Not found User [{queueName}]");
                 return;
             }
 
             var socket = ConnectionManager.GetSocketById(userData.SocketId);
             var str = Encoding.UTF8.GetString(ea.Body);
-            logger.Debug($"OnReceiveByUser() Consumer [{userData.SocketId}] [{queueName}] {str}");
+            Log.Logger.Debug($"OnReceiveByUser() Consumer [{userData.SocketId}] [{queueName}] {str}");
             await SendMessageAsync(socket, str);
         }
 
@@ -202,7 +200,7 @@ namespace Notification.WebSocket
             {
                 var socket = ConnectionManager.GetSocketById(userData.SocketId);
                 var str = Encoding.UTF8.GetString(ea.Body);
-                logger.Debug($"OnReceiveByChat() Consumer [{userData.SocketId}] [{queueName}] {str}");
+                Log.Logger.Debug($"OnReceiveByChat() Consumer [{userData.SocketId}] [{queueName}] {str}");
                 await SendMessageAsync(socket, str);
             }
         }
@@ -210,7 +208,7 @@ namespace Notification.WebSocket
         private async void OnReceiveByServer(string queueName, object model, BasicDeliverEventArgs ea)
         {
             var str = Encoding.UTF8.GetString(ea.Body);
-            logger.Debug($"OnReceiveByServer() Consumer [{queueName}] {str}");
+            Log.Logger.Debug($"OnReceiveByServer() Consumer [{queueName}] {str}");
             var requestHeader = JsonConvert.DeserializeObject<RequestHeader>(str);
             switch (requestHeader.ProtocolId)
             {
@@ -220,14 +218,14 @@ namespace Notification.WebSocket
                         var userData = GetUserData(disconnectUser.UserId);
                         if (null == userData)
                         {
-                            logger.Error($"OnReceiveByUser() Not Found User Socket by UserId. Maybe already disconnected user.  [Id:{requestHeader.ProtocolId}] [{queueName}] {str}");
+                            Log.Logger.Error($"OnReceiveByUser() Not Found User Socket by UserId. Maybe already disconnected user.  [Id:{requestHeader.ProtocolId}] [{queueName}] {str}");
                             break;
                         }
 
                         var userSocket = ConnectionManager.GetSocketById(userData.SocketId);
                         if (userSocket == null)
                         {
-                            logger.Error($"OnReceiveByUser() Not Found User Socket. Maybe already disconnected user. [Id:{requestHeader.ProtocolId}] [{queueName}] {str}");
+                            Log.Logger.Error($"OnReceiveByUser() Not Found User Socket. Maybe already disconnected user. [Id:{requestHeader.ProtocolId}] [{queueName}] {str}");
                             break;
                         }
 
@@ -237,7 +235,7 @@ namespace Notification.WebSocket
                     }
                 default:
                     {
-                        logger.Error($"OnReceiveByUser() Not Implemented Handler.  [Id:{requestHeader.ProtocolId}] [{queueName}] {str}");
+                        Log.Logger.Error($"OnReceiveByUser() Not Implemented Handler.  [Id:{requestHeader.ProtocolId}] [{queueName}] {str}");
                         break;
                     }
             }
@@ -251,7 +249,7 @@ namespace Notification.WebSocket
             }
             catch (WebSocketException e)
             {
-                logger.Error($"CloseSocket() catched Exception: {e.Message}");
+                Log.Logger.Error($"CloseSocket() catched Exception: {e.Message}");
             }
         }
 

@@ -4,7 +4,6 @@ using Auth.Extend;
 using Auth.Services;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using NLog;
 
 namespace Auth.Controllers
 {

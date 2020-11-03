@@ -22,7 +22,7 @@ namespace Gateway.LoadBalancer
 
             //TODO DownstreamAddresses 중에서, Header에 들어있는 ClientVersion, ProtocolVersion을 읽어서, 유효한 서비스들 중에서 찾아야 한다.
             //TODO 서버간 통신에서는 ProtocolVersion만 검사해야 한다.
-            //TODO 해당 기준의 서비스가 하나도 없을 경우, LogicException으로 오류코드를 반환해야 한다.
+            //TODO 해당 기준의 서비스가 하나도 없을 경우, DeveloperException으로 오류코드를 반환해야 한다.
 
             var count = context.DownstreamReRoute.DownstreamAddresses.Count - 1;
             var address = context.DownstreamReRoute.DownstreamAddresses;

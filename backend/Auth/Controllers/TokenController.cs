@@ -3,7 +3,6 @@ using System.Threading.Tasks;
 using Auth.Extend;
 using Auth.Services;
 using Microsoft.AspNetCore.Mvc;
-using NLog;
 using Web.Protocols.Exception;
 
 namespace Auth.Controllers

@@ -1,5 +1,5 @@
-﻿using NLog;
-using Notification.WebSocket;
+﻿using Notification.WebSocket;
+using Serilog;
 using System;
 using System.Threading;
 using System.Threading.Tasks;
@@ -10,8 +10,6 @@ namespace Notification.RabbitMQ
     public class ScheduledService : RepeatedService
     {
         private Handler _handler;
-
-        private static readonly Logger logger = LogManager.GetCurrentClassLogger();
 
         public ScheduledService(Handler handler)
         {
@@ -29,7 +27,7 @@ namespace Notification.RabbitMQ
                 }
                 catch (Exception e)
                 {
-                    logger.Error($"update server list from registry failed. Reason:{e.Message}");
+                    Log.Logger.Error($"update server list from registry failed. Reason:{e.Message}");
 
                 }
 

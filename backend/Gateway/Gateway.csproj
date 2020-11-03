@@ -21,12 +21,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <None Include="..\WebUtil\nlog.config">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-  </ItemGroup>
-
-  <ItemGroup>
     <ProjectReference Include="..\WebUtil\WebUtil.csproj" />
   </ItemGroup>
 

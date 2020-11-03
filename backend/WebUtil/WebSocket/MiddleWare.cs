@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
-using NLog;
+using Serilog;
 using System;
 using System.Net.WebSockets;
 using System.Threading;
@@ -10,13 +10,10 @@ namespace WebUtil.WebSocketManager
 {
     public class Middleware
     {
-        private readonly Logger logger = LogManager.GetCurrentClassLogger();
-
         private readonly RequestDelegate _next;
         private Handler _webSocketHandler { get; set; }
 
-        public Middleware(RequestDelegate next,
-                                          Handler webSocketHandler)
+        public Middleware(RequestDelegate next, Handler webSocketHandler)
         {
             _next = next;
             _webSocketHandler = webSocketHandler;
@@ -53,7 +50,7 @@ namespace WebUtil.WebSocketManager
             }
             catch (System.Exception e)
             {
-                logger.Error($"Catched Exception. [Message:{e.Message}] StackTrace:{e.StackTrace}");
+                Log.Logger.Error($"Catched Exception. [Message:{e.Message}] StackTrace:{e.StackTrace}");
             }
         }
 

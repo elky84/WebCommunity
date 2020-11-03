@@ -1,25 +1,28 @@
-﻿using WebUtil.Filter;
+﻿using Newtonsoft.Json;
 using Microsoft.Extensions.DependencyInjection;
-using NLog;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Builder;
-using WebUtil.Exception;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Hosting;
 using Microsoft.AspNetCore.Mvc;
-using Newtonsoft.Json;
 using Microsoft.OpenApi.Models;
 using WebUtil.Swagger;
 using WebUtil.Service;
+using WebUtil.Filter;
+using WebUtil.Exception;
+using Serilog;
 
 namespace WebUtil.StartUp
 {
     public static class Extend
     {
-        private static readonly Logger logger = LogManager.GetCurrentClassLogger();
-
         public static void CommonConfigureServices(this IServiceCollection services)
         {
+            Log.Logger = new LoggerConfiguration()
+                .MinimumLevel.Error()
+                .WriteTo.Console()
+                .CreateLogger();
+
             services.AddHttpClient();
 
             services.AddTransient<MongoDbService>();
@@ -69,7 +72,7 @@ namespace WebUtil.StartUp
                 app.UseDeveloperExceptionPage();
             }
 
-            app.ConfigureExceptionHandler(logger);
+            app.ConfigureExceptionHandler();
 
             app.UseCookiePolicy();
 

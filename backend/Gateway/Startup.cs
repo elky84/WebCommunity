@@ -86,15 +86,15 @@ namespace Gateway
                     {
                         if (e.GetType() == typeof(DeveloperException))
                         {
-                            var logicException = (DeveloperException)e;
-                            ctx.HttpContext.Response.StatusCode = (int)logicException.HttpStatusCode;
+                            var developerException = (DeveloperException)e;
+                            ctx.HttpContext.Response.StatusCode = (int)developerException.HttpStatusCode;
 
                             await ctx.HttpContext.Response.Body.WriteAsync(Encoding.UTF8.GetBytes(JsonConvert.SerializeObject(new ErrorDetails
                             {
                                 StatusCode = ctx.HttpContext.Response.StatusCode,
-                                ErrorMessage = logicException.ResultCode.ToString(),
-                                Detail = logicException.Detail,
-                                ResultCode = logicException.ResultCode
+                                ErrorMessage = developerException.ResultCode.ToString(),
+                                Detail = developerException.Detail,
+                                ResultCode = developerException.ResultCode
                             })));
                         }
                         else
