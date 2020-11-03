@@ -35,7 +35,7 @@ namespace Auth.Services
             _mongoDbAccountData = new MongoDbUtil<AccountData>(mongoDbServbice.Database);
         }
 
-        public async Task<Web.Protocols.Response.Authenticate> Issue(string userId)
+        public async Task<Web.Protocols.Response.Account> Issue(string userId)
         {
             if (string.IsNullOrEmpty(userId) || userId.ToCharArray().Where(x => char.GetUnicodeCategory(x) == System.Globalization.UnicodeCategory.OtherLetter).Count() > 0)
             {
@@ -57,7 +57,7 @@ namespace Auth.Services
 
             Issue(accountData);
 
-            return accountData.ToAuthenticateResponse();
+            return accountData.ToResponse();
         }
 
         public void Issue(AccountData accountData)

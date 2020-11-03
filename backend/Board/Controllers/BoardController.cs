@@ -40,12 +40,22 @@ namespace Board.Controllers
             };
         }
 
+
         [HttpGet("{boardId}/{articleId}")]
         public async Task<Web.Protocols.Response.Article> Get(string boardId, string articleId)
         {
             return new Web.Protocols.Response.Article
             {
                 Data = (await _articleService.Get(boardId, articleId))?.ToProtocol()
+            };
+        }
+
+        [HttpPost("{boardId}/{articleId}/Read")]
+        public async Task<Web.Protocols.Response.Article> Read(string boardId, string articleId)
+        {
+            return new Web.Protocols.Response.Article
+            {
+                Data = (await _articleService.Read(boardId, articleId))?.ToProtocol()
             };
         }
 

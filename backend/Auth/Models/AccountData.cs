@@ -24,9 +24,9 @@ namespace Auth.Models
 
         public string NickName { get; set; }
 
-        public Authenticate ToAuthenticateResponse()
+        public Web.Protocols.Response.Account ToResponse()
         {
-            return new Authenticate
+            return new Web.Protocols.Response.Account
             {
                 AccountId = this.Id,
                 Token = this.Token,
@@ -36,9 +36,9 @@ namespace Auth.Models
             };
         }
 
-        public Account ToResponse()
+        public Web.Protocols.Common.Account ToCommon()
         {
-            return new Account
+            return new Web.Protocols.Common.Account
             {
                 Id = this.Id,
                 Token = this.Token,

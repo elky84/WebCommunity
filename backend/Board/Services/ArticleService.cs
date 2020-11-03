@@ -76,6 +76,12 @@ namespace Board.Services
             return await mongoDbUtil.FindOneAsyncById(articleId);
         }
 
+        public async Task<Article> Read(string id, string articleId)
+        {
+            var mongoDbUtil = GetMongoDbBoard(id);
+            return await mongoDbUtil.UpdateGetAsync(articleId, Builders<Article>.Update.Inc(x => x.Hit, 1));
+        }
+
         public async Task<Article> Update(string id, string articleId, string userId, Web.Protocols.Request.Article article)
         {
             var mongoDbUtil = GetMongoDbBoard(id);
@@ -99,7 +105,6 @@ namespace Board.Services
         {
             var mongoDbUtil = GetMongoDbBoard(id);
             return await mongoDbUtil.UpdateGetAsync(articleId, Builders<Article>.Update.Inc(x => x.NotRecommend, 1));
-
         }
 
 

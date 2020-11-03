@@ -7,7 +7,7 @@ using Web.Types;
 
 namespace Web.Protocols.Response
 {
-    public class Authenticate : ResponseHeader
+    public class Account : ResponseHeader
     {
         public override ProtocolId ProtocolId { get { return ProtocolId.Authenticate; } }
 

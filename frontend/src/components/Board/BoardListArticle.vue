@@ -6,8 +6,8 @@
     </td>
     <td align="center" :class="borderClass">{{srcArticle.title}}</td>
     <td align="center" :class="borderClass">{{srcArticle.author}}</td>
-    <td align="center" :class="borderClass">{{srcArticle.recommend}}</td>
-    <td align="center" :class="borderClass">{{srcArticle.notRecommend}}</td>
+    <td align="center" :class="borderClass">{{srcArticle.recommend}}/{{srcArticle.notRecommend}}</td>
+    <td align="center" :class="borderClass">{{srcArticle.hit}}</td>
     <td align="center" :class="borderClass">{{toDateString(srcArticle.created)}}</td>
   </tr>
 </template>
@@ -54,10 +54,16 @@ export default {
       return !_.isEmpty(article.tags)
     },
     onClickBoard () {
-      this.$axios.get(`${process.env.VUE_APP_URL_BACKEND}/Board/${this.boardId}/${this.article.id}`)
+      if (this.article.edit) {
+        this.$set(this.article, 'edit', !this.article.edit)
+        return
+      }
+
+      this.$axios.post(`${process.env.VUE_APP_URL_BACKEND}/Board/${this.boardId}/${this.article.id}/Read`)
         .then((result) => {
           this.article.content = result.data.data.content
           this.article.source = result.data.data.source
+          this.article.hit = result.data.data.hit
           this.$set(this.article, 'edit', !this.article.edit)
 
           if (this.$route.query.articleId !== this.article.id) {

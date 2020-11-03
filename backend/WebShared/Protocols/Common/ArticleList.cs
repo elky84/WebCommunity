@@ -16,5 +16,7 @@ namespace Web.Protocols.Common
         public int Recommend { get; set; }
 
         public int NotRecommend { get; set; }
+
+        public int Hit { get; set; }
     }
 }

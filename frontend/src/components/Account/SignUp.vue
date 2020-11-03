@@ -1,7 +1,7 @@
 <template>
   <b-tab v-bind:active="activeState()" v-on:click="onClick()">
     <template #title>
-      <strong>{{title}}</strong>
+      <div style="font-size: smaller;" class="mb-2">{{title}}</div>
     </template>
     <b-card>
       <form>
@@ -89,10 +89,13 @@ export default {
           password: this.password
         })
         .then((result) => {
+          this.$localStorage.set('profile', JSON.stringify(result.data.account))
           vm.$bvModal.msgBoxConfirm('회원 가입에 성공했습니다. 홈 화면으로 이동하시겠습니까?', {
             title: 'Alert'
           }).then(value => {
-            vm.$router.push('/')
+            if (value) {
+              vm.$router.push('/')
+            }
           })
         })
     }

@@ -1,7 +1,7 @@
 <template>
   <b-tab v-bind:active="activeState()" v-on:click="onClick()">
     <template #title>
-      <strong>{{title}}</strong>
+      <div style="font-size: smaller;" class="mb-2">{{title}}</div>
     </template>
     <b-card :title=title class="mb-2">
       <button type="submit" class="btn btn-primary" v-on:click="onClickSubmit">Confirm</button>
@@ -44,8 +44,13 @@ export default {
         {
         })
         .then((result) => {
-          vm.$bvModal.msgBoxOk('로그아웃 되셨습니다.', {
+          this.$localStorage.set('profile', null)
+          vm.$bvModal.msgBoxConfirm('로그아웃에 성공했습니다. 홈 화면으로 이동하시겠습니까?', {
             title: 'Alert'
+          }).then(value => {
+            if (value) {
+              vm.$router.push('/')
+            }
           })
         })
     }

@@ -11,20 +11,20 @@
           <th width="120px">
             <span class="header">분류</span>
           </th>
-          <th width="200px">
+          <th width="150px">
             <span class="header">태그</span>
           </th>
           <th>
             <span class="header">제목</span>
           </th>
-          <th width="150px">
+          <th width="120px">
             <span class="header">작성자</span>
           </th>
-          <th width="150px">
+          <th width="80px">
             <span class="header">추천</span>
           </th>
-          <th width="150px">
-            <span class="header">비추천</span>
+          <th width="80px">
+            <span class="header">조회</span>
           </th>
           <th width="150px">
             <span class="header">시간</span>

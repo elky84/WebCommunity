@@ -34,6 +34,7 @@ namespace Gateway.Middlewares
             var uri = ctx.DownstreamRequest.AbsolutePath;
             if (uri.StartsWith("/Auth/Account/SignUp") ||
                 uri.StartsWith("/Auth/Account/SignIn") ||
+                (uri.StartsWith("/Board") && uri.EndsWith("/Read")) ||
                 ctx.DownstreamRequest.Method == HttpMethod.Get.Method) // TODO white 리스트를 어떻게 관리 할 것인가?
             {
                 await next.Invoke();
@@ -46,13 +47,13 @@ namespace Gateway.Middlewares
             await next.Invoke();
         }
 
-        private async Task<Web.Protocols.Response.Authenticate> Authorization(DownstreamContext ctx)
+        private async Task<Web.Protocols.Response.Account> Authorization(DownstreamContext ctx)
         {
             ctx.HttpContext.Request.Headers.TryGetValue(Web.Constants.HeaderKeys.Cookie, out StringValues values);
             var cacheKey = values.ToString();
 
             ObjectCache cache = MemoryCache.Default;
-            var cacheAuth = cache[cacheKey] as Web.Protocols.Response.Authenticate;
+            var cacheAuth = cache[cacheKey] as Web.Protocols.Response.Account;
             if (cacheAuth != null)
             {
                 return cacheAuth;
@@ -81,7 +82,7 @@ namespace Gateway.Middlewares
             }
             else
             {
-                var auth = JsonConvert.DeserializeObject<Web.Protocols.Response.Authenticate>(content);
+                var auth = JsonConvert.DeserializeObject<Web.Protocols.Response.Account>(content);
                 if (auth.ResultCode != Web.Code.ResultCode.Success)
                 {
                     throw new DeveloperException(auth.ResultCode, response.StatusCode, auth.ErrorMessage);

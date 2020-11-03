@@ -1,7 +1,7 @@
 <template>
   <b-tab v-bind:active="activeState()" v-on:click="onClick()">
     <template #title>
-      <strong>{{title}}</strong>
+      <div style="font-size: smaller;" class="mb-2">{{title}}</div>
     </template>
     <b-card :title=title class="mb-2">
       <form>
@@ -81,6 +81,7 @@ export default {
           password: this.password
         })
         .then((result) => {
+          this.$localStorage.set('profile', JSON.stringify(result.data.account))
           vm.$bvModal.msgBoxOk('프로필이 갱신되었습니다', {
             title: 'Alert'
           })

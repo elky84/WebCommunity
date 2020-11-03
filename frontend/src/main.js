@@ -13,9 +13,11 @@ import 'expose-loader?$!expose-loader?jQuery!jquery'
 import TreeView from 'vue-json-tree-view'
 import InputTag from 'vue-input-tag'
 import '@/fontAwesomeIcon.js'
+import VueLocalStorage from 'vue-localstorage'
 
 Vue.use(TreeView)
 Vue.use(BootstrapVue)
+Vue.use(VueLocalStorage)
 
 Vue.component('input-tag', InputTag)
 

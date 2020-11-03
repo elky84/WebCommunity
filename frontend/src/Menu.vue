@@ -14,11 +14,8 @@
         <b-nav-item b-link href="#/Mobile" :active="routePath.startsWith('/Mobile')">모바일</b-nav-item>
         <b-nav-item b-link href="#/Community" :active="routePath.startsWith('/Community')">커뮤니티</b-nav-item>
         <b-nav-item b-link href="#/L10N" :active="routePath.startsWith('/Community')">한글화</b-nav-item>
-        <!-- <b-nav-item href="#">Link</b-nav-item>
-        <b-nav-item href="#" disabled>Disabled</b-nav-item> -->
       </b-navbar-nav>
 
-      <!-- Right aligned nav items -->
       <b-navbar-nav class="ml-auto">
         <b-nav-form>
           <b-form-input size="sm" class="mr-sm-2" placeholder="메뉴 검색"></b-form-input>
@@ -26,13 +23,17 @@
         </b-nav-form>
 
         <b-nav-item-dropdown right>
-          <!-- Using 'button-content' slot -->
           <template v-slot:button-content>
-            <em>User</em>
+            <em>{{userInfo()}}</em>
           </template>
-          <b-dropdown-item b-link href="#/Account">Account</b-dropdown-item>
-          <b-dropdown-item b-link href="#/Account?mid=Profile">Profile</b-dropdown-item>
-          <b-dropdown-item b-link href="#/Account?mid=SignOut">Sign Out</b-dropdown-item>
+          <template v-if="profile()">
+            <b-dropdown-item b-link href="#/Account">Account</b-dropdown-item>
+            <b-dropdown-item b-link href="#/Account?mid=Profile">Profile</b-dropdown-item>
+            <b-dropdown-item b-link href="#/Account?mid=SignOut">Sign Out</b-dropdown-item>
+          </template>
+          <template v-else>
+            <b-dropdown-item b-link href="#/Account?mid=SignIn" >Sign In</b-dropdown-item>
+          </template>
         </b-nav-item-dropdown>
       </b-navbar-nav>
     </b-collapse>
@@ -42,23 +43,25 @@
 <script>
 export default {
   name: 'Menu',
-  data () {
-    return {
-    }
-  },
   components: {
-  },
-  methods: {
   },
   computed: {
     routePath: function () {
       return this.$route.path
     }
+  },
+  methods: {
+    userInfo () {
+      var profile = this.profile()
+      return profile ? `${profile.userId} (${profile.nickName})` : 'Not Loggined'
+    },
+    profile () {
+      return JSON.parse(this.$localStorage.get('profile'))
+    }
   }
 }
 </script>
 
-<!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
 h1, h2 {
   font-weight: normal;

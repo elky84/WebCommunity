@@ -35,7 +35,8 @@ namespace Board.Models
                 Tags = article.Tags,
                 Recommend = article.Recommend,
                 NotRecommend = article.NotRecommend,
-                Source = article.Source
+                Source = article.Source,
+                Hit = article.Hit
             }.ToProtocol(article);
         }
 
@@ -49,6 +50,7 @@ namespace Board.Models
                 Tags = article.Tags,
                 Recommend = article.Recommend,
                 NotRecommend = article.NotRecommend,
+                Hit = article.Hit
             }.ToProtocol(article);
         }
 

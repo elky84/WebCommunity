@@ -8,9 +8,9 @@ using Web.Types;
 
 namespace Web.Protocols.Response
 {
-    public class SignUp : ResponseHeader
+    public class SignIn : ResponseHeader
     {
-        public override ProtocolId ProtocolId { get { return ProtocolId.SignUp; } }
+        public override ProtocolId ProtocolId { get { return ProtocolId.SignIn; } }
 
         public Common.Account Account { get; set; }
     }

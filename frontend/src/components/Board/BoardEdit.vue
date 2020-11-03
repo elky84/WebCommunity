@@ -9,7 +9,7 @@
         <input-tag v-model="article.tags"></input-tag>
       </div>
 
-      <label :v-if="srcArticle.source">[출처]:{{srcArticle.source}}</label>
+      <label :v-if="!!srcArticle.source">[출처] {{srcArticle.source}}</label>
 
       <BoardEditor ref="editor" @onEditorContent="onEditorContent(... arguments)"
         :originEditable="editMode" :originContent=article.content />
@@ -116,7 +116,7 @@ export default {
       var vm = this
       this.$axios.delete(`${process.env.VUE_APP_URL_BACKEND}/Board/${this.boardId}/${this.article.id}`)
         .then((result) => {
-          vm.$emit('refresh')
+          vm.$emit('delete')
         })
     },
     onCommentDelete (deleteComment) {

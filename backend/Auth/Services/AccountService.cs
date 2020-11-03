@@ -10,8 +10,6 @@ namespace Auth.Services
 {
     public class AccountService
     {
-        private const string UserIdName = "UserId";
-
         private MongoDbUtil<AccountData> _mongoDbAccountData;
 
         private TokenService _tokenService;
@@ -20,6 +18,12 @@ namespace Auth.Services
         {
             _tokenService = tokenService;
             _mongoDbAccountData = new MongoDbUtil<AccountData>(mongoDbServbice.Database);
+        }
+
+
+        public async Task<AccountData> Get(string userId)
+        {
+            return await _mongoDbAccountData.FindOneAsync(Builders<AccountData>.Filter.Eq(x => x.UserId, userId));
         }
 
         public async Task<AccountData> SignUp(Web.Protocols.Request.SignUp signUp)
@@ -93,7 +97,7 @@ namespace Auth.Services
                 throw new DeveloperException(Web.Code.ResultCode.NotFoundAccount, System.Net.HttpStatusCode.Unauthorized);
             }
 
-            accountData.Token = null;
+            accountData.Token = string.Empty;
             await _mongoDbAccountData.UpdateAsync(accountData.Id, accountData);
             return accountData;
         }
