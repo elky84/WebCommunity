@@ -11,6 +11,8 @@ namespace Web.Protocols.Common
 
         public string Author { get; set; }
 
+        public string UserId { get; set; }
+
         public string Category { get; set; }
 
         public List<string> Tags { get; set; }

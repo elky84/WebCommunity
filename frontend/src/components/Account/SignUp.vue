@@ -89,7 +89,7 @@ export default {
           password: this.password
         })
         .then((result) => {
-          this.$localStorage.set('profile', JSON.stringify(result.data.account))
+          this.setProfile(result.data.account)
           vm.$bvModal.msgBoxConfirm('회원 가입에 성공했습니다. 홈 화면으로 이동하시겠습니까?', {
             title: 'Alert'
           }).then(value => {

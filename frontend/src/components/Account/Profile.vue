@@ -81,7 +81,7 @@ export default {
           password: this.password
         })
         .then((result) => {
-          this.$localStorage.set('profile', JSON.stringify(result.data.account))
+          this.setProfile(result.data.account)
           vm.$bvModal.msgBoxOk('프로필이 갱신되었습니다', {
             title: 'Alert'
           })

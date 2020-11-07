@@ -2,7 +2,7 @@
   <div class="modal" v-if="show">
     <div class="modal-content">
       <h1>Video Embed Modal</h1>
-      <label for="url">Past your Video URL:</label>
+      <label for="url">Past your Youtube URL:</label>
       <input v-model="url" id="url" />
       <footer class="modal-footer">
         <button @click="insertVideo">Add Video</button>
@@ -22,17 +22,28 @@ export default {
       show: false
     };
   },
+  computed: {
+    youtubeID() {
+      return this.youtubeParser(this.url);
+    }
+  },
   methods: {
+    youtubeParser(url) {
+      const regExp = /^.*((youtu.be\/)|(v\/)|(\/u\/\w\/)|(embed\/)|(watch\?))\??v?=?([^#\&\?]*).*/;
+      const match = url.match(regExp);
+      return match && match[7].length === 11 ? match[7] : false;
+    },
     showModal(command) {
       // Add the sent command
       this.command = command;
       this.show = true;
     },
     insertVideo() {
+      // Some check can be done here, like if `youtubeID` is not false.
       const data = {
         command: this.command,
         data: {
-          src: this.url
+          src: `https://www.youtube.com/embed/${this.youtubeID}`
         }
       };
 

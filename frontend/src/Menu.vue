@@ -26,7 +26,7 @@
           <template v-slot:button-content>
             <em>{{userInfo()}}</em>
           </template>
-          <template v-if="profile()">
+          <template v-if="getProfile()">
             <b-dropdown-item b-link href="#/Account">Account</b-dropdown-item>
             <b-dropdown-item b-link href="#/Account?mid=Profile">Profile</b-dropdown-item>
             <b-dropdown-item b-link href="#/Account?mid=SignOut">Sign Out</b-dropdown-item>
@@ -52,11 +52,9 @@ export default {
   },
   methods: {
     userInfo () {
-      var profile = this.profile()
+      var profile = this.getProfile()
+      console.log(profile)
       return profile ? `${profile.userId} (${profile.nickName})` : 'Not Loggined'
-    },
-    profile () {
-      return JSON.parse(this.$localStorage.get('profile'))
     }
   }
 }

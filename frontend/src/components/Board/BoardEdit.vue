@@ -17,9 +17,11 @@
       <b-btn-group>
         <b-button variant="outline-primary" @click="onClickRecommend()">추천 {{article.recommend}}</b-button>
         <b-button variant="outline-warning" @click="onClickNotRecommend()">비추천 {{article.notRecommend}}</b-button>
-        <b-button variant="outline-primary" v-on:click="onClickUpdate" v-if="!editMode">수정</b-button>
-        <b-button variant="outline-primary" v-on:click="onClickUpdateConfirm" v-if="editMode">수정완료</b-button>
-        <b-button variant="outline-warning" v-on:click="onClickDelete">삭제</b-button>
+        <template v-if="getProfile() && getProfile().userId == article.userId">
+          <b-button variant="outline-primary" v-on:click="onClickUpdate" v-if="!editMode">수정</b-button>
+          <b-button variant="outline-primary" v-on:click="onClickUpdateConfirm" v-if="editMode">수정완료</b-button>
+          <b-button variant="outline-warning" v-on:click="onClickDelete" v-if="article.userId">삭제</b-button>
+        </template>
         <b-button variant="outline-info" v-on:click="onClickCancel">닫기</b-button>
       </b-btn-group>
       <hr/>

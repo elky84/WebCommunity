@@ -61,9 +61,11 @@ export default {
 
       this.$axios.post(`${process.env.VUE_APP_URL_BACKEND}/Board/${this.boardId}/${this.article.id}/Read`)
         .then((result) => {
-          this.article.content = result.data.data.content
-          this.article.source = result.data.data.source
-          this.article.hit = result.data.data.hit
+          var article = result.data.data
+          this.article.content = article.content
+          this.article.source = article.source
+          this.article.hit = article.hit
+          this.article.userId = article.userId
           this.$set(this.article, 'edit', !this.article.edit)
 
           if (this.$route.query.articleId !== this.article.id) {

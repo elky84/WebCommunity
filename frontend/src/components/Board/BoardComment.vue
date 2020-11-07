@@ -5,14 +5,17 @@
     </b-col>
     <b-col fluid="lg">
       <label v-if="comment.originAuthor">{{comment.originAuthor}}에 대한 댓글</label>
-      <p v-html="comment.content" display:inline-block style="width: 720px;"></p>
-    </b-col>
+      <BoardEditor ref="editor" @onEditorContent="onEditorContent(... arguments)"
+        :originEditable="false" :originContent=comment.content />
+      </b-col>
     <b-col sm="4">
       <b-row v-if="comment.status === 'Normal'">
         <b-button variant="outline-primary" class="m-1" @click="onClickRecommend()">추천 {{comment.recommend}}</b-button>
         <b-button variant="outline-warning" class="m-1" @click="onClickNotRecommend()">비추천 {{comment.notRecommend}}</b-button>
         <b-button variant="outline-info" class="m-1" @click="onClickReply()">댓글</b-button>
-        <b-button variant="outline-danger" class="m-1" @click="onClickDelete()">삭제</b-button>
+        <template v-if="getProfile() && getProfile().userId == comment.userId">
+          <b-button variant="outline-danger" class="m-1" @click="onClickDelete()">삭제</b-button>
+        </template>
       </b-row>
       <b-row>
         <p>{{toDateString()}}</p>
@@ -23,9 +26,13 @@
 
 <script>
 import dayjs from 'dayjs'
+import BoardEditor from './BoardEditor'
 
 export default {
   name: 'BoardComment',
+  components: {
+    BoardEditor: BoardEditor
+  },
   props: {
     comment: {
       type: Object,
@@ -33,6 +40,11 @@ export default {
     },
     boardId: {
       type: String
+    }
+  },
+  data () {
+    return {
+      editorContent: ''
     }
   },
   methods: {
@@ -72,6 +84,10 @@ export default {
     },
     toDateString () {
       return dayjs(this.comment.created).format('YYYY-MM-DD HH:mm:ss')
+    },
+    onEditorContent (editorContent) {
+      console.log(editorContent)
+      this.editorContent = editorContent
     }
   }
 }

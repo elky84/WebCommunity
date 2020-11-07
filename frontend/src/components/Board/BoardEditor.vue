@@ -2,6 +2,7 @@
   <div class="editor">
     <ImageModal ref="imageModal" @onConfirm="addCommand" />
     <VideoModal ref="videoModal" @onConfirm="addCommand" />
+    <YoutubeModal ref="youtubeModal" @onConfirm="addCommand" />
 
     <editor-menu-bar :editor="editor" v-slot="{ commands, isActive }" v-if="editable">
       <div class="menubar">
@@ -142,14 +143,18 @@
           <font-awesome-icon :icon="['fas', 'image']" />
         </button>
 
-        <button class="menubar__button" @click="openVideoModal(commands.iframe);">
+        <button class="menubar__button" @click="openYoutubeModal(commands.iframe);">
           <font-awesome-icon :icon="['fab', 'youtube-square']" />
+        </button>
+
+        <button class="menubar__button" @click="openVideoModal(commands.iframe);">
+          <font-awesome-icon :icon="['fas', 'video']" />
         </button>
 
       </div>
     </editor-menu-bar>
 
-    <editor-content class="editor__content" :editor="editor" />
+    <editor-content class="editor__content" :editor="editor" v-bind:style="{ borderStyle: 'solid', borderColor: '#D3D3D3'}"/>
   </div>
 </template>
 
@@ -157,6 +162,7 @@
 import { Editor, EditorContent, EditorMenuBar } from 'tiptap'
 import ImageModal from './ImageModal'
 import VideoModal from './VideoModal'
+import YoutubeModal from './YoutubeModal'
 
 import {
   Blockquote,
@@ -186,7 +192,8 @@ export default {
     EditorContent,
     EditorMenuBar,
     ImageModal,
-    VideoModal
+    VideoModal,
+    YoutubeModal
   },
   props: {
     originContent: {
@@ -246,6 +253,9 @@ export default {
     },
     openVideoModal (command) {
       this.$refs.videoModal.showModal(command)
+    },
+    openYoutubeModal (command) {
+      this.$refs.youtubeModal.showModal(command)
     },
     addCommand (data) {
       if (data.command !== null) {

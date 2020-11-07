@@ -23,6 +23,17 @@ Vue.component('input-tag', InputTag)
 
 Vue.config.productionTip = false
 
+Vue.mixin({
+  methods: {
+    getProfile: function () {
+      return JSON.parse(this.$localStorage.get('profile'))
+    },
+    setProfile: function (data) {
+      this.$localStorage.set('profile', JSON.stringify(data))
+    }
+  }
+})
+
 /* eslint-disable no-new */
 new Vue({
   el: '#app',

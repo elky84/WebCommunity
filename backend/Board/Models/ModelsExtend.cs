@@ -29,6 +29,7 @@ namespace Board.Models
             return new Web.Protocols.Common.Article
             {
                 Author = article.Author,
+                UserId = article.UserId,
                 Category = article.Category,
                 Content = article.Content,
                 Title = article.Title,
@@ -72,6 +73,7 @@ namespace Board.Models
             return new Web.Protocols.Common.Comment
             {
                 Author = comment.Author,
+                UserId = comment.UserId,
                 ArticleId = comment.ArticleId,
                 CommentId = comment.CommentId,
                 Content = comment.Content,

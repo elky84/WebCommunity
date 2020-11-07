@@ -1,8 +1,8 @@
 <template>
   <b-row class="m-1">
-    <b-col sm="6">
-      <b-form-textarea v-model="comment" placeholder="Enter Comment"
-        rows="3" max-rows="10"></b-form-textarea>
+    <b-col sm="9">
+      <BoardEditor ref="editor" @onEditorContent="onEditorContent(... arguments)"
+        :originEditable="true" :originContent=comment />
     </b-col>
     <b-col>
       <b-button variant="outline-primary" v-on:click="onClickComment">{{commentText}}</b-button>
@@ -11,9 +11,13 @@
 </template>
 
 <script>
+import BoardEditor from './BoardEditor'
 
 export default {
   name: 'BoardCommentEdit',
+  components: {
+    BoardEditor: BoardEditor
+  },
   props: {
     boardId: String,
     srcComment: {
@@ -26,8 +30,12 @@ export default {
   },
   data () {
     return {
-      comment: ''
+      comment: '',
+      editorContent: ''
     }
+  },
+  mounted () {
+    this.comment = this.srcComment != null ? this.srcComment.content : ''
   },
   computed: {
     commentText: function () {
@@ -36,15 +44,21 @@ export default {
   },
   methods: {
     onClickComment () {
+      this.$refs.editor.getHTML()
+
       var vm = this
       this.$axios.post(`${process.env.VUE_APP_URL_BACKEND}/Board/Comment/${this.boardId}/${this.srcArticle.id}`,
         {
           originCommentId: this.srcComment === null ? null : this.srcComment.id,
-          content: this.comment
+          content: this.editorContent
         })
         .then((result) => {
           vm.$emit('refreshComments')
         })
+    },
+    onEditorContent (editorContent) {
+      console.log(editorContent)
+      this.editorContent = editorContent
     }
   }
 }
