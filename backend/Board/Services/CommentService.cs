@@ -105,13 +105,21 @@ namespace Board.Services
         public async Task<Comment> Recommend(string id, string commentId, string userId)
         {
             var mongoDbUtil = GetMongoDbBoardComment(id);
-            return await mongoDbUtil.UpdateGetAsync(commentId, Builders<Comment>.Update.Inc(x => x.Recommend, 1));
+            var origin = await GetAndValidation(mongoDbUtil, commentId, userId);
+            origin.Recommend += 1;
+
+            await mongoDbUtil.UpdateAsync(commentId, Builders<Comment>.Update.Inc(x => x.Recommend, 1));
+            return origin;
         }
 
         public async Task<Comment> NotRecommend(string id, string commentId, string userId)
         {
             var mongoDbUtil = GetMongoDbBoardComment(id);
-            return await mongoDbUtil.UpdateGetAsync(commentId, Builders<Comment>.Update.Inc(x => x.NotRecommend, 1));
+            var origin = await GetAndValidation(mongoDbUtil, commentId, userId);
+            origin.NotRecommend += 1;
+
+            await mongoDbUtil.UpdateAsync(commentId, Builders<Comment>.Update.Inc(x => x.NotRecommend, 1));
+            return origin;
         }
 
         public async Task<Comment> Delete(string id, string commentId, string userId)
@@ -123,6 +131,12 @@ namespace Board.Services
 
             await mongoDbUtil.UpdateAsync(origin.Id, origin);
             return origin;
+        }
+
+        public async Task DeleteByArticleId(string id, string articleId)
+        {
+            var mongoDbUtil = GetMongoDbBoardComment(id);
+            await mongoDbUtil.RemoveManyAsync(Builders<Comment>.Filter.Eq(x => x.ArticleId, articleId));
         }
     }
 }

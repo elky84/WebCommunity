@@ -16,9 +16,13 @@ namespace Board.Services
 
         private readonly ConcurrentDictionary<string, MongoDbUtil<Article>> _mongoDbBoards = new ConcurrentDictionary<string, MongoDbUtil<Article>>();
 
-        public ArticleService(MongoDbService mongoDbService)
+        private CommentService _commentService;
+
+        public ArticleService(MongoDbService mongoDbService,
+            CommentService commentService)
         {
             _mongoDbService = mongoDbService;
+            _commentService = commentService;
         }
 
 
@@ -113,6 +117,7 @@ namespace Board.Services
             var mongoDbUtil = GetMongoDbBoard(id);
             var origin = await GetAndValidation(mongoDbUtil, articleId, userId);
             await mongoDbUtil.RemoveAsync(articleId);
+            await _commentService.DeleteByArticleId(id, articleId);
             return origin;
         }
 

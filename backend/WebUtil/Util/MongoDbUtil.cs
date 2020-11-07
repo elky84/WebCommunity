@@ -102,6 +102,11 @@ namespace WebUtil.Util
             Collection.DeleteMany(x => true);
         }
 
+        public async Task ClearAsync()
+        {
+            await Collection.DeleteManyAsync(x => true);
+        }
+
         public T Update(string id, T t)
         {
             t.Id = id;

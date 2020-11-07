@@ -116,7 +116,7 @@ export default {
       var vm = this
       this.$axios.delete(`${process.env.VUE_APP_URL_BACKEND}/Board/${this.boardId}/${this.article.id}`)
         .then((result) => {
-          vm.$emit('delete')
+          vm.$emit('delete', this.article)
         })
     },
     onCommentDelete (deleteComment) {

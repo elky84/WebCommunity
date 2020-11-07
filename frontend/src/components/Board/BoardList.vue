@@ -34,11 +34,15 @@
       <tbody>
         <template v-if="focusArticle">
           <BoardListArticle :borderClass="rowColor(focusArticle)" :key="focusArticle.id + '_focus'" :category="category" :boardId="boardId" :srcArticle="focusArticle" v-if="focusArticle" />
-          <BoardEdit :borderClass="rowColor(focusArticle)" @refresh="onRefresh(... arguments)" @close="onClose(... arguments)" @update="onUpdate(... arguments)" :boardId="boardId" :srcArticle="focusArticle" v-if="focusArticle.edit" :key="focusArticle.id + '_edit_focus'" />
+          <BoardEdit :borderClass="rowColor(focusArticle)" @refresh="onRefresh(... arguments)" @close="onClose(... arguments)"
+            @delete="onDelete(... arguments)" @update="onUpdate(... arguments)" :boardId="boardId" :srcArticle="focusArticle"
+            v-if="focusArticle.edit" :key="focusArticle.id + '_edit_focus'" />
         </template>
         <template v-for="(article) in articles">
           <BoardListArticle :borderClass="rowColor(article)" :key="article.id" :category="category" :boardId="boardId" :srcArticle="article" />
-          <BoardEdit :borderClass="rowColor(article)" @refresh="onRefresh(... arguments)" @close="onClose(... arguments)" @update="onUpdate(... arguments)" :boardId="boardId" :srcArticle="article" v-if="article.edit" :key="article.id + '_edit'" />
+          <BoardEdit :borderClass="rowColor(article)" @refresh="onRefresh(... arguments)" @close="onClose(... arguments)"
+            @delete="onDelete(... arguments)" @update="onUpdate(... arguments)" :boardId="boardId" :srcArticle="article"
+            v-if="article.edit" :key="article.id + '_edit'" />
         </template>
       </tbody>
     </table>
@@ -144,6 +148,12 @@ export default {
     },
     onNew (newArticle) {
       this.articles.unshift(newArticle)
+    },
+    onDelete (deleteArticle) {
+      // remove의 반환 값은, 삭제되지 않은 것들을 반환함. 그래서 조건으로 삭제된 글이 아닌 조건을 넣었다.
+      this.articles = _.remove(this.articles, function (article) {
+        return article.id !== deleteArticle.id
+      })
     },
     onUpdate (newArticle) {
       var vm = this
