@@ -1,20 +1,22 @@
 <template>
   <b-row :class="rowColor(comment)">
     <b-col sm="2">
-      <label>{{comment.author}}</label>
-    </b-col>
-    <b-col sm="5">
-      <label v-if="comment.originAuthor">{{comment.originAuthor}}에 대한 댓글</label>
-      <b-form-input :value="comment.content" :readonly="true"></b-form-input>
-    </b-col>
-    <b-col sm="3">
-      <b-button variant="outline-primary" class="m-1" @click="onClickRecommend()">추천 {{comment.recommend}}</b-button>
-      <b-button variant="outline-warning" class="m-1" @click="onClickNotRecommend()">비추천 {{comment.notRecommend}}</b-button>
-      <b-button variant="outline-info" class="m-1" @click="onClickReply()">댓글</b-button>
-      <b-button variant="outline-danger" class="m-1" @click="onClickDelete()">삭제</b-button>
+      <p>{{`작성자: ${comment.author}`}}</p>
     </b-col>
     <b-col>
-      <label>{{toDateString()}}</label>
+      <label v-if="comment.originAuthor">{{comment.originAuthor}}에 대한 댓글</label>
+      <p v-html="comment.content"></p>
+    </b-col>
+    <b-col sm="4">
+      <b-row>
+        <b-button variant="outline-primary" class="m-1" @click="onClickRecommend()">추천 {{comment.recommend}}</b-button>
+        <b-button variant="outline-warning" class="m-1" @click="onClickNotRecommend()">비추천 {{comment.notRecommend}}</b-button>
+        <b-button variant="outline-info" class="m-1" @click="onClickReply()">댓글</b-button>
+        <b-button variant="outline-danger" class="m-1" @click="onClickDelete()">삭제</b-button>
+      </b-row>
+      <b-row>
+        <p>{{toDateString()}}</p>
+      </b-row>
     </b-col>
   </b-row>
 </template>

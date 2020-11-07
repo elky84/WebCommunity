@@ -1,7 +1,8 @@
 <template>
   <b-row class="m-1">
     <b-col sm="6">
-      <b-form-input v-model="comment" placeholder="Enter Comment"></b-form-input>
+      <b-form-textarea v-model="comment" placeholder="Enter Comment"
+        rows="3" max-rows="10"></b-form-textarea>
     </b-col>
     <b-col>
       <b-button variant="outline-primary" v-on:click="onClickComment">{{commentText}}</b-button>
