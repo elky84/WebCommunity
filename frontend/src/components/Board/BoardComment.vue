@@ -3,12 +3,12 @@
     <b-col sm="2">
       <p>{{`작성자: ${comment.author}`}}</p>
     </b-col>
-    <b-col>
+    <b-col fluid="lg">
       <label v-if="comment.originAuthor">{{comment.originAuthor}}에 대한 댓글</label>
-      <p v-html="comment.content"></p>
+      <p v-html="comment.content" display:inline-block style="width: 720px;"></p>
     </b-col>
     <b-col sm="4">
-      <b-row>
+      <b-row v-if="comment.status === 'Normal'">
         <b-button variant="outline-primary" class="m-1" @click="onClickRecommend()">추천 {{comment.recommend}}</b-button>
         <b-button variant="outline-warning" class="m-1" @click="onClickNotRecommend()">비추천 {{comment.notRecommend}}</b-button>
         <b-button variant="outline-info" class="m-1" @click="onClickReply()">댓글</b-button>
@@ -49,7 +49,7 @@ export default {
       var vm = this
       this.$axios.post(`${process.env.VUE_APP_URL_BACKEND}/Board/Comment/${this.boardId}/${this.comment.id}/NotRecommend`)
         .then((result) => {
-          vm.$emit('delete', this.comment)
+          vm.onCommentUpdate(result.data.data)
         })
     },
     onClickReply () {
@@ -60,7 +60,7 @@ export default {
       this.$axios.delete(`${process.env.VUE_APP_URL_BACKEND}/Board/Comment/${this.boardId}/${this.comment.id}`)
         .then((result) => {
           if (result.data.data) {
-            vm.$emit('delete', this.comment)
+            vm.onCommentUpdate(result.data.data)
           }
         })
     },

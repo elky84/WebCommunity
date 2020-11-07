@@ -25,7 +25,7 @@
       <hr/>
 
       <div v-for="(comment) in comments" :key="comment.id">
-        <BoardComment @delete="onCommentDelete(... arguments)" :comment=comment :boardId="boardId" />
+        <BoardComment :comment=comment :boardId="boardId" />
         <BoardCommentEdit v-if="comment.reply" :srcComment="comment" :boardId="boardId" :srcArticle="srcArticle" @refreshComments="refreshComments(... arguments)" />
       </div>
       <b-pagination ref="pagination" align="center" size="md" v-model="currentPage" :total-rows="totalItems" :per-page="limit" @change="listing(... arguments)" />

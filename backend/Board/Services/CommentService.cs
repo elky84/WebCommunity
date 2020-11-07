@@ -94,6 +94,11 @@ namespace Board.Services
                 throw new DeveloperException(Web.Code.ResultCode.NotMatchedAuthor);
             }
 
+            if (origin.Status != Web.Code.CommentStatus.Normal)
+            {
+                throw new DeveloperException(Web.Code.ResultCode.NotEditComment);
+            }
+
             return origin;
         }
 
@@ -113,7 +118,10 @@ namespace Board.Services
         {
             var mongoDbUtil = GetMongoDbBoardComment(id);
             var origin = await GetAndValidation(mongoDbUtil, commentId, userId);
-            await mongoDbUtil.RemoveAsync(commentId);
+            origin.Content = "삭제된 댓글입니다."; // RemoveAsync를 하면 댓글 자체가 삭제 되는데, 어떤 글에 대한 대댓글인지에 대한 인지 이슈가 있어, 내용만 삭제한다.
+            origin.Status = Web.Code.CommentStatus.Deleted;
+
+            await mongoDbUtil.UpdateAsync(origin.Id, origin);
             return origin;
         }
     }

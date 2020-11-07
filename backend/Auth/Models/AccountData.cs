@@ -5,6 +5,8 @@ using Web.Types;
 using System;
 using Web.Protocols.Common;
 using Web.Models;
+using MongoDB.Bson.Serialization.Attributes;
+using MongoDB.Bson;
 
 namespace Auth.Models
 {
@@ -14,8 +16,10 @@ namespace Auth.Models
 
         public string UserId { get; set; }
 
+        [BsonRepresentation(BsonType.String)]
         public AccountGradeType Grade { get; set; }
 
+        [BsonRepresentation(BsonType.String)]
         public AccountStateType State { get; set; }
 
         public string Password { get; set; }

@@ -70,5 +70,8 @@ namespace Web.Code
 
         [Description("로그인이 필요합니다")]
         NotPrivodeToken,
+
+        [Description("편집이 불가능한 댓글입니다")]
+        NotEditComment,
     }
 }

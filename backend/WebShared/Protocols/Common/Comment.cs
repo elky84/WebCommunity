@@ -1,4 +1,7 @@
-﻿using System.Collections.Generic;
+﻿using Newtonsoft.Json;
+using Newtonsoft.Json.Converters;
+using System.Collections.Generic;
+using Web.Code;
 using Web.Models;
 
 namespace Web.Protocols.Common
@@ -18,5 +21,8 @@ namespace Web.Protocols.Common
         public int Recommend { get; set; }
 
         public int NotRecommend { get; set; }
+
+        [JsonConverter(typeof(StringEnumConverter))]
+        public CommentStatus Status { get; set; } = CommentStatus.Normal;
     }
 }

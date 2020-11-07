@@ -1,4 +1,7 @@
-﻿using System.Collections.Generic;
+﻿using MongoDB.Bson;
+using MongoDB.Bson.Serialization.Attributes;
+using System.Collections.Generic;
+using Web.Code;
 using Web.Models;
 
 namespace Board.Models
@@ -20,5 +23,8 @@ namespace Board.Models
         public int Recommend { get; set; }
 
         public int NotRecommend { get; set; }
+
+        [BsonRepresentation(BsonType.String)]
+        public CommentStatus Status { get; set; } = CommentStatus.Normal;
     }
 }

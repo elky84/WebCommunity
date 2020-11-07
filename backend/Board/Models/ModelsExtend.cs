@@ -77,7 +77,8 @@ namespace Board.Models
                 Content = comment.Content,
                 Recommend = comment.Recommend,
                 NotRecommend = comment.NotRecommend,
-                OriginAuthor = comment.OriginAuthor
+                OriginAuthor = comment.OriginAuthor,
+                Status = comment.Status
             }.ToProtocol(comment);
         }
     }
