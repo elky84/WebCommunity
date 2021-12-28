@@ -2,7 +2,7 @@
 using RabbitMQ.Client;
 using RabbitMQ.Client.Events;
 using System.Text;
-using Web.Protocols.Exception;
+using Protocols.Exception;
 using WebUtil.Settings;
 
 namespace WebUtil.RabbitMQ
@@ -40,7 +40,7 @@ namespace WebUtil.RabbitMQ
             }
             catch (System.Exception e)
             {
-                throw new DeveloperException(Web.Code.ResultCode.NotConnectedMQ, System.Net.HttpStatusCode.InternalServerError, e.Message);
+                throw new DeveloperException(Protocols.Code.ResultCode.NotConnectedMQ, System.Net.HttpStatusCode.InternalServerError, e.Message);
             }
         }
 

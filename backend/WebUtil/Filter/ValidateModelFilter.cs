@@ -4,7 +4,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Web.Protocols;
+using Protocols;
+using EzAspDotNet.Protocols;
 
 namespace WebUtil.Filter
 {
@@ -15,7 +16,7 @@ namespace WebUtil.Filter
             if (!context.ModelState.IsValid)
             {
                 var message = string.Join(" | ", context.ModelState.Values.SelectMany(v => v.Errors).Select(e => e.ErrorMessage));
-                context.Result = new BadRequestObjectResult(new ResponseHeader { ResultCode = Web.Code.ResultCode.BadRequest, ErrorMessage = message });
+                context.Result = new BadRequestObjectResult(new ResponseHeader { ResultCode = Protocols.Code.ResultCode.BadRequest, ErrorMessage = message });
             }
         }
     }

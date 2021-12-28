@@ -3,7 +3,7 @@ using MongoDB.Driver;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using Web.Models;
+using EzAspDotNet.Models;
 
 namespace WebUtil.Util
 {

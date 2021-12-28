@@ -8,7 +8,7 @@ using System.Net.Http.Headers;
 using System.Runtime.Caching;
 using System.Threading.Tasks;
 using System.Web;
-using Web.Protocols.Exception;
+using Protocols.Exception;
 
 namespace Gateway.Middlewares
 {
@@ -47,14 +47,13 @@ namespace Gateway.Middlewares
             await next.Invoke();
         }
 
-        private async Task<Web.Protocols.Response.Account> Authorization(DownstreamContext ctx)
+        private async Task<Protocols.Response.Account> Authorization(DownstreamContext ctx)
         {
-            ctx.HttpContext.Request.Headers.TryGetValue(Web.Constants.HeaderKeys.Cookie, out StringValues values);
+            ctx.HttpContext.Request.Headers.TryGetValue(EzAspDotNet.Constants.HeaderKeys.Cookie, out StringValues values);
             var cacheKey = values.ToString();
 
             ObjectCache cache = MemoryCache.Default;
-            var cacheAuth = cache[cacheKey] as Web.Protocols.Response.Account;
-            if (cacheAuth != null)
+            if (cache[cacheKey] is Protocols.Response.Account cacheAuth)
             {
                 return cacheAuth;
             }
@@ -62,7 +61,7 @@ namespace Gateway.Middlewares
             var reRoute = Configuration.Extend.Get("AuthReRoute", "/Auth/{everything}");
             if (reRoute == null)
             {
-                throw new DeveloperException(Web.Code.ResultCode.NotFoundAuthRoutes);
+                throw new DeveloperException(Protocols.Code.ResultCode.NotFoundAuthRoutes);
             }
 
             var downStreamHostAndPorts = reRoute.DownstreamHostAndPorts[Random.Next(reRoute.DownstreamHostAndPorts.Count)];
@@ -71,7 +70,7 @@ namespace Gateway.Middlewares
             var client = _clientFactory.CreateClient();
             client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
 
-            request.Headers.Add(Web.Constants.HeaderKeys.Cookie, values.AsEnumerable());
+            request.Headers.Add(EzAspDotNet.Constants.HeaderKeys.Cookie, values.AsEnumerable());
 
             var response = await client.SendAsync(request);
             var content = await response.Content.ReadAsStringAsync();
@@ -82,17 +81,17 @@ namespace Gateway.Middlewares
             }
             else
             {
-                var auth = JsonConvert.DeserializeObject<Web.Protocols.Response.Account>(content);
-                if (auth.ResultCode != Web.Code.ResultCode.Success)
+                var auth = JsonConvert.DeserializeObject<Protocols.Response.Account>(content);
+                if (auth.ResultCode != Protocols.Code.ResultCode.Success)
                 {
                     throw new DeveloperException(auth.ResultCode, response.StatusCode, auth.ErrorMessage);
                 }
 
-                if (response.Headers.TryGetValues(Web.Constants.HeaderKeys.SetCookie, out var setCookie))
+                if (response.Headers.TryGetValues(EzAspDotNet.Constants.HeaderKeys.SetCookie, out var setCookie))
                 {
-                    ctx.HttpContext.Request.Headers.Remove(Web.Constants.HeaderKeys.Cookie);
-                    ctx.HttpContext.Request.Headers.Add(Web.Constants.HeaderKeys.Cookie, setCookie.ToArray());
-                    ctx.HttpContext.Response.Headers.Add(Web.Constants.HeaderKeys.SetCookie, setCookie.ToArray());
+                    ctx.HttpContext.Request.Headers.Remove(EzAspDotNet.Constants.HeaderKeys.Cookie);
+                    ctx.HttpContext.Request.Headers.Add(EzAspDotNet.Constants.HeaderKeys.Cookie, setCookie.ToArray());
+                    ctx.HttpContext.Response.Headers.Add(EzAspDotNet.Constants.HeaderKeys.SetCookie, setCookie.ToArray());
                 }
 
                 var policy = new CacheItemPolicy();

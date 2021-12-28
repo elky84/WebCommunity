@@ -1,5 +1,5 @@
 ﻿using System.Collections.Generic;
-using Web.Models;
+using EzAspDotNet.Models;
 
 namespace Board.Models
 {

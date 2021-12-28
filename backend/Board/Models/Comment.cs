@@ -1,8 +1,7 @@
 ﻿using MongoDB.Bson;
 using MongoDB.Bson.Serialization.Attributes;
-using System.Collections.Generic;
-using Web.Code;
-using Web.Models;
+using Protocols.Code;
+using EzAspDotNet.Models;
 
 namespace Board.Models
 {

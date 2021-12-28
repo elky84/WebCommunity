@@ -4,8 +4,9 @@ using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Text;
 using System.Threading.Tasks;
-using Web.Protocols;
-using Web.Protocols.Exception;
+using Protocols;
+using Protocols.Exception;
+using EzAspDotNet.Protocols;
 
 namespace WebUtil.HttpClient
 {
@@ -32,7 +33,7 @@ namespace WebUtil.HttpClient
                 }
                 else
                 {
-                    throw new DeveloperException(Web.Code.ResultCode.HttpError, httpResponseMessage.StatusCode);
+                    throw new DeveloperException(Protocols.Code.ResultCode.HttpError, httpResponseMessage.StatusCode);
                 }
             }
         }

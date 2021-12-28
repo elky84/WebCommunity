@@ -2,10 +2,10 @@
 using MongoDB.Driver;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using Web.Protocols.Exception;
-using Web.Protocols.Page;
+using Protocols.Exception;
 using WebUtil.Service;
 using WebUtil.Util;
+using EzAspDotNet.Protocols.Page;
 
 namespace Board.Services
 {
@@ -51,7 +51,7 @@ namespace Board.Services
             return await mongoDbUtil.CountAsync(Builders<Comment>.Filter.Eq(x => x.ArticleId, articleId));
         }
 
-        public async Task<Comment> Create(string id, string articleId, string userId, string nickName, Web.Protocols.Request.Comment comment)
+        public async Task<Comment> Create(string id, string articleId, string userId, string nickName, Protocols.Request.Comment comment)
         {
             var mongoDbUtil = GetMongoDbBoardComment(id);
             var originComment = string.IsNullOrEmpty(comment.OriginCommentId) ? null : await mongoDbUtil.FindOneAsyncById(comment.OriginCommentId);
@@ -65,7 +65,7 @@ namespace Board.Services
             return created;
         }
 
-        public async Task<Comment> Update(string id, string commentId, string userId, Web.Protocols.Request.Comment comment)
+        public async Task<Comment> Update(string id, string commentId, string userId, Protocols.Request.Comment comment)
         {
             var mongoDbUtil = GetMongoDbBoardComment(id);
 
@@ -74,7 +74,7 @@ namespace Board.Services
             var result = await mongoDbUtil.UpdateAsync(commentId, Builders<Comment>.Update.Set(x => x.Content, comment.Content));
             if (!result)
             {
-                throw new DeveloperException(Web.Code.ResultCode.DatabaseUpdateFailure);
+                throw new DeveloperException(Protocols.Code.ResultCode.DatabaseUpdateFailure);
             }
 
             origin.Content = comment.Content;
@@ -86,17 +86,17 @@ namespace Board.Services
             var origin = await mongoDbUtil.FindOneAsyncById(articleId);
             if (origin == null)
             {
-                throw new DeveloperException(Web.Code.ResultCode.NotFoundData);
+                throw new DeveloperException(Protocols.Code.ResultCode.NotFoundData);
             }
 
             if (origin.UserId != userId)
             {
-                throw new DeveloperException(Web.Code.ResultCode.NotMatchedAuthor);
+                throw new DeveloperException(Protocols.Code.ResultCode.NotMatchedAuthor);
             }
 
-            if (origin.Status != Web.Code.CommentStatus.Normal)
+            if (origin.Status != Protocols.Code.CommentStatus.Normal)
             {
-                throw new DeveloperException(Web.Code.ResultCode.NotEditComment);
+                throw new DeveloperException(Protocols.Code.ResultCode.NotEditComment);
             }
 
             return origin;
@@ -127,7 +127,7 @@ namespace Board.Services
             var mongoDbUtil = GetMongoDbBoardComment(id);
             var origin = await GetAndValidation(mongoDbUtil, commentId, userId);
             origin.Content = "삭제된 댓글입니다."; // RemoveAsync를 하면 댓글 자체가 삭제 되는데, 어떤 글에 대한 대댓글인지에 대한 인지 이슈가 있어, 내용만 삭제한다.
-            origin.Status = Web.Code.CommentStatus.Deleted;
+            origin.Status = Protocols.Code.CommentStatus.Deleted;
 
             await mongoDbUtil.UpdateAsync(origin.Id, origin);
             return origin;

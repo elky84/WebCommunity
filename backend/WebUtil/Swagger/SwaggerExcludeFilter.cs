@@ -3,7 +3,7 @@ using Swashbuckle.AspNetCore.SwaggerGen;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
-using Web.Swagger;
+using EzAspDotNet.Swagger;
 
 namespace WebUtil.Swagger
 {

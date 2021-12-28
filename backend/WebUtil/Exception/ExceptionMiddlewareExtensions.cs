@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Http;
 using Newtonsoft.Json;
 using Serilog;
 using System.Net;
-using Web.Protocols.Exception;
+using Protocols.Exception;
 
 namespace WebUtil.Exception
 {
@@ -44,7 +44,7 @@ namespace WebUtil.Exception
                                 StatusCode = context.Response.StatusCode,
                                 ErrorMessage = "Internal Server Error",
                                 Detail = contextFeature.Error.Message,
-                                ResultCode = Web.Code.ResultCode.UnknownException
+                                ResultCode = Protocols.Code.ResultCode.UnknownException
                             }));
                         }
                     }

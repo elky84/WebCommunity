@@ -1,12 +1,7 @@
-using System.ComponentModel.DataAnnotations;
-using Web.Protocols.Response;
-using Web.Protocols;
-using Web.Types;
-using System;
-using Web.Protocols.Common;
-using Web.Models;
+using EzAspDotNet.Models;
 using MongoDB.Bson.Serialization.Attributes;
 using MongoDB.Bson;
+using Protocols.Types;
 
 namespace Auth.Models
 {
@@ -28,9 +23,9 @@ namespace Auth.Models
 
         public string NickName { get; set; }
 
-        public Web.Protocols.Response.Account ToResponse()
+        public Protocols.Response.Account ToResponse()
         {
-            return new Web.Protocols.Response.Account
+            return new Protocols.Response.Account
             {
                 AccountId = this.Id,
                 Token = this.Token,
@@ -40,9 +35,9 @@ namespace Auth.Models
             };
         }
 
-        public Web.Protocols.Common.Account ToCommon()
+        public Protocols.Common.Account ToCommon()
         {
-            return new Web.Protocols.Common.Account
+            return new Protocols.Common.Account
             {
                 Id = this.Id,
                 Token = this.Token,

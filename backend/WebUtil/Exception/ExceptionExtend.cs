@@ -1,6 +1,5 @@
-﻿using Serilog;
-using System.Net;
-using Web.Protocols.Exception;
+﻿using Protocols.Exception;
+using Serilog;
 
 namespace WebUtil.Exception
 {

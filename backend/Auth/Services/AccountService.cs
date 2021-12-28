@@ -1,10 +1,10 @@
 ﻿using Auth.Models;
 using MongoDB.Driver;
 using System.Threading.Tasks;
-using Web.Protocols.Exception;
-using Web.Types;
+using Protocols.Exception;
 using WebUtil.Service;
 using WebUtil.Util;
+using Protocols.Types;
 
 namespace Auth.Services
 {
@@ -26,12 +26,12 @@ namespace Auth.Services
             return await _mongoDbAccountData.FindOneAsync(Builders<AccountData>.Filter.Eq(x => x.UserId, userId));
         }
 
-        public async Task<AccountData> SignUp(Web.Protocols.Request.SignUp signUp)
+        public async Task<AccountData> SignUp(Protocols.Request.SignUp signUp)
         {
             var accountData = await _mongoDbAccountData.FindOneAsync(Builders<AccountData>.Filter.Eq(x => x.UserId, signUp.UserId));
             if (accountData != null)
             {
-                throw new DeveloperException(Web.Code.ResultCode.AlreadyTakenUserId, System.Net.HttpStatusCode.Unauthorized);
+                throw new DeveloperException(Protocols.Code.ResultCode.AlreadyTakenUserId, System.Net.HttpStatusCode.Unauthorized);
             }
 
             accountData = new AccountData { UserId = signUp.UserId, Grade = AccountGradeType.User, State = AccountStateType.Enable, Password = signUp.Password, NickName = signUp.NickName, Email = signUp.Email };
@@ -41,17 +41,17 @@ namespace Auth.Services
             return accountData;
         }
 
-        public async Task<AccountData> Update(string userId, Web.Protocols.Request.AccountUpdate accountUpdate)
+        public async Task<AccountData> Update(string userId, Protocols.Request.AccountUpdate accountUpdate)
         {
             var accountData = await _mongoDbAccountData.FindOneAsync(Builders<AccountData>.Filter.Eq(x => x.UserId, userId));
             if (accountData == null)
             {
-                throw new DeveloperException(Web.Code.ResultCode.AlreadyTakenUserId);
+                throw new DeveloperException(Protocols.Code.ResultCode.AlreadyTakenUserId);
             }
 
             if (accountData.State != AccountStateType.Enable)
             {
-                throw new DeveloperException(Web.Code.ResultCode.NotUsableAccount);
+                throw new DeveloperException(Protocols.Code.ResultCode.NotUsableAccount);
             }
 
             var update = Builders<AccountData>.Update;
@@ -70,17 +70,17 @@ namespace Auth.Services
             return accountData;
         }
 
-        public async Task<AccountData> SignIn(Web.Protocols.Request.SignIn signIn)
+        public async Task<AccountData> SignIn(Protocols.Request.SignIn signIn)
         {
             var accountData = await _mongoDbAccountData.FindOneAsync(Builders<AccountData>.Filter.Eq(x => x.UserId, signIn.UserId));
             if (accountData == null)
             {
-                throw new DeveloperException(Web.Code.ResultCode.NotFoundAccount, System.Net.HttpStatusCode.Unauthorized);
+                throw new DeveloperException(Protocols.Code.ResultCode.NotFoundAccount, System.Net.HttpStatusCode.Unauthorized);
             }
 
             if (accountData.Password != signIn.Password)
             {
-                throw new DeveloperException(Web.Code.ResultCode.NotMatchPassword, System.Net.HttpStatusCode.Unauthorized);
+                throw new DeveloperException(Protocols.Code.ResultCode.NotMatchPassword, System.Net.HttpStatusCode.Unauthorized);
             }
 
             _tokenService.Issue(accountData);
@@ -94,7 +94,7 @@ namespace Auth.Services
             var accountData = await _mongoDbAccountData.FindOneAsync(Builders<AccountData>.Filter.Eq(x => x.UserId, userId));
             if (accountData == null)
             {
-                throw new DeveloperException(Web.Code.ResultCode.NotFoundAccount, System.Net.HttpStatusCode.Unauthorized);
+                throw new DeveloperException(Protocols.Code.ResultCode.NotFoundAccount, System.Net.HttpStatusCode.Unauthorized);
             }
 
             accountData.Token = string.Empty;

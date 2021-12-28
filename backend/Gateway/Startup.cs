@@ -11,7 +11,7 @@ using Ocelot.DependencyInjection;
 using Ocelot.LoadBalancer.LoadBalancers;
 using Ocelot.LoadBalancer.Middleware;
 using Ocelot.Middleware;
-using Web.Protocols.Exception;
+using Protocols.Exception;
 using WebUtil.StartUp;
 
 namespace Gateway

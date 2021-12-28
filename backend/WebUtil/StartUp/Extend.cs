@@ -41,7 +41,7 @@ namespace WebUtil.StartUp
 
                     // Resolve Looping navigation properties
                     options.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore;
-                }).SetCompatibilityVersion(CompatibilityVersion.Version_3_0);
+                });
 
             services.AddSwaggerGen(c =>
                     {

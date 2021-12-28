@@ -13,11 +13,12 @@ using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
-using Web.Protocols;
+using Protocols;
 using WebShared.Util;
 using WebUtil.HttpClient;
 using WebUtil.RabbitMQ;
 using WebUtil.Settings;
+using EzAspDotNet.Protocols;
 
 namespace Notification.WebSocket
 {
@@ -125,47 +126,44 @@ namespace Notification.WebSocket
         private async Task Dispatch(System.Net.WebSockets.WebSocket socket, RequestHeader requestHeader)
         {
             var socketId = ConnectionManager.GetId(socket);
-            switch (requestHeader.ProtocolId)
+            if (requestHeader.ProtocolId == Protocols.Id.ProtocolId.WebSocketAuth)
             {
-                case ProtocolId.WebSocketAuth:
-                    {
-                        if (IsAuth(socket))
-                        {
-                            await SendMessageAsync(socket, new Web.Protocols.Response.WebSocketAuth { ResultCode = Web.Code.ResultCode.AlreadyAuth, ErrorMessage = Web.Code.ResultCode.AlreadyAuth.ToString() });
-                            return;
-                        }
+                if (IsAuth(socket))
+                {
+                    await SendMessageAsync(socket, new Protocols.Response.WebSocketAuth { ResultCode = Protocols.Code.ResultCode.AlreadyAuth, ErrorMessage = Protocols.Code.ResultCode.AlreadyAuth.ToString() });
+                    return;
+                }
 
-                        var webSocketAuth = requestHeader.ExtensionData.Populate<Web.Protocols.Request.WebSocketAuth>();
+                var webSocketAuth = requestHeader.ExtensionData.Populate<Protocols.Request.WebSocketAuth>();
 
-                        Log.Logger.Debug($"[ReceiveAsync] SocketId:{socketId}, Cookie:{webSocketAuth.Cookie}");
+                Log.Logger.Debug($"[ReceiveAsync] SocketId:{socketId}, Cookie:{webSocketAuth.Cookie}");
 
-                        var token = CookieValue(webSocketAuth.Cookie, "Token");
-                        if (string.IsNullOrEmpty(token))
-                        {
-                            await socket.CloseAsync(WebSocketCloseStatus.PolicyViolation, "Not found Token", CancellationToken.None);
-                            return;
-                        }
+                var token = CookieValue(webSocketAuth.Cookie, "Token");
+                if (string.IsNullOrEmpty(token))
+                {
+                    await socket.CloseAsync(WebSocketCloseStatus.PolicyViolation, "Not found Token", CancellationToken.None);
+                    return;
+                }
 
-                        var authCheck = await _clientFactory.RequestJson<Web.Protocols.Response.AuthCheck>(HttpMethod.Post,
-                            _configuration.GetGatewaySettings().Url + "/auth/admin/accounts/check",
-                            new Web.Protocols.Request.AuthCheck { Token = token });
+                var authCheck = await _clientFactory.RequestJson<Protocols.Response.AuthCheck>(HttpMethod.Post,
+                    _configuration.GetGatewaySettings().Url + "/auth/admin/accounts/check",
+                    new Protocols.Request.AuthCheck { Token = token });
 
-                        if (authCheck.ResultCode != Web.Code.ResultCode.Success)
-                        {
-                            await SendMessageAsync(socket, new Web.Protocols.Response.WebSocketAuth { ResultCode = authCheck.ResultCode, ErrorMessage = authCheck.ErrorMessage });
-                            await socket.CloseAsync(WebSocketCloseStatus.PolicyViolation, "Invalid Token", CancellationToken.None);
-                            return;
-                        }
+                if (authCheck.ResultCode != Protocols.Code.ResultCode.Success)
+                {
+                    await SendMessageAsync(socket, new Protocols.Response.WebSocketAuth { ResultCode = authCheck.ResultCode, ErrorMessage = authCheck.ErrorMessage });
+                    await socket.CloseAsync(WebSocketCloseStatus.PolicyViolation, "Invalid Token", CancellationToken.None);
+                    return;
+                }
 
-                        var userData = new UserData { UserId = authCheck.UserId, SocketId = socketId };
-                        Consumer(socket, authCheck.UserId, OnReceiveByUser, userData);
+                var userData = new UserData { UserId = authCheck.UserId, SocketId = socketId };
+                Consumer(socket, authCheck.UserId, OnReceiveByUser, userData);
 
-                        await SendMessageAsync(socket, new Web.Protocols.Response.WebSocketAuth { });
-                    }
-                    break;
-                default:
-                    Log.Logger.Error($"OnReceiveByUser() Not Implemented Handler.  [Id:{requestHeader.ProtocolId}] [{socketId}]");
-                    break;
+                await SendMessageAsync(socket, new Protocols.Response.WebSocketAuth { });
+            }
+            else 
+            { 
+                Log.Logger.Error($"OnReceiveByUser() Not Implemented Handler.  [Id:{requestHeader.ProtocolId}] [{socketId}]");
             }
         }
 
@@ -210,34 +208,29 @@ namespace Notification.WebSocket
             var str = Encoding.UTF8.GetString(ea.Body);
             Log.Logger.Debug($"OnReceiveByServer() Consumer [{queueName}] {str}");
             var requestHeader = JsonConvert.DeserializeObject<RequestHeader>(str);
-            switch (requestHeader.ProtocolId)
+            if (requestHeader.ProtocolId == Protocols.Id.ProtocolId.AdminDisconnectUser)
             {
-                case ProtocolId.AdminDisconnectUser:
-                    {
-                        var disconnectUser = requestHeader.ExtensionData.Populate<Web.Protocols.Admin.Request.DisconnectUser>();
-                        var userData = GetUserData(disconnectUser.UserId);
-                        if (null == userData)
-                        {
-                            Log.Logger.Error($"OnReceiveByUser() Not Found User Socket by UserId. Maybe already disconnected user.  [Id:{requestHeader.ProtocolId}] [{queueName}] {str}");
-                            break;
-                        }
+                var disconnectUser = requestHeader.ExtensionData.Populate<Protocols.Admin.Request.DisconnectUser>();
+                var userData = GetUserData(disconnectUser.UserId);
+                if (null == userData)
+                {
+                    Log.Logger.Error($"OnReceiveByUser() Not Found User Socket by UserId. Maybe already disconnected user.  [Id:{requestHeader.ProtocolId}] [{queueName}] {str}");
+                    return;
+                }
 
-                        var userSocket = ConnectionManager.GetSocketById(userData.SocketId);
-                        if (userSocket == null)
-                        {
-                            Log.Logger.Error($"OnReceiveByUser() Not Found User Socket. Maybe already disconnected user. [Id:{requestHeader.ProtocolId}] [{queueName}] {str}");
-                            break;
-                        }
+                var userSocket = ConnectionManager.GetSocketById(userData.SocketId);
+                if (userSocket == null)
+                {
+                    Log.Logger.Error($"OnReceiveByUser() Not Found User Socket. Maybe already disconnected user. [Id:{requestHeader.ProtocolId}] [{queueName}] {str}");
+                    return;
+                }
 
-                        await SendMessageAsync(userSocket, new Web.Protocols.Response.WebSocketAuth { ResultCode = Web.Code.ResultCode.DisconnectByServer });
-                        await CloseSocket(userSocket, "Disconnect User by Server");
-                        break;
-                    }
-                default:
-                    {
-                        Log.Logger.Error($"OnReceiveByUser() Not Implemented Handler.  [Id:{requestHeader.ProtocolId}] [{queueName}] {str}");
-                        break;
-                    }
+                await SendMessageAsync(userSocket, new Protocols.Response.WebSocketAuth { ResultCode = Protocols.Code.ResultCode.DisconnectByServer });
+                await CloseSocket(userSocket, "Disconnect User by Server");
+            }
+            else
+            {
+                Log.Logger.Error($"OnReceiveByUser() Not Implemented Handler.  [Id:{requestHeader.ProtocolId}] [{queueName}] {str}");
             }
         }
 

@@ -1,14 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
-using Newtonsoft.Json;
-using Board.Models;
+﻿using Microsoft.AspNetCore.Mvc;
 using Board.Services;
-using Web.Protocols;
-using Web.Types;
 
 namespace Board.Controllers
 {

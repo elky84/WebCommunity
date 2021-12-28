@@ -3,10 +3,10 @@ using MongoDB.Driver;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using Web.Protocols.Exception;
-using Web.Protocols.Page;
+using Protocols.Exception;
 using WebUtil.Service;
 using WebUtil.Util;
+using EzAspDotNet.Protocols.Page;
 
 namespace Board.Services
 {
@@ -68,7 +68,7 @@ namespace Board.Services
             return await mongoDbUtil.Page(filter, pageable.Limit, pageable.Offset, pageable.Sort, pageable.Asc);
         }
 
-        public async Task<Article> Create(string id, string userId, string nickName, Web.Protocols.Request.Article article)
+        public async Task<Article> Create(string id, string userId, string nickName, Protocols.Request.Article article)
         {
             var mongoDbUtil = GetMongoDbBoard(id);
             return await mongoDbUtil.CreateAsync(article.ToModel(userId, nickName));
@@ -86,7 +86,7 @@ namespace Board.Services
             return await mongoDbUtil.UpdateGetAsync(articleId, Builders<Article>.Update.Inc(x => x.Hit, 1));
         }
 
-        public async Task<Article> Update(string id, string articleId, string userId, Web.Protocols.Request.Article article)
+        public async Task<Article> Update(string id, string articleId, string userId, Protocols.Request.Article article)
         {
             var mongoDbUtil = GetMongoDbBoard(id);
             var origin = await GetAndValidation(mongoDbUtil, articleId, userId);
@@ -127,12 +127,12 @@ namespace Board.Services
             var origin = await mongoDbUtil.FindOneAsyncById(articleId);
             if (origin == null)
             {
-                throw new DeveloperException(Web.Code.ResultCode.NotFoundData);
+                throw new DeveloperException(Protocols.Code.ResultCode.NotFoundData);
             }
 
             if (origin.UserId != userId)
             {
-                throw new DeveloperException(Web.Code.ResultCode.NotMatchedAuthor);
+                throw new DeveloperException(Protocols.Code.ResultCode.NotMatchedAuthor);
             }
 
             return origin;

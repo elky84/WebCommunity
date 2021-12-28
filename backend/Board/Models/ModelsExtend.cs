@@ -3,13 +3,13 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Web.Models;
+using EzAspDotNet.Models;
 
 namespace Board.Models
 {
     public static class ModelsExtend
     {
-        public static Article ToModel(this Web.Protocols.Request.Article article, string userId, string author)
+        public static Article ToModel(this Protocols.Request.Article article, string userId, string author)
         {
             return new Article
             {
@@ -24,9 +24,9 @@ namespace Board.Models
             };
         }
 
-        public static Web.Protocols.Common.Article ToProtocol(this Article article)
+        public static Protocols.Common.Article ToProtocol(this Article article)
         {
-            return new Web.Protocols.Common.Article
+            return new Protocols.Common.Article
             {
                 Author = article.Author,
                 UserId = article.UserId,
@@ -41,9 +41,9 @@ namespace Board.Models
             }.ToProtocol(article);
         }
 
-        public static Web.Protocols.Common.ArticleList ToListProtocol(this Article article)
+        public static Protocols.Common.ArticleList ToListProtocol(this Article article)
         {
-            return new Web.Protocols.Common.ArticleList
+            return new Protocols.Common.ArticleList
             {
                 Author = article.Author,
                 Category = article.Category,
@@ -55,7 +55,7 @@ namespace Board.Models
             }.ToProtocol(article);
         }
 
-        public static Comment ToModel(this Web.Protocols.Request.Comment comment, string articleId, string userId, string author, string commentId = null, string originAuthor = null)
+        public static Comment ToModel(this Protocols.Request.Comment comment, string articleId, string userId, string author, string commentId = null, string originAuthor = null)
         {
             return new Comment
             {
@@ -68,9 +68,9 @@ namespace Board.Models
             };
         }
 
-        public static Web.Protocols.Common.Comment ToProtocol(this Comment comment)
+        public static Protocols.Common.Comment ToProtocol(this Comment comment)
         {
-            return new Web.Protocols.Common.Comment
+            return new Protocols.Common.Comment
             {
                 Author = comment.Author,
                 UserId = comment.UserId,
