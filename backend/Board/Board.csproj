@@ -15,6 +15,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\Protocols\Protocols.csproj" />
     <ProjectReference Include="..\WebUtil\WebUtil.csproj" />
   </ItemGroup>
 

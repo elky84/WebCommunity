@@ -1,9 +1,4 @@
-﻿using RabbitMQ.Client;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using EzAspDotNet.Models;
+﻿using WebUtil.Models;
 
 namespace Board.Models
 {

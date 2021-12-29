@@ -1,5 +1,5 @@
-﻿using System.Collections.Generic;
-using EzAspDotNet.Models;
+﻿using MongoDbWebUtil.Models;
+using System.Collections.Generic;
 
 namespace Board.Models
 {

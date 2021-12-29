@@ -4,9 +4,9 @@ using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Protocols.Exception;
-using WebUtil.Service;
-using WebUtil.Util;
 using EzAspDotNet.Protocols.Page;
+using MongoDbWebUtil.Services;
+using MongoDbWebUtil.Util;
 
 namespace Board.Services
 {
@@ -14,7 +14,7 @@ namespace Board.Services
     {
         private MongoDbService _mongoDbService;
 
-        private readonly ConcurrentDictionary<string, MongoDbUtil<Article>> _mongoDbBoards = new ConcurrentDictionary<string, MongoDbUtil<Article>>();
+        private readonly ConcurrentDictionary<string, MongoDbUtil<Article>> _mongoDbBoards = new();
 
         private CommentService _commentService;
 

@@ -1,7 +1,7 @@
-using EzAspDotNet.Models;
 using MongoDB.Bson.Serialization.Attributes;
 using MongoDB.Bson;
 using Protocols.Types;
+using MongoDbWebUtil.Models;
 
 namespace Auth.Models
 {

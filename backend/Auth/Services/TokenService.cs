@@ -11,9 +11,9 @@ using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
 using Protocols.Exception;
-using WebUtil.Service;
-using WebUtil.Util;
 using Protocols.Types;
+using MongoDbWebUtil.Util;
+using MongoDbWebUtil.Services;
 
 namespace Auth.Services
 {
