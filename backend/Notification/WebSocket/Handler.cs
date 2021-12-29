@@ -13,16 +13,15 @@ using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
-using Protocols;
 using WebShared.Util;
-using WebUtil.HttpClient;
-using WebUtil.RabbitMQ;
-using WebUtil.Settings;
+using EzAspDotNet.HttpClient;
+using EzAspDotNet.RabbitMQ;
+using EzAspDotNet.Settings;
 using EzAspDotNet.Protocols;
 
 namespace Notification.WebSocket
 {
-    public class Handler : WebUtil.WebSocketManager.Handler
+    public class Handler : EzAspDotNet.WebSocketManager.Handler
     {
         private class UserData
         {
@@ -45,7 +44,7 @@ namespace Notification.WebSocket
 
         private readonly IHttpClientFactory _clientFactory;
 
-        public Handler(WebUtil.WebSocketManager.ConnectionManager connectionManager, IHttpClientFactory httpClientFactory, IConfiguration configuration) : base(connectionManager)
+        public Handler(EzAspDotNet.WebSocketManager.ConnectionManager connectionManager, IHttpClientFactory httpClientFactory, IConfiguration configuration) : base(connectionManager)
         {
             _clientFactory = httpClientFactory;
             _configuration = configuration;
@@ -66,7 +65,7 @@ namespace Notification.WebSocket
             try
             {
                 var rabbitMqSettings = _configuration.GetRabbitMqSettings();
-                _connection = WebUtil.RabbitMQ.Extend.CreateConnection(rabbitMqSettings.Url, rabbitMqSettings.UserName, rabbitMqSettings.Password);
+                _connection = EzAspDotNet.RabbitMQ.Extend.CreateConnection(rabbitMqSettings.Url, rabbitMqSettings.UserName, rabbitMqSettings.Password);
 
                 if (IsOpen())
                 {
@@ -187,7 +186,7 @@ namespace Notification.WebSocket
             }
 
             var socket = ConnectionManager.GetSocketById(userData.SocketId);
-            var str = Encoding.UTF8.GetString(ea.Body);
+            var str = Encoding.UTF8.GetString(ea.Body.ToArray());
             Log.Logger.Debug($"OnReceiveByUser() Consumer [{userData.SocketId}] [{queueName}] {str}");
             await SendMessageAsync(socket, str);
         }
@@ -197,7 +196,7 @@ namespace Notification.WebSocket
             foreach (var userData in GetUserDatasByChat(queueName))
             {
                 var socket = ConnectionManager.GetSocketById(userData.SocketId);
-                var str = Encoding.UTF8.GetString(ea.Body);
+                var str = Encoding.UTF8.GetString(ea.Body.ToArray());
                 Log.Logger.Debug($"OnReceiveByChat() Consumer [{userData.SocketId}] [{queueName}] {str}");
                 await SendMessageAsync(socket, str);
             }
@@ -205,7 +204,7 @@ namespace Notification.WebSocket
 
         private async void OnReceiveByServer(string queueName, object model, BasicDeliverEventArgs ea)
         {
-            var str = Encoding.UTF8.GetString(ea.Body);
+            var str = Encoding.UTF8.GetString(ea.Body.ToArray());
             Log.Logger.Debug($"OnReceiveByServer() Consumer [{queueName}] {str}");
             var requestHeader = JsonConvert.DeserializeObject<RequestHeader>(str);
             if (requestHeader.ProtocolId == Protocols.Id.ProtocolId.AdminDisconnectUser)

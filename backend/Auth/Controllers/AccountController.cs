@@ -17,7 +17,7 @@ namespace Auth.Controllers
         }
 
         [HttpPost("Profile")]
-        public async Task<Protocols.Response.Account> Profile([FromHeader(Name = WebUtil.HeaderKeys.AuthorizedUserId)] string userId)
+        public async Task<Protocols.Response.Account> Profile([FromHeader(Name = EzAspDotNet.Constants.HeaderKeys.AuthorizedUserId)] string userId)
         {
             return (await _accountService.Get(userId)).ToResponse();
         }
@@ -35,7 +35,7 @@ namespace Auth.Controllers
         }
 
         [HttpPut("Update")]
-        public async Task<Protocols.Response.AccountUpdate> Update([FromHeader(Name = WebUtil.HeaderKeys.AuthorizedUserId)] string userId,
+        public async Task<Protocols.Response.AccountUpdate> Update([FromHeader(Name = EzAspDotNet.Constants.HeaderKeys.AuthorizedUserId)] string userId,
             [FromBody] Protocols.Request.AccountUpdate update)
         {
             var account = await _accountService.Update(userId, update);
@@ -59,7 +59,7 @@ namespace Auth.Controllers
         }
 
         [HttpPost("SignOut")]
-        public async Task<EzAspDotNet.Protocols.ResponseHeader> SignOut([FromHeader(Name = WebUtil.HeaderKeys.AuthorizedUserId)] string userId)
+        public async Task<EzAspDotNet.Protocols.ResponseHeader> SignOut([FromHeader(Name = EzAspDotNet.Constants.HeaderKeys.AuthorizedUserId)] string userId)
         {
             var account = await _accountService.SignOut(userId);
             if (account != null)

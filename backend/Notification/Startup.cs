@@ -3,10 +3,10 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using WebUtil.WebSocketManager;
-using WebUtil.StartUp;
+using EzAspDotNet.WebSocketManager;
+using EzAspDotNet.StartUp;
 using Microsoft.Extensions.Hosting;
-using WebUtil.Service;
+using EzAspDotNet.Service;
 
 namespace Notification
 {

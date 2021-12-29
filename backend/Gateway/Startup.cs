@@ -12,7 +12,7 @@ using Ocelot.LoadBalancer.LoadBalancers;
 using Ocelot.LoadBalancer.Middleware;
 using Ocelot.Middleware;
 using Protocols.Exception;
-using WebUtil.StartUp;
+using EzAspDotNet.StartUp;
 
 namespace Gateway
 {

@@ -25,7 +25,7 @@ namespace Gateway.Middlewares
 
         public async Task Authenticate(DownstreamContext ctx, Func<Task> next)
         {
-            if (ctx.DownstreamRequest.Headers.TryGetValues(WebUtil.HeaderKeys.InternalServer, out var server))
+            if (ctx.DownstreamRequest.Headers.TryGetValues(EzAspDotNet.Constants.HeaderKeys.InternalServer, out var server))
             {
                 await next.Invoke();
                 return;
@@ -42,7 +42,7 @@ namespace Gateway.Middlewares
             }
 
             var auth = await Authorization(ctx);
-            ctx.DownstreamRequest.Headers.Add(WebUtil.HeaderKeys.AuthorizedUserId, auth.UserId);
+            ctx.DownstreamRequest.Headers.Add(EzAspDotNet.Constants.HeaderKeys.AuthorizedUserId, auth.UserId);
             ctx.DownstreamRequest.Headers.Add(WebUtil.HeaderKeys.AuthorizedNickName, HttpUtility.UrlEncode(auth.NickName));
             await next.Invoke();
         }

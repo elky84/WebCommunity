@@ -3,7 +3,7 @@ using Serilog;
 using System;
 using System.Threading;
 using System.Threading.Tasks;
-using WebUtil.Service;
+using EzAspDotNet.Service;
 
 namespace Notification.RabbitMQ
 {

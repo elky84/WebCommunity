@@ -30,7 +30,7 @@ namespace Board.Controllers
         }
 
         [HttpPost("{boardId}")]
-        public async Task<Protocols.Response.Article> Create([FromHeader(Name = WebUtil.HeaderKeys.AuthorizedUserId)] string userId,
+        public async Task<Protocols.Response.Article> Create([FromHeader(Name = EzAspDotNet.Constants.HeaderKeys.AuthorizedUserId)] string userId,
             [FromHeader(Name = WebUtil.HeaderKeys.AuthorizedNickName)] string encodedNickName,
             string boardId, [FromBody] Protocols.Request.Article article)
         {
@@ -61,7 +61,7 @@ namespace Board.Controllers
 
 
         [HttpPut("{boardId}/{articleId}")]
-        public async Task<Protocols.Response.Article> Update([FromHeader(Name = WebUtil.HeaderKeys.AuthorizedUserId)] string userId,
+        public async Task<Protocols.Response.Article> Update([FromHeader(Name = EzAspDotNet.Constants.HeaderKeys.AuthorizedUserId)] string userId,
             string boardId, string articleId, [FromBody] Protocols.Request.Article article)
         {
             return new Protocols.Response.Article
@@ -71,7 +71,7 @@ namespace Board.Controllers
         }
 
         [HttpDelete("{boardId}/{articleId}")]
-        public async Task<Protocols.Response.Article> Delete([FromHeader(Name = WebUtil.HeaderKeys.AuthorizedUserId)] string userId,
+        public async Task<Protocols.Response.Article> Delete([FromHeader(Name = EzAspDotNet.Constants.HeaderKeys.AuthorizedUserId)] string userId,
             string boardId, string articleId)
         {
             return new Protocols.Response.Article
@@ -81,7 +81,7 @@ namespace Board.Controllers
         }
 
         [HttpPost("{boardId}/{articleId}/Recommend")]
-        public async Task<Protocols.Response.Article> Recommend([FromHeader(Name = WebUtil.HeaderKeys.AuthorizedUserId)] string userId,
+        public async Task<Protocols.Response.Article> Recommend([FromHeader(Name = EzAspDotNet.Constants.HeaderKeys.AuthorizedUserId)] string userId,
             string boardId, string articleId)
         {
             return new Protocols.Response.Article
@@ -91,7 +91,7 @@ namespace Board.Controllers
         }
 
         [HttpPost("{boardId}/{articleId}/NotRecommend")]
-        public async Task<Protocols.Response.Article> NotRecommend([FromHeader(Name = WebUtil.HeaderKeys.AuthorizedUserId)] string userId,
+        public async Task<Protocols.Response.Article> NotRecommend([FromHeader(Name = EzAspDotNet.Constants.HeaderKeys.AuthorizedUserId)] string userId,
             string boardId, string articleId)
         {
             return new Protocols.Response.Article

@@ -3,8 +3,8 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Board.Services;
-using WebUtil.Service;
-using WebUtil.StartUp;
+using EzAspDotNet.Service;
+using EzAspDotNet.StartUp;
 using Microsoft.Extensions.Options;
 
 namespace Board
