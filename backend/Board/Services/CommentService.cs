@@ -11,7 +11,7 @@ namespace Board.Services
 {
     public class CommentService
     {
-        private MongoDbService _mongoDbService;
+        private readonly MongoDbService _mongoDbService;
 
         private readonly Dictionary<string, MongoDbUtil<Comment>> _mongoDbBoardComments = new Dictionary<string, MongoDbUtil<Comment>>();
 

@@ -2,7 +2,7 @@
 using MongoDB.Driver;
 using System.Threading.Tasks;
 using Protocols.Exception;
-using Protocols.Types;
+using Protocols.Code;
 using MongoDbWebUtil.Util;
 using MongoDbWebUtil.Services;
 
@@ -10,9 +10,9 @@ namespace Auth.Services
 {
     public class AccountService
     {
-        private MongoDbUtil<AccountData> _mongoDbAccountData;
+        private readonly MongoDbUtil<AccountData> _mongoDbAccountData;
 
-        private TokenService _tokenService;
+        private readonly TokenService _tokenService;
 
         public AccountService(MongoDbService mongoDbServbice, TokenService tokenService)
         {
@@ -34,7 +34,7 @@ namespace Auth.Services
                 throw new DeveloperException(Protocols.Code.ResultCode.AlreadyTakenUserId, System.Net.HttpStatusCode.Unauthorized);
             }
 
-            accountData = new AccountData { UserId = signUp.UserId, Grade = AccountGradeType.User, State = AccountStateType.Enable, Password = signUp.Password, NickName = signUp.NickName, Email = signUp.Email };
+            accountData = new AccountData { UserId = signUp.UserId, Grade = AccountGrade.User, State = AccountState.Enable, Password = signUp.Password, NickName = signUp.NickName, Email = signUp.Email };
 
             _tokenService.Issue(accountData);
             await _mongoDbAccountData.CreateAsync(accountData);
@@ -49,7 +49,7 @@ namespace Auth.Services
                 throw new DeveloperException(Protocols.Code.ResultCode.AlreadyTakenUserId);
             }
 
-            if (accountData.State != AccountStateType.Enable)
+            if (accountData.State != AccountState.Enable)
             {
                 throw new DeveloperException(Protocols.Code.ResultCode.NotUsableAccount);
             }

@@ -14,7 +14,9 @@ namespace Auth.Extend
 
             var options = new CookieOptions
             {
-                //Expires = DateTime.Now.AddMinutes(60),
+#if !_DEBUG
+                Expires = DateTime.Now.AddMinutes(60),
+#endif
                 IsEssential = true
             };
 

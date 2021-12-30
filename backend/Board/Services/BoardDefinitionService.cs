@@ -6,7 +6,7 @@ namespace Board.Services
 {
     public class BoardDefinitionService
     {
-        private MongoDbService _mongoDbService;
+        private readonly MongoDbService _mongoDbService;
 
         private readonly MongoDbUtil<Models.BoardDefinition> _mongoDbBoardDefinition;
 

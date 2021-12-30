@@ -1,6 +1,6 @@
 using MongoDB.Bson.Serialization.Attributes;
 using MongoDB.Bson;
-using Protocols.Types;
+using Protocols.Code;
 using MongoDbWebUtil.Models;
 
 namespace Auth.Models
@@ -12,10 +12,10 @@ namespace Auth.Models
         public string UserId { get; set; }
 
         [BsonRepresentation(BsonType.String)]
-        public AccountGradeType Grade { get; set; }
+        public AccountGrade Grade { get; set; }
 
         [BsonRepresentation(BsonType.String)]
-        public AccountStateType State { get; set; }
+        public AccountState State { get; set; }
 
         public string Password { get; set; }
 

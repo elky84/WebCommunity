@@ -2,7 +2,7 @@
 using Newtonsoft.Json.Converters;
 using EzAspDotNet.Protocols;
 using EzAspDotNet.Protocols.Id;
-using Protocols.Types;
+using Protocols.Code;
 
 namespace Protocols.Response
 {
@@ -20,9 +20,9 @@ namespace Protocols.Response
         public string Token { get; set; }
 
         [JsonConverter(typeof(StringEnumConverter))]
-        public AccountGradeType Grade { get; set; }
+        public AccountGrade Grade { get; set; }
 
         [JsonConverter(typeof(StringEnumConverter))]
-        public AccountStateType State { get; set; }
+        public AccountState State { get; set; }
     }
 }

@@ -1,4 +1,4 @@
-﻿using Auth.Models.Settings;
+﻿using Auth.Settings;
 using Auth.Services;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;

@@ -1,5 +1,5 @@
 ﻿
-namespace Auth.Models.Settings
+namespace Auth.Settings
 {
     public class AppSettings : IAppSettings
     {

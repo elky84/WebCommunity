@@ -1,18 +1,15 @@
 ﻿using WebShared.Common;
 
-namespace Protocols.Types
+namespace Protocols.Code
 {
     [DescriptiveEnumEnforcement(DescriptiveEnumEnforcementAttribute.EnforcementTypeEnum.ThrowException)]
-    public enum AccountGradeType
+    public enum AccountGrade
     {
         [Description("관리자")]
         Admin,
 
         [Description("중재자")]
         Moderator,
-
-        [Description("개발자")]
-        Developer,
 
         [Description("사용자")]
         User

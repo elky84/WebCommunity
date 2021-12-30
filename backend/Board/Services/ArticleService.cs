@@ -12,11 +12,11 @@ namespace Board.Services
 {
     public class ArticleService
     {
-        private MongoDbService _mongoDbService;
+        private readonly MongoDbService _mongoDbService;
 
         private readonly ConcurrentDictionary<string, MongoDbUtil<Article>> _mongoDbBoards = new();
 
-        private CommentService _commentService;
+        private readonly CommentService _commentService;
 
         public ArticleService(MongoDbService mongoDbService,
             CommentService commentService)

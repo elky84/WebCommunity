@@ -9,6 +9,9 @@ using System.Runtime.Caching;
 using System.Threading.Tasks;
 using System.Web;
 using Protocols.Exception;
+using Ocelot.Configuration.File;
+using System.Collections.Generic;
+using System.IO;
 
 namespace Gateway.Middlewares
 {
@@ -16,7 +19,7 @@ namespace Gateway.Middlewares
     {
         private readonly IHttpClientFactory _clientFactory;
 
-        private Random Random = new Random();
+        private readonly Random Random = new();
 
         public AuthMiddleware(IHttpClientFactory clientFactory)
         {
@@ -58,7 +61,7 @@ namespace Gateway.Middlewares
                 return cacheAuth;
             }
 
-            var reRoute = Configuration.Extend.Get("AuthReRoute", "/Auth/{everything}");
+            var reRoute = GetReRoute("AuthReRoute", "/Auth/{everything}");
             if (reRoute == null)
             {
                 throw new DeveloperException(Protocols.Code.ResultCode.NotFoundAuthRoutes);
@@ -98,6 +101,29 @@ namespace Gateway.Middlewares
                 cache.Set(cacheKey, auth.UserId, policy);
                 return auth;
             }
+        }
+
+        public static FileReRoute GetReRoute(string cacheKey, string pathTemplate)
+        {
+            ObjectCache cache = MemoryCache.Default;
+            var reRoute = cache[cacheKey] as FileReRoute;
+            if (reRoute == null)
+            {
+                var fileName = $"./ocelot.{Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT")}.json";
+                var filePaths = new List<string> { fileName };
+
+                var policy = new CacheItemPolicy();
+                policy.ChangeMonitors.Add(new HostFileChangeMonitor(filePaths));
+
+                reRoute = JsonConvert.DeserializeObject<FileConfiguration>(File.ReadAllText(fileName)).ReRoutes
+                    .FirstOrDefault(x => x.UpstreamPathTemplate.StartsWith(pathTemplate) && x.DownstreamHostAndPorts.Count() > 0);
+
+                if (reRoute != null)
+                {
+                    cache.Set(cacheKey, reRoute, policy);
+                }
+            }
+            return reRoute;
         }
     }
 }

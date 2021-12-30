@@ -1,20 +1,14 @@
 ﻿using WebShared.Common;
 
-namespace Protocols.Types
+namespace Protocols.Code
 {
     [DescriptiveEnumEnforcement(DescriptiveEnumEnforcementAttribute.EnforcementTypeEnum.ThrowException)]
-    public enum AccountStateType
+    public enum AccountState
     {
         [Description("활성화")]
         Enable,
 
         [Description("비활성화")]
         Disable,
-
-        [Description("삭제")]
-        Delete,
-
-        [Description("중지")]
-        Suspend
     }
 }

@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Serilog;
 
 namespace WebUtil.Auth
 {
@@ -8,7 +9,8 @@ namespace WebUtil.Auth
         {
             if (false == controller.Request.Headers.TryGetValue(EzAspDotNet.Constants.HeaderKeys.AuthorizedUserId, out var userId))
             {
-                // TODO throw 
+                Log.Logger.Error($"ExtractUserId() Failed. <RemoteIp:{controller.Request.HttpContext.Connection.RemoteIpAddress}, " +
+                    $"LocalIp:{controller.Request.HttpContext.Connection.LocalIpAddress}>");
                 return null;
             }
 

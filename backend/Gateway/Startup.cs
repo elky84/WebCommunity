@@ -8,7 +8,6 @@ using Microsoft.Extensions.DependencyInjection;
 using Newtonsoft.Json;
 using NLog;
 using Ocelot.DependencyInjection;
-using Ocelot.LoadBalancer.LoadBalancers;
 using Ocelot.LoadBalancer.Middleware;
 using Ocelot.Middleware;
 using Protocols.Exception;
@@ -41,7 +40,6 @@ namespace Gateway
                     builder => builder
                         .AllowAnyMethod()
                         .AllowAnyHeader()
-                        .WithOrigins("http://localhost:8080") // 설정 파일로 빼야 할 덧?
                         .AllowCredentials()
                         .WithExposedHeaders("Set-Cookie"));
             });
@@ -51,7 +49,6 @@ namespace Gateway
             services.AddSingleton<AuthMiddleware>();
 
             services.AddSingleton<LoadBalancingMiddleware>();
-            services.AddSingleton<ILoadBalancerHouse, LoadBalancer.LoadBalancerHouse>();
 
             services.AddOcelot(Configuration);
         }
@@ -62,13 +59,6 @@ namespace Gateway
             app.CommonConfigure(env);
 
             authMiddleware = app.ApplicationServices.GetService<AuthMiddleware>();
-
-            //TODO https 로컬 환경 때문에 검토 필요.
-            //if (!env.IsDevelopment())
-            //{
-            //    // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
-            //    app.UseHsts();
-            //}
             app.UseHttpsRedirection();
 
             app.UseCors();

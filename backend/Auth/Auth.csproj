@@ -28,9 +28,4 @@
     <ProjectReference Include="..\WebUtil\WebUtil.csproj" />
   </ItemGroup>
 
-
-  <ItemGroup>
-    <Folder Include="Protocols\" />
-  </ItemGroup>
-
 </Project>
