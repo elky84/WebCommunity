@@ -5,8 +5,8 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using Protocols.Exception;
 using EzAspDotNet.Protocols.Page;
-using MongoDbWebUtil.Services;
-using MongoDbWebUtil.Util;
+using EzAspDotNet.Services;
+using EzAspDotNet.Util;
 
 namespace Board.Services
 {

@@ -85,9 +85,9 @@ namespace Gateway.Middlewares
             else
             {
                 var auth = JsonConvert.DeserializeObject<Protocols.Response.Account>(content);
-                if (auth.ResultCode != Protocols.Code.ResultCode.Success)
+                if (auth.ResultCode != EzAspDotNet.Code.ResultCode.Success)
                 {
-                    throw new DeveloperException(auth.ResultCode, response.StatusCode, auth.ErrorMessage);
+                    throw new DeveloperException(auth.ResultCode, response.StatusCode);
                 }
 
                 if (response.Headers.TryGetValues(EzAspDotNet.Constants.HeaderKeys.SetCookie, out var setCookie))

@@ -82,7 +82,6 @@ namespace Gateway
                             await ctx.HttpContext.Response.Body.WriteAsync(Encoding.UTF8.GetBytes(JsonConvert.SerializeObject(new ErrorDetails
                             {
                                 StatusCode = ctx.HttpContext.Response.StatusCode,
-                                ErrorMessage = developerException.ResultCode.ToString(),
                                 Detail = developerException.Detail,
                                 ResultCode = developerException.ResultCode
                             })));
@@ -93,7 +92,6 @@ namespace Gateway
                             await ctx.HttpContext.Response.Body.WriteAsync(Encoding.UTF8.GetBytes(JsonConvert.SerializeObject(new ErrorDetails()
                             {
                                 StatusCode = ctx.HttpContext.Response.StatusCode,
-                                ErrorMessage = ctx.HttpContext.Response.StatusCode.ToString(),
                                 Detail = e.Message
                             })));
                         }

@@ -1,4 +1,4 @@
-﻿using MongoDbWebUtil.Models;
+﻿using EzAspDotNet.Models;
 using System.Collections.Generic;
 
 namespace Board.Models

@@ -1,6 +1,6 @@
 ﻿
-using MongoDbWebUtil.Services;
-using MongoDbWebUtil.Util;
+using EzAspDotNet.Services;
+using EzAspDotNet.Util;
 
 namespace Board.Services
 {

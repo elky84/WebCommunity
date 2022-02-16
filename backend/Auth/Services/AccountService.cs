@@ -3,8 +3,8 @@ using MongoDB.Driver;
 using System.Threading.Tasks;
 using Protocols.Exception;
 using Protocols.Code;
-using MongoDbWebUtil.Util;
-using MongoDbWebUtil.Services;
+using EzAspDotNet.Util;
+using EzAspDotNet.Services;
 
 namespace Auth.Services
 {

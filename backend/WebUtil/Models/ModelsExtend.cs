@@ -1,4 +1,4 @@
-﻿using MongoDbWebUtil.Models;
+﻿using EzAspDotNet.Models;
 
 namespace WebUtil.Models
 {
