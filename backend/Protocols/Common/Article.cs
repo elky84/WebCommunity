@@ -1,4 +1,5 @@
-﻿using EzAspDotNet.Protocols.Common;
+﻿using EzAspDotNet.Protocols;
+using System.Collections.Generic;
 
 namespace Protocols.Common
 {

@@ -85,7 +85,7 @@ namespace Gateway.Middlewares
             else
             {
                 var auth = JsonConvert.DeserializeObject<Protocols.Response.Account>(content);
-                if (auth.ResultCode != EzAspDotNet.Code.ResultCode.Success)
+                if (auth.ResultCode != EzAspDotNet.Protocols.Code.ResultCode.Success)
                 {
                     throw new DeveloperException(auth.ResultCode, response.StatusCode);
                 }

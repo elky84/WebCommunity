@@ -1,5 +1,6 @@
 ﻿using EzAspDotNet.Protocols;
 using EzAspDotNet.Protocols.Id;
+using System.Collections.Generic;
 
 namespace Protocols.Request
 {

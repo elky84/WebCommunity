@@ -1,7 +1,7 @@
 ﻿using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
-using EzAspDotNet.Protocols.Common;
 using Protocols.Code;
+using EzAspDotNet.Protocols;
 
 namespace Protocols.Common
 {
