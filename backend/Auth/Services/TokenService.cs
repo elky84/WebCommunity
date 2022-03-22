@@ -1,8 +1,12 @@
 ﻿using Auth.Models;
 using Auth.Settings;
+using EzAspDotNet.Services;
+using EzAspDotNet.Util;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using MongoDB.Driver;
+using Protocols.Code;
+using Protocols.Exception;
 using System;
 using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
@@ -10,10 +14,6 @@ using System.Linq;
 using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
-using Protocols.Exception;
-using Protocols.Code;
-using EzAspDotNet.Util;
-using EzAspDotNet.Services;
 
 namespace Auth.Services
 {
@@ -43,9 +43,13 @@ namespace Auth.Services
             var accountData = await _mongoDbAccountData.FindOneAsync(Builders<AccountData>.Filter.Eq(x => x.UserId, userId));
             if (accountData == null)
             {
-                accountData = new AccountData { UserId = userId, Grade = AccountGrade.User, State = AccountState.Enable };
-                await _mongoDbAccountData.CreateAsync(accountData);
-                throw new DeveloperException(ResultCode.NotFoundAccount, System.Net.HttpStatusCode.Unauthorized);
+                if (Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT") == "Production")
+                    throw new DeveloperException(ResultCode.NotFoundAccount, System.Net.HttpStatusCode.Unauthorized);
+                else
+                {
+                    accountData = new AccountData { UserId = userId, Grade = AccountGrade.User, State = AccountState.Enable };
+                    await _mongoDbAccountData.CreateAsync(accountData);
+                }
             }
 
             if (accountData.State != AccountState.Enable)
@@ -54,6 +58,8 @@ namespace Auth.Services
             }
 
             Issue(accountData);
+
+            await _mongoDbAccountData.UpdateAsync(accountData.Id, accountData);
 
             return accountData.ToResponse();
         }
