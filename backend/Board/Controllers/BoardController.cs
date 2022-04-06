@@ -1,9 +1,9 @@
-﻿using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
-using Board.Models;
+﻿using Board.Models;
 using Board.Services;
-using System.Web;
 using EzAspDotNet.Protocols.Page;
+using Microsoft.AspNetCore.Mvc;
+using System.Threading.Tasks;
+using System.Web;
 
 namespace Board.Controllers
 {
@@ -25,7 +25,8 @@ namespace Board.Controllers
             return new Protocols.Response.ArticleList
             {
                 Contents = (await _articleService.Get(boardId, author, title, content, pageable)).ConvertAll(x => x.ToListProtocol()),
-                Total = await _articleService.CountAsync(boardId)
+                Total = await _articleService.CountAsync(boardId),
+                Pageable = pageable,
             };
         }
 
