@@ -1,17 +1,17 @@
 ﻿using Microsoft.Extensions.Primitives;
 using Newtonsoft.Json;
+using Ocelot.Configuration.File;
 using Ocelot.Middleware;
+using Protocols.Exception;
 using System;
+using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Runtime.Caching;
 using System.Threading.Tasks;
 using System.Web;
-using Protocols.Exception;
-using Ocelot.Configuration.File;
-using System.Collections.Generic;
-using System.IO;
 
 namespace Gateway.Middlewares
 {
@@ -109,7 +109,7 @@ namespace Gateway.Middlewares
             var reRoute = cache[cacheKey] as FileReRoute;
             if (reRoute == null)
             {
-                var fileName = $"./ocelot.{Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT")}.json";
+                var fileName = $"./ocelot.{Environment.GetEnvironmentVariable("DOTNET_ENVIRONMENT")}.json";
                 var filePaths = new List<string> { fileName };
 
                 var policy = new CacheItemPolicy();

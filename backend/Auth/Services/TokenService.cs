@@ -43,7 +43,7 @@ namespace Auth.Services
             var accountData = await _mongoDbAccountData.FindOneAsync(Builders<AccountData>.Filter.Eq(x => x.UserId, userId));
             if (accountData == null)
             {
-                if (Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT") == "Production")
+                if (Environment.GetEnvironmentVariable("DOTNET_ENVIRONMENT") == "Production")
                     throw new DeveloperException(ResultCode.NotFoundAccount, System.Net.HttpStatusCode.Unauthorized);
                 else
                 {
