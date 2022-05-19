@@ -1,4 +1,4 @@
-﻿using EzAspDotNet.Models;
+﻿using EzMongoDb.Models;
 using System.Collections.Generic;
 
 namespace Board.Models

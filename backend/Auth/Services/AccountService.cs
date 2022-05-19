@@ -1,10 +1,10 @@
 ﻿using Auth.Models;
-using MongoDB.Driver;
-using System.Threading.Tasks;
-using Protocols.Exception;
-using Protocols.Code;
-using EzAspDotNet.Util;
 using EzAspDotNet.Services;
+using EzMongoDb.Util;
+using MongoDB.Driver;
+using Protocols.Code;
+using Protocols.Exception;
+using System.Threading.Tasks;
 
 namespace Auth.Services
 {

@@ -1,6 +1,6 @@
 ﻿
 using EzAspDotNet.Services;
-using EzAspDotNet.Util;
+using EzMongoDb.Util;
 
 namespace Board.Services
 {

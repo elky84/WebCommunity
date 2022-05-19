@@ -2,7 +2,7 @@
 using EzAspDotNet.Models;
 using EzAspDotNet.Protocols.Page;
 using EzAspDotNet.Services;
-using EzAspDotNet.Util;
+using EzMongoDb.Util;
 using MongoDB.Driver;
 using Protocols.Exception;
 using System.Collections.Concurrent;

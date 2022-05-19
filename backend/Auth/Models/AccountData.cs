@@ -1,4 +1,4 @@
-using EzAspDotNet.Models;
+using EzMongoDb.Models;
 using MongoDB.Bson;
 using MongoDB.Bson.Serialization.Attributes;
 using Protocols.Code;
