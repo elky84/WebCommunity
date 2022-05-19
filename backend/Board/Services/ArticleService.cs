@@ -1,12 +1,13 @@
 ﻿using Board.Models;
-using MongoDB.Driver;
-using System.Collections.Concurrent;
-using System.Collections.Generic;
-using System.Threading.Tasks;
-using Protocols.Exception;
+using EzAspDotNet.Models;
 using EzAspDotNet.Protocols.Page;
 using EzAspDotNet.Services;
 using EzAspDotNet.Util;
+using MongoDB.Driver;
+using Protocols.Exception;
+using System.Collections.Concurrent;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace Board.Services
 {
@@ -68,10 +69,15 @@ namespace Board.Services
             return await mongoDbUtil.Page(filter, pageable.Limit, pageable.Offset, pageable.Sort, pageable.Asc);
         }
 
-        public async Task<Article> Create(string id, string userId, string nickName, Protocols.Request.Article article)
+        public async Task<Article> Create(string id, string userId, string author, Protocols.Request.Article article)
         {
             var mongoDbUtil = GetMongoDbBoard(id);
-            return await mongoDbUtil.CreateAsync(article.ToModel(userId, nickName));
+
+            var articleModel = MapperUtil.Map<Article>(article);
+            articleModel.UserId = userId;
+            articleModel.Author = author;
+
+            return await mongoDbUtil.CreateAsync(articleModel);
         }
 
         public async Task<Article> Get(string id, string articleId)

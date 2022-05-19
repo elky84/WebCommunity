@@ -1,11 +1,12 @@
-﻿using Auth.Settings;
-using Auth.Services;
+﻿using Auth.Services;
+using Auth.Settings;
+using AutoMapper;
+using EzAspDotNet.StartUp;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
-using EzAspDotNet.StartUp;
 
 namespace Auth
 {
@@ -21,6 +22,14 @@ namespace Auth
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            EzAspDotNet.Models.MapperUtil.Initialize(
+                new MapperConfiguration(cfg =>
+                {
+                    cfg.CreateMap<Models.AccountData, Protocols.Common.Account>();
+                    cfg.CreateMap<Protocols.Common.Account, Models.AccountData>();
+                })
+            );
+
             services.CommonConfigureServices();
 
             services.Configure<AppSettings>(Configuration.GetSection(nameof(AppSettings)));

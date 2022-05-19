@@ -1,9 +1,12 @@
-﻿using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
-using Board.Models;
+﻿using Board.Models;
 using Board.Services;
-using System.Web;
+using EzAspDotNet.Exception;
+using EzAspDotNet.Models;
 using EzAspDotNet.Protocols.Page;
+using Microsoft.AspNetCore.Mvc;
+using System.Collections.Generic;
+using System.Threading.Tasks;
+using System.Web;
 
 namespace Board.Controllers
 {
@@ -23,7 +26,7 @@ namespace Board.Controllers
         {
             return new Protocols.Response.CommentList
             {
-                Datas = (await _commentService.Get(boardId, articleId, pageable)).ConvertAll(x => x.ToProtocol()),
+                Datas = MapperUtil.Map<List<Comment>, List<Protocols.Common.Comment>>(await _commentService.Get(boardId, articleId, pageable)),
                 Total = await _commentService.CountAsync(boardId, articleId)
             };
         }
@@ -33,9 +36,15 @@ namespace Board.Controllers
             [FromHeader(Name = WebUtil.HeaderKeys.AuthorizedNickName)] string encodedNickName,
             string boardId, string articleId, [FromBody] Protocols.Request.Comment comment)
         {
+            var commentModel = await _commentService.Create(boardId, articleId, userId, HttpUtility.UrlDecode(encodedNickName), comment);
+            if (commentModel == null)
+            {
+                throw new DeveloperException(Protocols.Code.ResultCode.NotFoundData);
+            }
+
             return new Protocols.Response.Comment
             {
-                Data = (await _commentService.Create(boardId, articleId, userId, HttpUtility.UrlDecode(encodedNickName), comment))?.ToProtocol()
+                Data = MapperUtil.Map<Protocols.Common.Comment>(commentModel)
             };
         }
 
@@ -43,9 +52,15 @@ namespace Board.Controllers
         public async Task<Protocols.Response.Comment> Update([FromHeader(Name = EzAspDotNet.Constants.HeaderKeys.AuthorizedUserId)] string userId,
             string boardId, string commentId, [FromBody] Protocols.Request.Comment comment)
         {
+            var commentModel = await _commentService.Update(boardId, commentId, userId, comment);
+            if (commentModel == null)
+            {
+                throw new DeveloperException(Protocols.Code.ResultCode.NotFoundData);
+            }
+
             return new Protocols.Response.Comment
             {
-                Data = (await _commentService.Update(boardId, commentId, userId, comment))?.ToProtocol()
+                Data = MapperUtil.Map<Protocols.Common.Comment>(commentModel)
             };
         }
 
@@ -53,9 +68,15 @@ namespace Board.Controllers
         public async Task<Protocols.Response.Comment> Delete([FromHeader(Name = EzAspDotNet.Constants.HeaderKeys.AuthorizedUserId)] string userId,
             string boardId, string commentId)
         {
+            var commentModel = await _commentService.Delete(boardId, commentId, userId);
+            if (commentModel == null)
+            {
+                throw new DeveloperException(Protocols.Code.ResultCode.NotFoundData);
+            }
+
             return new Protocols.Response.Comment
             {
-                Data = (await _commentService.Delete(boardId, commentId, userId))?.ToProtocol()
+                Data = MapperUtil.Map<Protocols.Common.Comment>(commentModel)
             };
         }
 
@@ -63,9 +84,15 @@ namespace Board.Controllers
         public async Task<Protocols.Response.Comment> Recommend([FromHeader(Name = EzAspDotNet.Constants.HeaderKeys.AuthorizedUserId)] string userId,
             string boardId, string commentId)
         {
+            var commentModel = await _commentService.Recommend(boardId, commentId, userId);
+            if (commentModel == null)
+            {
+                throw new DeveloperException(Protocols.Code.ResultCode.NotFoundData);
+            }
+
             return new Protocols.Response.Comment
             {
-                Data = (await _commentService.Recommend(boardId, commentId, userId))?.ToProtocol()
+                Data = MapperUtil.Map<Protocols.Common.Comment>(commentModel)
             };
         }
 
@@ -73,9 +100,14 @@ namespace Board.Controllers
         public async Task<Protocols.Response.Comment> NotRecommend([FromHeader(Name = EzAspDotNet.Constants.HeaderKeys.AuthorizedUserId)] string userId,
             string boardId, string commentId)
         {
+            var commentModel = await _commentService.NotRecommend(boardId, commentId, userId);
+            if (commentModel == null)
+            {
+                throw new DeveloperException(Protocols.Code.ResultCode.NotFoundData);
+            }
             return new Protocols.Response.Comment
             {
-                Data = (await _commentService.NotRecommend(boardId, commentId, userId))?.ToProtocol()
+                Data = MapperUtil.Map<Protocols.Common.Comment>(commentModel)
             };
         }
 

@@ -1,7 +1,7 @@
-using MongoDB.Bson.Serialization.Attributes;
-using MongoDB.Bson;
-using Protocols.Code;
 using EzAspDotNet.Models;
+using MongoDB.Bson;
+using MongoDB.Bson.Serialization.Attributes;
+using Protocols.Code;
 
 namespace Auth.Models
 {
@@ -31,20 +31,6 @@ namespace Auth.Models
                 Token = this.Token,
                 UserId = this.UserId,
                 Grade = this.Grade,
-                NickName = this.NickName
-            };
-        }
-
-        public Protocols.Common.Account ToCommon()
-        {
-            return new Protocols.Common.Account
-            {
-                Id = this.Id,
-                Token = this.Token,
-                UserId = this.UserId,
-                Grade = this.Grade,
-                State = this.State,
-                Email = this.Email,
                 NickName = this.NickName
             };
         }

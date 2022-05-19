@@ -1,7 +1,8 @@
-﻿using System.Threading.Tasks;
-using Auth.Extend;
+﻿using Auth.Extend;
 using Auth.Services;
+using EzAspDotNet.Models;
 using Microsoft.AspNetCore.Mvc;
+using System.Threading.Tasks;
 
 namespace Auth.Controllers
 {
@@ -31,7 +32,7 @@ namespace Auth.Controllers
                 Response.TokenSaveToCookie(account.Token);
             }
 
-            return new Protocols.Response.SignUp { Account = account.ToCommon() };
+            return new Protocols.Response.SignUp { Account = MapperUtil.Map<Protocols.Common.Account>(account) };
         }
 
         [HttpPut("Update")]
@@ -44,7 +45,7 @@ namespace Auth.Controllers
                 Response.TokenSaveToCookie(account.Token);
             }
 
-            return new Protocols.Response.AccountUpdate { Account = account.ToCommon() };
+            return new Protocols.Response.AccountUpdate { Account = MapperUtil.Map<Protocols.Common.Account>(account) };
         }
 
         [HttpPost("SignIn")]
@@ -55,7 +56,7 @@ namespace Auth.Controllers
             {
                 Response.TokenSaveToCookie(account.Token);
             }
-            return new Protocols.Response.SignIn { Account = account.ToCommon() };
+            return new Protocols.Response.SignIn { Account = MapperUtil.Map<Protocols.Common.Account>(account) };
         }
 
         [HttpPost("SignOut")]

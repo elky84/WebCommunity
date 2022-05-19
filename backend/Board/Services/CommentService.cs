@@ -1,11 +1,12 @@
 ﻿using Board.Models;
-using MongoDB.Driver;
-using System.Collections.Generic;
-using System.Threading.Tasks;
-using Protocols.Exception;
+using EzAspDotNet.Models;
 using EzAspDotNet.Protocols.Page;
 using EzAspDotNet.Services;
 using EzAspDotNet.Util;
+using MongoDB.Driver;
+using Protocols.Exception;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace Board.Services
 {
@@ -51,12 +52,19 @@ namespace Board.Services
             return await mongoDbUtil.CountAsync(Builders<Comment>.Filter.Eq(x => x.ArticleId, articleId));
         }
 
-        public async Task<Comment> Create(string id, string articleId, string userId, string nickName, Protocols.Request.Comment comment)
+        public async Task<Comment> Create(string id, string articleId, string userId, string author, Protocols.Request.Comment comment)
         {
             var mongoDbUtil = GetMongoDbBoardComment(id);
             var originComment = string.IsNullOrEmpty(comment.OriginCommentId) ? null : await mongoDbUtil.FindOneAsyncById(comment.OriginCommentId);
 
-            var created = await mongoDbUtil.CreateAsync(comment.ToModel(articleId, userId, nickName, originComment?.CommentId, originComment?.Author));
+            var commentModel = MapperUtil.Map<Comment>(comment);
+            commentModel.ArticleId = articleId;
+            commentModel.UserId = userId;
+            commentModel.Author = author;
+            commentModel.CommentId = originComment?.CommentId;
+            commentModel.OriginAuthor = originComment?.Author;
+
+            var created = await mongoDbUtil.CreateAsync(commentModel);
             if (created != null && string.IsNullOrEmpty(comment.OriginCommentId))
             {
                 await mongoDbUtil.UpdateAsync(created.Id, Builders<Comment>.Update.Set(x => x.CommentId, created.Id));
