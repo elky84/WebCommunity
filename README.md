@@ -36,3 +36,7 @@ MongoDB가 shcemaless 인 만큼, 동적으로 콜렉션을 생성해서 동작�
 현재는 URI에 따라 모든 테이블이 동적 생성되는데, Admin이 정의해둔 BoardDefinition 데이터에 따라서만 동적 생성되게 추가 예정입니다. (미구현 상태)
 
 Frontend의 경우 정의된 데이터 기반으로 메뉴를 구성하게 되는데, 현재 구성은 게임 커뮤니티 기반으로 정의되어있습니다.
+
+![write](write.png)
+
+![list](list.png)
