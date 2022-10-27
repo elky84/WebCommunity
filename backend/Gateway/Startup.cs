@@ -1,5 +1,4 @@
-﻿using System.Net;
-using System.Text;
+﻿using EzAspDotNet.StartUp;
 using Gateway.Middlewares;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -11,7 +10,8 @@ using Ocelot.DependencyInjection;
 using Ocelot.LoadBalancer.Middleware;
 using Ocelot.Middleware;
 using Protocols.Exception;
-using EzAspDotNet.StartUp;
+using System.Net;
+using System.Text;
 
 namespace Gateway
 {
@@ -38,6 +38,9 @@ namespace Gateway
             {
                 options.AddDefaultPolicy(
                     builder => builder
+#if DEBUG
+                        .WithOrigins("http://localhost:8080")
+#endif
                         .AllowAnyMethod()
                         .AllowAnyHeader()
                         .AllowCredentials()

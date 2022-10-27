@@ -1,8 +1,4 @@
 ﻿using Microsoft.AspNetCore.Http;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace Auth.Extend
 {
@@ -14,10 +10,13 @@ namespace Auth.Extend
 
             var options = new CookieOptions
             {
-#if !_DEBUG
+#if !DEBUG
                 Expires = DateTime.Now.AddMinutes(60),
 #endif
-                IsEssential = true
+                IsEssential = true,
+                Secure = true,
+                SameSite = SameSiteMode.None,
+                HttpOnly = true,
             };
 
             response.Cookies.Append("Token", token, options);

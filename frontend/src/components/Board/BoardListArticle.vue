@@ -59,7 +59,7 @@ export default {
         return
       }
 
-      this.$axios.post(`${process.env.VUE_APP_URL_BACKEND}/Board/${this.boardId}/${this.article.id}/Read`)
+      this.$axios.post(`/Board/${this.boardId}/${this.article.id}/Read`)
         .then((result) => {
           var article = result.data.data
           this.article.content = article.content

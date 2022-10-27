@@ -38,8 +38,8 @@
             @delete="onDelete(... arguments)" @update="onUpdate(... arguments)" :boardId="boardId" :srcArticle="focusArticle"
             v-if="focusArticle.edit" :key="focusArticle.id + '_edit_focus'" />
         </template>
-        <template v-for="(article) in articles">
-          <BoardListArticle :borderClass="rowColor(article)" :key="article.id" :category="category" :boardId="boardId" :srcArticle="article" />
+        <template v-for="(article) in articles" >
+          <BoardListArticle :borderClass="rowColor(article)" :category="category" :boardId="boardId" :srcArticle="article" :key="article.id + '_article'" />
           <BoardEdit :borderClass="rowColor(article)" @refresh="onRefresh(... arguments)" @close="onClose(... arguments)"
             @delete="onDelete(... arguments)" @update="onUpdate(... arguments)" :boardId="boardId" :srcArticle="article"
             v-if="article.edit" :key="article.id + '_edit'" />
@@ -110,7 +110,7 @@ export default {
   methods: {
     getArticles (searchData) {
       this.focusArticle = null
-      this.$axios.get(`${process.env.VUE_APP_URL_BACKEND}/Board/${this.boardId}`, {
+      this.$axios.get(`/Board/${this.boardId}`, {
         params: {
           offset: this.limit * (this.currentPage - 1),
           limit: this.limit,
@@ -181,7 +181,7 @@ export default {
       this.onRefresh()
     },
     getFocusArticle () {
-      this.$axios.get(`${process.env.VUE_APP_URL_BACKEND}/Board/${this.boardId}/${this.articleId}`)
+      this.$axios.get(`/Board/${this.boardId}/${this.articleId}`)
         .then((result) => {
           this.focusArticle = result.data.data
           if (this.focusArticle) {

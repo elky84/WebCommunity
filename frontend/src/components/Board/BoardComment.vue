@@ -50,7 +50,7 @@ export default {
   methods: {
     onClickRecommend () {
       var vm = this
-      this.$axios.post(`${process.env.VUE_APP_URL_BACKEND}/Board/Comment/${this.boardId}/${this.comment.id}/Recommend`)
+      this.$axios.post(`/Board/Comment/${this.boardId}/${this.comment.id}/Recommend`)
         .then((result) => {
           if (result.data.data) {
             vm.onCommentUpdate(result.data.data)
@@ -59,7 +59,7 @@ export default {
     },
     onClickNotRecommend () {
       var vm = this
-      this.$axios.post(`${process.env.VUE_APP_URL_BACKEND}/Board/Comment/${this.boardId}/${this.comment.id}/NotRecommend`)
+      this.$axios.post(`/Board/Comment/${this.boardId}/${this.comment.id}/NotRecommend`)
         .then((result) => {
           vm.onCommentUpdate(result.data.data)
         })
@@ -69,7 +69,7 @@ export default {
     },
     onClickDelete () {
       var vm = this
-      this.$axios.delete(`${process.env.VUE_APP_URL_BACKEND}/Board/Comment/${this.boardId}/${this.comment.id}`)
+      this.$axios.delete(`/Board/Comment/${this.boardId}/${this.comment.id}`)
         .then((result) => {
           if (result.data.data) {
             vm.onCommentUpdate(result.data.data)

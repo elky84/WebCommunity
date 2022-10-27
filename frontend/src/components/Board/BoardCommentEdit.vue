@@ -47,7 +47,7 @@ export default {
       this.$refs.editor.getHTML()
 
       var vm = this
-      this.$axios.post(`${process.env.VUE_APP_URL_BACKEND}/Board/Comment/${this.boardId}/${this.srcArticle.id}`,
+      this.$axios.post(`/Board/Comment/${this.boardId}/${this.srcArticle.id}`,
         {
           originCommentId: this.srcComment === null ? null : this.srcComment.id,
           content: this.editorContent

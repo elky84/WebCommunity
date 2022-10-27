@@ -109,7 +109,7 @@ namespace Gateway.Middlewares
             var reRoute = cache[cacheKey] as FileReRoute;
             if (reRoute == null)
             {
-                var fileName = $"./ocelot.{Environment.GetEnvironmentVariable("DOTNET_ENVIRONMENT")}.json";
+                var fileName = $"./ocelot.{Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT")}.json";
                 var filePaths = new List<string> { fileName };
 
                 var policy = new CacheItemPolicy();

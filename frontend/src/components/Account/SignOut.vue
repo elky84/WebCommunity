@@ -40,7 +40,7 @@ export default {
     },
     onClickSubmit () {
       var vm = this
-      this.$axios.post(`${process.env.VUE_APP_URL_BACKEND}/Auth/Account/SignOut`,
+      this.$axios.post('/Auth/Account/SignOut',
         {
         })
         .then((result) => {

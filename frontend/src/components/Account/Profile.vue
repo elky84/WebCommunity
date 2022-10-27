@@ -74,7 +74,7 @@ export default {
     },
     onClickSubmit () {
       var vm = this
-      this.$axios.put(`${process.env.VUE_APP_URL_BACKEND}/Auth/Account/Update`,
+      this.$axios.put('/Auth/Account/Update',
         {
           email: this.email,
           nickName: this.nickName,

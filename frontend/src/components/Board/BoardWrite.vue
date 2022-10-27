@@ -40,7 +40,7 @@ export default {
       var vm = this
       this.$refs.editor.getHTML()
 
-      this.$axios.post(`${process.env.VUE_APP_URL_BACKEND}/Board/${this.boardId}`,
+      this.$axios.post(`/Board/${this.boardId}`,
         {
           title: this.title,
           content: this.editorContent,

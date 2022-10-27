@@ -81,7 +81,7 @@ export default {
     },
     onClickSubmit () {
       var vm = this
-      this.$axios.post(`${process.env.VUE_APP_URL_BACKEND}/Auth/Account/SignUp`,
+      this.$axios.post('/Auth/Account/SignUp',
         {
           userId: this.userId,
           email: this.email,

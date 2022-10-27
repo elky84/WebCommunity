@@ -23,14 +23,15 @@ namespace Board
             EzAspDotNet.Models.MapperUtil.Initialize(
                 new MapperConfiguration(cfg =>
                 {
-                    cfg.CreateMap<Models.Article, Protocols.Common.ArticleList>();
-                    cfg.CreateMap<Protocols.Common.ArticleList, Models.Article>();
+                    cfg.CreateMap<Models.Article, Protocols.Common.ArticleList>(MemberList.None);
+                    cfg.CreateMap<Protocols.Common.ArticleList, Models.Article>(MemberList.None);
 
-                    cfg.CreateMap<Models.Article, Protocols.Common.Article>();
-                    cfg.CreateMap<Protocols.Common.Article, Models.Article>();
+                    cfg.CreateMap<Protocols.Request.Article, Models.Article>(MemberList.None);
+                    cfg.CreateMap<Models.Article, Protocols.Common.Article>(MemberList.None);
+                    cfg.CreateMap<Protocols.Common.Article, Models.Article>(MemberList.None);
 
-                    cfg.CreateMap<Models.Comment, Protocols.Common.Comment>();
-                    cfg.CreateMap<Protocols.Common.Comment, Models.Comment>();
+                    cfg.CreateMap<Models.Comment, Protocols.Common.Comment>(MemberList.None);
+                    cfg.CreateMap<Protocols.Common.Comment, Models.Comment>(MemberList.None);
                 })
             );
 

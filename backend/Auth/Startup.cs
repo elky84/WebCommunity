@@ -25,8 +25,8 @@ namespace Auth
             EzAspDotNet.Models.MapperUtil.Initialize(
                 new MapperConfiguration(cfg =>
                 {
-                    cfg.CreateMap<Models.AccountData, Protocols.Common.Account>();
-                    cfg.CreateMap<Protocols.Common.Account, Models.AccountData>();
+                    cfg.CreateMap<Models.AccountData, Protocols.Common.Account>(MemberList.None);
+                    cfg.CreateMap<Protocols.Common.Account, Models.AccountData>(MemberList.None);
                 })
             );
 

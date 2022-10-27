@@ -1,0 +1,21 @@
+### Sign Up
+
+POST {{host}}/Auth/Account/SignUp
+Content-Type: application/json
+
+{
+  "UserId": "elky",
+  "Password": "1234",
+  "Email": "elky@kakao.com",
+  "NickName": "elky",
+}
+
+### Sign In
+
+POST {{host}}/Auth/Account/SignIn
+Content-Type: application/json
+
+{
+  "UserId": "elky",
+  "Password": "1234"
+}
