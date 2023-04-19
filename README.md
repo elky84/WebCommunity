@@ -1,5 +1,5 @@
 [![Website](https://img.shields.io/website-up-down-green-red/http/shields.io.svg?label=elky-essay)](https://elky84.github.io)
-![Made with](https://img.shields.io/badge/made%20with-.NET6-brightgreen.svg)
+![Made with](https://img.shields.io/badge/made%20with-.NET7-brightgreen.svg)
 ![Made with](https://img.shields.io/badge/made%20with-JavaScript-blue.svg)
 ![Made with](https://img.shields.io/badge/made%20with-MongoDB-red.svg)
 
