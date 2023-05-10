@@ -1,4 +1,4 @@
-﻿namespace WebUtil
+﻿namespace WebUtil.Constants
 {
 
     public static class HeaderKeys

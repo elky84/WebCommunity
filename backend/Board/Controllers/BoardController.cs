@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using System.Web;
+using WebUtil.Constants;
 
 namespace Board.Controllers
 {
@@ -35,7 +36,7 @@ namespace Board.Controllers
 
         [HttpPost("{boardId}")]
         public async Task<Protocols.Response.Article> Create([FromHeader(Name = EzAspDotNet.Constants.HeaderKeys.AuthorizedUserId)] string userId,
-            [FromHeader(Name = WebUtil.HeaderKeys.AuthorizedNickName)] string encodedNickName,
+            [FromHeader(Name = HeaderKeys.AuthorizedNickName)] string encodedNickName,
             string boardId, [FromBody] Protocols.Request.Article article)
         {
             var articleModel = await _articleService.Create(boardId, userId, HttpUtility.UrlDecode(encodedNickName), article);

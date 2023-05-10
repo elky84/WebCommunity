@@ -12,6 +12,7 @@ using System.Net.Http.Headers;
 using System.Runtime.Caching;
 using System.Threading.Tasks;
 using System.Web;
+using WebUtil.Constants;
 
 namespace Gateway.Middlewares
 {
@@ -46,7 +47,7 @@ namespace Gateway.Middlewares
 
             var auth = await Authorization(ctx);
             ctx.DownstreamRequest.Headers.Add(EzAspDotNet.Constants.HeaderKeys.AuthorizedUserId, auth.UserId);
-            ctx.DownstreamRequest.Headers.Add(WebUtil.HeaderKeys.AuthorizedNickName, HttpUtility.UrlEncode(auth.NickName));
+            ctx.DownstreamRequest.Headers.Add(HeaderKeys.AuthorizedNickName, HttpUtility.UrlEncode(auth.NickName));
             await next.Invoke();
         }
 

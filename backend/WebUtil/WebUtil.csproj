@@ -15,7 +15,7 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<PackageReference Include="EzAspDotnet" Version="1.0.46" />
+		<PackageReference Include="EzAspDotnet" Version="1.0.56" />
 	</ItemGroup>
 
 </Project>

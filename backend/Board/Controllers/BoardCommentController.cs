@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using System.Web;
+using WebUtil.Constants;
 
 namespace Board.Controllers
 {
@@ -33,7 +34,7 @@ namespace Board.Controllers
 
         [HttpPost("{boardId}/{articleId}")]
         public async Task<Protocols.Response.Comment> Create([FromHeader(Name = EzAspDotNet.Constants.HeaderKeys.AuthorizedUserId)] string userId,
-            [FromHeader(Name = WebUtil.HeaderKeys.AuthorizedNickName)] string encodedNickName,
+            [FromHeader(Name = HeaderKeys.AuthorizedNickName)] string encodedNickName,
             string boardId, string articleId, [FromBody] Protocols.Request.Comment comment)
         {
             var commentModel = await _commentService.Create(boardId, articleId, userId, HttpUtility.UrlDecode(encodedNickName), comment);

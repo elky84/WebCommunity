@@ -2,6 +2,7 @@
 
 namespace WebUtil.Models
 {
+    // ReSharper disable once UnusedType.Global
     public static class ModelsExtend
     {
         public static T ToProtocol<T>(this T t, MongoDbHeader header)
